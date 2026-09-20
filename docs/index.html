@@ -428,12 +428,12 @@ td.word{font-weight:700;font-size:18px}
 <!-- Grown-up gate -->
 <div class="overlay" id="gateOv" hidden style="z-index:32">
   <div class="card" style="max-width:420px">
-    <h2 id="gateTitle">For grown-ups</h2>
-    <p class="help" id="gateHelp">Enter the grown-up PIN.</p>
-    <div class="gateQ" id="gateQ" hidden></div>
-    <form class="gateRow" id="gateForm"><input id="gateIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" aria-label="PIN"><button class="btn primary" type="submit" id="gateGo">Open</button></form>
+    <h2>For grown-ups</h2>
+    <p class="help">Solve this to open progress and word lists.</p>
+    <div class="gateQ" id="gateQ"></div>
+    <form class="gateRow" id="gateForm"><input id="gateIn" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" aria-label="Answer"><button class="btn primary" type="submit">Open</button></form>
     <p class="help" id="gateMsg" style="margin-top:8px"></p>
-    <div class="row" style="margin-top:8px"><button class="btn" id="gateClose">Cancel</button><button class="btn sm" id="gateForgot" style="border:0;background:none;color:var(--muted);text-decoration:underline">Forgot the PIN?</button></div>
+    <div class="row" style="margin-top:8px"><button class="btn" id="gateClose">Cancel</button></div>
   </div>
 </div>
 
@@ -506,7 +506,7 @@ td.word{font-weight:700;font-size:18px}
           <label>Voice<select id="setVoice"></select><span class="help">Automatic picks the nicest woman's voice on this iPad. For a much more natural voice, download one on the iPad: Settings → Accessibility → Spoken Content → Voices → English → tap <b>Ava</b> or <b>Zoe</b> and download the <b>Premium</b> version. Then reopen Pip and choose it here.</span></label>
           <label>Talking speed: <span id="setRateVal"></span><input type="range" id="setRate" min="0.6" max="1.1" step="0.05"></label>
         </div>
-        <div class="row" style="margin-top:14px"><button class="btn" id="testVoice">Test the voice</button><button class="btn" id="changePin">Change grown-up PIN</button><span class="small" id="setSaved"></span></div>
+        <div class="row" style="margin-top:14px"><button class="btn" id="testVoice">Test the voice</button><span class="small" id="setSaved"></span></div>
       </div>
       <div class="panel" id="backupPanel" hidden>
         <h3>Backup</h3>
@@ -1061,52 +1061,19 @@ $("#dressBtn").onclick=openDress;
 $("#dressClose").onclick=()=>{$("#dressOv").hidden=true;renderHome();};
 
 /* ---------------- Grown-up gate ---------------- */
-// A grown-up PIN (hashed, stored with settings). Creating a PIN when none exists
-// first requires a two-digit × two-digit multiplication, so a child can't set one.
-async function pinHash(pin){
-  const txt="spellwithpip:"+pin;
-  try{const buf=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(txt));return[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");}
-  catch(e){let h=5381;for(const c of txt)h=((h<<5)+h+c.charCodeAt(0))|0;return"d"+(h>>>0).toString(16);}
-}
-let gate={mode:"enter",ans:0,first:"",fails:0,lockUntil:0};
-function gateView(mode,msg){
-  gate.mode=mode;$("#gateIn").value="";$("#gateMsg").textContent=msg||"";
-  const q=$("#gateQ");q.hidden=mode!=="challenge";
-  $("#gateForgot").hidden=mode!=="enter";
-  $("#gateIn").type=mode==="challenge"?"text":"password";
-  if(mode==="challenge"){
-    const a=23+Math.floor(Math.random()*67),b=13+Math.floor(Math.random()*76);gate.ans=a*b;
-    $("#gateTitle").textContent="Set up a grown-up PIN";$("#gateHelp").textContent="First, solve this to show you're a grown-up:";q.textContent=`${a} × ${b} = ?`;$("#gateGo").textContent="Next";
-  }else if(mode==="create"){
-    $("#gateTitle").textContent="Choose a grown-up PIN";$("#gateHelp").textContent="Pick 4 to 8 digits she won't guess (not a birthday she knows).";$("#gateGo").textContent="Next";
-  }else if(mode==="confirm"){
-    $("#gateTitle").textContent="Type the PIN again";$("#gateHelp").textContent="Just to be sure.";$("#gateGo").textContent="Save PIN";
-  }else{
-    $("#gateTitle").textContent="For grown-ups";$("#gateHelp").textContent="Enter the grown-up PIN.";$("#gateGo").textContent="Open";
-  }
+// A two-digit x two-digit multiplication keeps the grown-ups area out of reach.
+let gateAns=0;
+function newGateQ(msg){
+  const a=23+Math.floor(Math.random()*67),b=13+Math.floor(Math.random()*76);gateAns=a*b;
+  $("#gateQ").textContent=`${a} × ${b} = ?`;$("#gateIn").value="";$("#gateMsg").textContent=msg||"";
   $("#gateOv").hidden=false;setTimeout(()=>$("#gateIn").focus(),50);
 }
-$("#grownBtn").onclick=()=>gateView(S.settings.pinHash?"enter":"challenge");
+$("#grownBtn").onclick=()=>newGateQ();
 $("#gateClose").onclick=()=>$("#gateOv").hidden=true;
-$("#gateForgot").onclick=()=>{if(S.mode==="local"){gateView("challenge","Solve this to make a new PIN.");return;}$("#gateMsg").textContent="Ask Claude in your “spelling app” project to reset the grown-up PIN. Then you can make a new one.";};
-$("#gateForm").onsubmit=async e=>{
-  e.preventDefault();const v=$("#gateIn").value.trim();
-  if(gate.mode==="enter"){
-    if(Date.now()<gate.lockUntil){$("#gateMsg").textContent="Too many tries. Wait a minute and try again.";$("#gateIn").value="";return;}
-    if(v&&await pinHash(v)===S.settings.pinHash){gate.fails=0;$("#gateOv").hidden=true;openAdmin();}
-    else{gate.fails++;$("#gateIn").value="";
-      if(gate.fails>=3){gate.lockUntil=Date.now()+60000*Math.min(10,gate.fails-2);$("#gateMsg").textContent="That's not it. Locked for a bit.";}
-      else $("#gateMsg").textContent="That's not the PIN.";}
-  }else if(gate.mode==="challenge"){
-    if(+v===gate.ans)gateView("create");else gateView("challenge","Not quite. Here's a new one.");
-  }else if(gate.mode==="create"){
-    if(!/^\d{4,8}$/.test(v)){$("#gateMsg").textContent="Use 4 to 8 digits.";$("#gateIn").value="";return;}
-    gate.first=v;gateView("confirm");
-  }else if(gate.mode==="confirm"){
-    if(v!==gate.first){gateView("create","Those didn't match. Pick a PIN again.");return;}
-    const h=await pinHash(v);S.settings={...S.settings,pinHash:h};setDoc("settings","main",S.settings);
-    gate.first="";$("#gateOv").hidden=true;toast("Grown-up PIN saved");openAdmin();
-  }
+$("#gateForm").onsubmit=e=>{
+  e.preventDefault();
+  if(+$("#gateIn").value.trim()===gateAns){$("#gateOv").hidden=true;openAdmin();}
+  else newGateQ("Not quite. Here's another one.");
 };
 
 /* ---------------- Admin ---------------- */
@@ -1233,8 +1200,11 @@ async function openPresets(){
   $$("#presetRows [data-use]").forEach(b=>b.onclick=()=>{
     const g=PRESETS.groups.find(x=>x.id===b.dataset.use);if(!g)return;
     box.hidden=true;openEditor(null);
-    $("#listName").value=g.name;$("#listWords").value=g.words.join("\n");
-    $("#listMsg").textContent=`${g.words.length} words loaded. Delete any she isn't tested on, set the test date, then save.`;
+    const sents=PRESETS.sentences||{};
+    $("#listName").value=g.name;
+    $("#listWords").value=g.words.map(w=>sents[w]?`${w}: ${sents[w]}`:w).join("\n");
+    const withS=g.words.filter(w=>sents[w]).length;
+    $("#listMsg").textContent=`${g.words.length} words loaded${withS?` (${withS} with a sentence Pip can read)`:""}. Delete any she isn't tested on, set the test date, then save.`;
   });
 }
 $("#presetBtn").onclick=openPresets;
@@ -1286,7 +1256,6 @@ $("#setBoxes").onchange=e=>saveSettings({showBoxes:e.target.value==="1"});
 $("#setCase").onchange=e=>saveSettings({letterCase:e.target.value});
 $("#setVoice").onchange=e=>saveSettings({voice:e.target.value});
 $("#setRate").oninput=e=>saveSettings({rate:+e.target.value});
-$("#changePin").onclick=()=>gateView("create");
 $("#backupBtn").onclick=async()=>{
   const name=`spell-with-pip-backup-${today()}.json`,blob=new Blob([JSON.stringify(snapshot())],{type:"application/json"});
   try{const f=new File([blob],name,{type:"application/json"});
