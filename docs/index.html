@@ -72,6 +72,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .homeRow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .softBtn.hot{background:var(--honey);border-color:var(--honeyDeep);box-shadow:0 4px 0 var(--honeyDeep);color:#4a3200}
 .softBtn.locked{opacity:.75;color:var(--muted)}
+.demoBar{background:var(--ink);color:#fff;font-size:14px;line-height:1.4;text-align:center;padding:7px 16px;margin-inline:-16px;text-wrap:balance}
+.demoBar b{font-family:var(--display);font-weight:700}
+.demoBar .icon{width:15px;height:15px;opacity:.9;margin-right:5px;vertical-align:-2px}
 .nudgeLine{font-family:var(--display);font-weight:700;font-size:19px;color:var(--berryDeep);margin:0;text-wrap:balance}
 .x2{display:inline-block;background:var(--berry);color:#fff;border-radius:999px;padding:1px 8px;font-size:15px;margin-left:6px;vertical-align:2px}
 .stopBtn{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 16px;font-family:var(--display);font-weight:700;font-size:17px;color:var(--muted)}
@@ -332,6 +335,10 @@ td.word{font-weight:700;font-size:18px}
 
 
 <div class="app" id="app">
+  <div class="demoBar" id="demoBar" hidden>
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M4 13v6a2 2 0 002 2h12a2 2 0 002-2v-6"/></svg>
+<b>Just trying it out.</b> Nothing is saved in a browser tab. On an iPad or iPhone, tap Share → “Add to Home Screen”, and Pip keeps her stars and progress on that device.
+  </div>
   <!-- HOME -->
   <section class="screen" id="home">
     <div class="homeTop">
@@ -579,7 +586,10 @@ const bname=()=>S.settings.buddyName||"Pip";
 const LS="spellwithpip.v1";
 function trimSessions(){const ids=Object.keys(S.sessions).sort((a,b)=>(S.sessions[b].startedAt||0)-(S.sessions[a].startedAt||0));ids.slice(200).forEach(id=>delete S.sessions[id]);}
 function snapshot(){return{app:"spellwithpip",version:1,savedAt:Date.now(),lists:S.lists,settings:S.settings,stats:S.stats,rewards:S.rewards,sessions:S.sessions};}
-function lsSave(){try{trimSessions();localStorage.setItem(LS,JSON.stringify(snapshot()))}catch(e){console.warn(e);toast("Couldn't save. The iPad may be out of space.");}}
+// Saving happens only in the installed app (Home Screen icon). In a plain browser
+// tab the app is a try-it-out demo: it starts from seed.json on every load.
+function isInstalled(){try{return (window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;}catch(e){return false}}
+function lsSave(){if(!isInstalled())return;try{trimSessions();localStorage.setItem(LS,JSON.stringify(snapshot()))}catch(e){console.warn(e);toast("Couldn't save. The iPad may be out of space.");}}
 function lsLoad(){try{return JSON.parse(localStorage.getItem(LS))||{}}catch(e){return{}}}
 const chains={};
 function queueWrite(path,fn){chains[path]=(chains[path]||Promise.resolve()).then(fn).catch(async e=>{
@@ -614,9 +624,11 @@ async function initStore(){
 }
 function fallback(e){
   if(e)console.warn(e);
-  db=null;S.mode="local";const o=lsLoad();
+  db=null;
+  const installed=isInstalled();S.mode=installed?"local":"demo";
+  const o=installed?lsLoad():{};
   applyData(o);
-  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(_){}
+  if(installed)try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist();}catch(_){}
   if(!o.lists&&window.PIP_SEED){fetch(window.PIP_SEED).then(r=>r.ok?r.json():null).then(d=>{if(d&&!Object.keys(S.lists).length){applyData(d);lsSave();}S.ready=true;refresh();}).catch(()=>{S.ready=true;refresh();});return;}
   S.ready=true;refresh();
 }
@@ -713,7 +725,8 @@ function tone(f,t0,d,type="sine",g=.12){const a=audio();if(!a)return;const o=a.c
 const sfx={tap(){tone(660,0,.07,"triangle",.06)},win(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.09,.25,"triangle",.1))},oops(){tone(330,0,.18,"sine",.08);tone(262,.14,.22,"sine",.08)},nope(){tone(180,0,.12,"square",.03)},pop(){tone(880,0,.08,"triangle",.08);tone(1320,.06,.1,"triangle",.06)}};
 
 /* ---------------- UI helpers ---------------- */
-function show(id){["home","play","summary","room"].forEach(s=>$("#"+s).hidden=s!==id);}
+function show(id){["home","play","summary","room"].forEach(s=>$("#"+s).hidden=s!==id);
+  $("#demoBar").hidden=S.mode!=="demo"||id==="play";}
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
 function banner(text){if(matchMedia("(prefers-reduced-motion: reduce)").matches){toast(text);return;}const b=document.createElement("div");b.className="banner";b.textContent=text;document.body.appendChild(b);setTimeout(()=>b.remove(),1900);}
 function confetti(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const box=document.createElement("div");box.className="confetti";const cols=["#EF5B7B","#F7B538","#2FB673","#5BB8EA","#B18CF0"];
@@ -771,6 +784,7 @@ function renderHome(){
   nudge.hidden=!testSoon;
   if(testSoon)nudge.textContent=du2===0?"Test is today! A practice test is a great warm-up.":"Test tomorrow! Try a practice test to see which words are ready.";
   $("#testBtn").classList.toggle("hot",!!testSoon);
+  $("#demoBar").hidden=S.mode!=="demo"||!$("#play").hidden;
   const got=S.rewards.chest===today();
   $("#goal").innerHTML=`<svg class="chest" viewBox="0 0 34 30"><rect x="2" y="12" width="30" height="16" rx="3" fill="#C9763A"/><path d="M2 14 Q17 ${got?"-6":"2"} 32 14 Z" fill="#E29A1E"/><rect x="14" y="12" width="6" height="8" rx="1.5" fill="#FFD23F"/>${got?'<circle cx="10" cy="6" r="2.5" fill="#FFD23F"/><circle cx="24" cy="4" r="2" fill="#FFD23F"/>':""}</svg>${got?"Treasure opened! A new one comes tomorrow.":"Finish a round to open today's treasure!"}`;
 }
@@ -1123,7 +1137,9 @@ function renderAdmin(){
   $$("[data-pane]").forEach(p=>p.hidden=p.dataset.pane!==tab);
   const n=S.settings.childName.trim();
   $("#adTitle").textContent=n?`${n}'s spelling`:"Spelling progress";
-  $("#adMode").textContent=S.mode==="db"?"Saved online. Open this page on any device to check in.":"Saved on this iPad. Make a backup now and then under Settings.";
+  $("#adMode").textContent=S.mode==="db"?"Saved online. Open this page on any device to check in."
+    :S.mode==="demo"?"Preview in a browser tab — nothing is saved, and a refresh starts over. Add it to the Home Screen to keep her progress."
+    :"Saved on this iPad. Make a backup now and then under Settings.";
   if(tab==="progress")renderProgress();else if(tab==="history")renderHistory();else if(tab==="lists")renderLists();else renderSettings();
 }
 const LVL={new:"Not practiced",learn:"Needs practice",close:"Getting there",mast:"Ready"};

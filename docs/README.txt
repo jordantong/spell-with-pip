@@ -17,10 +17,17 @@ then the iPad keeps its own copy and works offline.
      first open it works without internet.
 
 3. FIRST TIME, AS A GROWN-UP
-   - Tap "Grown-ups" and set your PIN.
+   - Tap "Grown-ups" and answer the multiplication problem.
    - Settings: enter her name, tap "Test the voice".
-   - Test lists: "Add this week's list" and paste her words.
-     (A sample list is already loaded; delete it once hers is in.)
+   - Test lists: "Add from her spelling book" to pick a lesson group, or
+     "Type a new list" to paste her words. (Lessons 1-5 is already loaded,
+     with Friday 9/25 as the test date.)
+
+HOW IT SAVES
+   - In a browser tab it's a try-it-out preview: nothing is saved, and a
+     refresh starts fresh with the built-in list.
+   - Once it's added to the Home Screen, that icon keeps her stars, lists
+     and progress on that device.
 
 GOOD TO KNOW
    - Her progress is saved on that iPad only. Every so often use
