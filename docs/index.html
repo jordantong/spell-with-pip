@@ -71,7 +71,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .softBtn:disabled{opacity:.5;cursor:default}
 .homeRow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .softBtn.hot{background:var(--honey);border-color:var(--honeyDeep);box-shadow:0 4px 0 var(--honeyDeep);color:#4a3200}
-.softBtn.locked{opacity:.75;color:var(--muted)}
+.softBtn.locked{opacity:.85;color:var(--muted)}
+.tk{display:inline-block;width:11px;height:11px;border-radius:3px;border:2px solid var(--line);box-sizing:border-box;margin-right:2px;vertical-align:0}
+.tk.on{background:var(--honey);border-color:var(--honeyDeep)}
+.bonusNote{margin:0;font-size:14px;color:var(--muted);text-wrap:balance;max-width:34ch}
 .demoBar{background:var(--ink);color:#fff;font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px;margin-inline:-16px;text-wrap:balance}
 .demoBar b{font-family:var(--display);font-weight:700}
 .demoBar .icon{width:13px;height:13px;opacity:.9;margin-right:5px;vertical-align:-2px}
@@ -245,6 +248,21 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .meter{height:14px;border-radius:99px;background:var(--ground2);overflow:hidden}
 .meter i{display:block;height:100%;background:var(--honey);border-radius:99px}
 
+.shopWrap{flex:1;min-height:0;overflow:auto;padding-block:4px 20px}
+.shopIntro{margin:6px 0 0;color:var(--muted);font-size:15px}
+.shopHead{font-family:var(--display);font-weight:800;font-size:21px;margin:16px 0 8px}
+.shopGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:10px}
+.shopItem{background:var(--paper);border:2px solid var(--line);border-radius:18px;padding:10px 6px 8px;display:grid;justify-items:center;gap:5px;
+  font-family:var(--display);font-weight:700;font-size:13px;color:var(--ink);box-shadow:0 3px 0 var(--line);text-align:center}
+.shopItem:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+.shopItem .art{font-size:34px;line-height:1}
+.shopItem .swatchArt{width:38px;height:38px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line)}
+.shopItem .price{display:inline-flex;align-items:center;gap:3px;font-size:15px}
+.shopItem .price .icon{width:16px;height:16px}
+.shopItem.own{background:var(--leafSoft);border-color:var(--leaf);box-shadow:0 3px 0 var(--leaf);color:#18794A}
+.shopItem.cant{opacity:.6}
+.shopItem.cant .price{color:var(--muted)}
+
 /* ---------- Overlays ---------- */
 .overlay{position:fixed;inset:0;background:rgba(38,48,92,.35);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}
 .card{background:var(--paper);border-radius:var(--radius);padding:24px;max-width:560px;width:100%;box-sizing:border-box;box-shadow:0 12px 40px rgba(38,48,92,.25);max-height:calc(100% - 32px);overflow:auto}
@@ -339,12 +357,12 @@ td.word{font-weight:700;font-size:18px}
 <div class="app" id="app">
   <div class="demoBar" id="demoBar" hidden>
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M4 13v6a2 2 0 002 2h12a2 2 0 002-2v-6"/></svg>
-<b>You’re playing Pip in a web browser, so nothing is saved.</b> On an iPad or iPhone, tap the Share button and choose “Add to Home Screen.” Pip then works like any other app — its own icon, no internet needed, and her stars and word lists are saved on that device.
+<b>You’re playing Pip in a web browser, so nothing is saved.</b> On an iPad or iPhone, tap the Share button and choose “Add to Home Screen.” Pip then works like any other app — its own icon, no internet needed, and her gems and word lists are saved on that device.
   </div>
   <!-- HOME -->
   <section class="screen" id="home">
     <div class="homeTop">
-      <button class="starPill" id="starBtn" aria-label="Open Pip's room">__STAR__<span id="homeStars">0</span></button>
+      <button class="starPill" id="starBtn" aria-label="Open Pip's Shop">__STAR__<span id="homeStars">0</span></button>
       <button class="grownBtn" id="grownBtn">Grown-ups</button>
     </div>
     <div class="homeGrid">
@@ -353,6 +371,7 @@ td.word{font-weight:700;font-size:18px}
         <svg class="buddy idle homeBuddy" id="buddyHome" viewBox="0 0 200 200" aria-hidden="true"></svg>
         <button class="bigBtn" id="startBtn" disabled>Let's practice!</button>
         <button class="softBtn" id="trickyBtn" hidden></button>
+        <p class="bonusNote" id="bonusNote" hidden></p>
         <button class="softBtn" id="testBtn" disabled>Take a practice test</button>
         <p class="nudgeLine" id="nudgeLine" hidden></p>
       </div>
@@ -363,7 +382,7 @@ td.word{font-weight:700;font-size:18px}
           <p class="tcReady" id="tcReady"></p>
         </div>
         <div class="dailyCard"><div class="week" id="week"></div><div class="goal" id="goal"></div></div>
-        <div class="homeRow"><button class="softBtn" id="roomBtn">Pip's room</button><button class="softBtn" id="dressBtn">Dress up Pip</button></div>
+        <div class="homeRow"><button class="softBtn hot" id="shopBtn">Pip's Shop</button><button class="softBtn" id="roomBtn">Pip's room</button><button class="softBtn" id="dressBtn">Dress up Pip</button></div>
       </div>
     </div>
   </section>
@@ -403,6 +422,24 @@ td.word{font-weight:700;font-size:18px}
     <div class="homeRow" style="margin-top:8px"><button class="bigBtn" id="againBtn">Play again</button><button class="softBtn" id="sumRoomBtn" hidden>Decorate Pip's room</button><button class="softBtn" id="homeBtn">Home</button></div>
   </section>
 
+  <!-- SHOP -->
+  <section class="screen" id="shop" hidden>
+    <div class="roomBar">
+      <button class="stopBtn" id="shopBack">Back</button>
+      <h2 id="shopTitle">Pip's Shop</h2>
+      <div class="starPill">__STAR__<span id="shopGems">0</span></div>
+    </div>
+    <div class="shopWrap">
+      <p class="shopIntro" id="shopIntro"></p>
+      <h3 class="shopHead">Stickers for the room</h3>
+      <div class="shopGrid" id="shopStickers"></div>
+      <h3 class="shopHead" id="shopWearHead">Things for Pip to wear</h3>
+      <div class="shopGrid" id="shopAccs"></div>
+      <h3 class="shopHead">Wallpaper</h3>
+      <div class="shopGrid" id="shopWalls"></div>
+    </div>
+  </section>
+
   <!-- PIP'S ROOM -->
   <section class="screen" id="room" hidden>
     <div class="roomBar">
@@ -433,10 +470,10 @@ td.word{font-weight:700;font-size:18px}
 <div class="overlay" id="dressOv" hidden>
   <div class="card">
     <h2 id="dressTitle">Dress up Pip</h2>
-    <p class="help">Earn stars to unlock new things for your buddy. Tap to put them on or take them off.</p>
+    <p class="help">Tap something to put it on or take it off. Buy new things with gems in the Shop.</p>
     <svg class="buddy idle" id="buddyDress" viewBox="0 0 200 200" aria-hidden="true" style="width:150px;margin:10px auto 0"></svg>
     <div class="wearGrid" id="wearGrid"></div>
-    <button class="softBtn" id="dressClose">Done</button>
+    <div class="homeRow"><button class="softBtn" id="dressShop">Pip's Shop</button><button class="softBtn" id="dressClose">Done</button></div>
   </div>
 </div>
 
@@ -529,14 +566,14 @@ td.word{font-weight:700;font-size:18px}
         <div class="row" style="margin-top:10px"><button class="btn" id="backupBtn">Save a backup</button><label class="btn" for="restoreIn" style="cursor:pointer">Restore from a backup</label><input type="file" id="restoreIn" accept=".json,application/json" hidden><span class="small" id="backupMsg"></span></div>
       </div>
       <div class="panel">
-        <h3>Stars and prizes</h3>
-        <p class="help">One star per word spelled in practice or a practice test, bonus stars for streaks and the daily treasure, and a sticker for Pip's room every 10 stars.</p>
-        <div class="row" style="margin-top:10px"><span id="setStars"></span><button class="btn sm danger" id="resetStars">Reset stars</button></div>
+        <h3>Gems and the Shop</h3>
+        <p class="help">She earns 1 gem per word in practice or a practice test, 3 gems per word in a Power Round, plus bonus gems for streaks and the daily treasure. Gems are spent in Pip's Shop on stickers (10–35), things for Pip to wear (25–120) and wallpaper (15–25).</p>
+        <div class="row" style="margin-top:10px"><span id="setStars"></span><button class="btn sm danger" id="resetStars">Reset gems</button></div>
       </div>
       <div class="panel">
         <h3>Privacy</h3>
         <ul class="privacy">
-          <li>Everything Pip knows — her name, word lists, stars and history — is stored on this device only. There's no account, no sign-in, and nothing is uploaded to a server.</li>
+          <li>Everything Pip knows — her name, word lists, gems and history — is stored on this device only. There's no account, no sign-in, and nothing is uploaded to a server.</li>
           <li>No cookies, no analytics, no third-party services. The fonts and sounds are built into the app, so it makes no outside requests once it's open.</li>
           <li>The voice comes from this device's own speech settings. Nothing she types or hears is sent anywhere.</li>
           <li>Added to the Home Screen, Pip works offline. The web address it came from is public, and that host sees a normal web request (IP address and time) when the app is first downloaded or later updated.</li>
@@ -552,12 +589,13 @@ td.word{font-weight:700;font-size:18px}
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const STAR='<svg class="icon" viewBox="0 0 24 24"><path fill="#F7B538" stroke="#E29A1E" stroke-width="1.2" stroke-linejoin="round" d="M12 2.8l2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.6l-5.4 2.9 1.1-6.1-4.5-4.2 6.1-.8z"/></svg>';
+const STAR='<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#5BB8EA" stroke="#2C7FB0" stroke-width="1.1" stroke-linejoin="round" d="M7.5 3h9l4 6.2L12 21 3.5 9.2z"/><path fill="#BFE6FA" d="M7.5 3h4.5L10 9.2H3.5z"/><path fill="#8FD3F5" d="M16.5 3H12l2 6.2h6.5z"/></svg>';
 $$(".starPill").forEach(p=>p.innerHTML=p.innerHTML.replace("__STAR__",STAR));
 const STICKERS=["🧸","🪴","🌈","🦊","⭐","🎈","🐢","🦄","🌙","🐙","🍓","🦋","🚀","🌻","🐸","🍩","🐧","🦉","🐳","🐞","🦕","🐼","🧁","🐨","🦁","🐬","🐣","🍉","🦩","🪁","🐠","🌵","🎀","🎨","🍭","🏰"];
-const PER_STICKER=10;
+const stickerPrice=i=>10+Math.min(5,Math.floor(i/6))*5;   // 10,15,20,25,30,35 gems
+const WALL_PRICE={mint:0,sky:15,pink:15,lavender:20,butter:25};
 const WALLS={mint:"#BFE8D8",sky:"#BFE0F5",pink:"#F9CCD8",lavender:"#DCD2F7",butter:"#FBE7A6"};
-const ACCS=[{id:"bow",name:"Bow",at:5},{id:"glasses",name:"Glasses",at:15},{id:"flower",name:"Flower",at:30},{id:"hat",name:"Party hat",at:50},{id:"crown",name:"Crown",at:80}];
+const ACCS=[{id:"bow",name:"Bow",price:25},{id:"glasses",name:"Glasses",price:40},{id:"flower",name:"Flower",price:55},{id:"hat",name:"Party hat",price:80},{id:"crown",name:"Crown",price:120}];
 const PRAISE=["Yes! You got it!","Great spelling!","Wow, super job!","That's right!","You're a spelling star!","Perfect!","Hooray, you did it!"];
 const DEFAULTS={childName:"",buddyName:"Pip",perSession:10,layout:"qwerty",showBoxes:true,letterCase:"lower",voice:"",rate:0.85};
 const READY=3;
@@ -644,7 +682,20 @@ function fallback(e){
   if(!o.lists&&window.PIP_SEED){fetch(window.PIP_SEED).then(r=>r.ok?r.json():null).then(d=>{if(d&&!Object.keys(S.lists).length){applyData(d);lsSave();}S.ready=true;refresh();}).catch(()=>{S.ready=true;refresh();});return;}
   S.ready=true;refresh();
 }
-function applyData(o){S.lists=o.lists||{};S.settings={...DEFAULTS,...(o.settings||{})};S.stats=o.stats||{};S.rewards=o.rewards||{stars:0};S.sessions=o.sessions||{};}
+function applyData(o){
+  S.lists=o.lists||{};S.settings={...DEFAULTS,...(o.settings||{})};S.stats=o.stats||{};S.sessions=o.sessions||{};
+  const r={...(o.rewards||{})};
+  if(r.gems==null){ // older saves counted stars and unlocked things automatically
+    const st=r.stars||0;r.gems=st;
+    const own={st:[],acc:[],wall:["mint"]};
+    for(let i=0;i<Math.floor(st/10);i++)own.st.push(i);
+    [[5,"bow"],[15,"glasses"],[30,"flower"],[50,"hat"],[80,"crown"]].forEach(([at,id])=>{if(st>=at)own.acc.push(id);});
+    r.owned=own;
+  }
+  if(!r.owned)r.owned={st:[],acc:[],wall:["mint"]};
+  if(!r.owned.wall||!r.owned.wall.length)r.owned.wall=["mint"];
+  S.rewards=r;
+}
 
 /* ---------------- Dates ---------------- */
 function dayStr(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -684,8 +735,19 @@ function notReady(){
   return pool().filter(w=>level(S.stats[key(w.w)])!=="mast")
     .sort((a,b)=>{const A=rank(a),B=rank(b);return A[0]-B[0]||A[1]-B[1]||A[2]-B[2];});
 }
-const roundsToday=()=>S.rewards.roundsDay===today()?(S.rewards.roundsCount||0):0;
-const trickyUnlocked=()=>roundsToday()>=1;
+const TICKETS_NEEDED=3;
+const tickets=()=>S.rewards.tickets||0;
+const bonusReady=()=>tickets()>=TICKETS_NEEDED;
+// Bonus Round: 8 words drawn from the whole list, but words she hasn't mastered
+// are far likelier to come up (ready words can still show up as a freebie).
+function pickBonus(n){
+  const cand=pool().map(w=>{const lv=level(S.stats[key(w.w)]);
+    return {w,wt:weight(w)*(lv==="mast"?0.25:lv==="close"?3:6)};});
+  const out=[];n=Math.min(n,cand.length);
+  while(out.length<n){const tot=cand.reduce((a,c)=>a+c.wt,0);let r=Math.random()*tot,i=0;
+    for(;i<cand.length-1;i++){r-=cand[i].wt;if(r<=0)break;}out.push(cand[i].w);cand.splice(i,1);}
+  return out;
+}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function parseWords(text){
   const out=[],skipped=[],seen=new Set();
@@ -737,7 +799,7 @@ function tone(f,t0,d,type="sine",g=.12){const a=audio();if(!a)return;const o=a.c
 const sfx={tap(){tone(660,0,.07,"triangle",.06)},win(){[523,659,784,1047].forEach((f,i)=>tone(f,i*.09,.25,"triangle",.1))},oops(){tone(330,0,.18,"sine",.08);tone(262,.14,.22,"sine",.08)},nope(){tone(180,0,.12,"square",.03)},pop(){tone(880,0,.08,"triangle",.08);tone(1320,.06,.1,"triangle",.06)}};
 
 /* ---------------- UI helpers ---------------- */
-function show(id){["home","play","summary","room"].forEach(s=>$("#"+s).hidden=s!==id);
+function show(id){["home","play","summary","room","shop"].forEach(s=>$("#"+s).hidden=s!==id);
   $("#demoBar").hidden=S.mode!=="demo"||id==="play";}
 function toast(msg){const t=document.createElement("div");t.className="toast";t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
 function banner(text){if(matchMedia("(prefers-reduced-motion: reduce)").matches){toast(text);return;}const b=document.createElement("div");b.className="banner";b.textContent=text;document.body.appendChild(b);setTimeout(()=>b.remove(),1900);}
@@ -746,7 +808,20 @@ function confetti(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)re
   document.body.appendChild(box);setTimeout(()=>box.remove(),2600);}
 const cased=s=>S.settings.letterCase==="upper"?s.toUpperCase():s.toLowerCase();
 function setRewards(patch){setDoc("rewards","main",{...S.rewards,...patch});}
-const stickerCount=()=>Math.floor((S.rewards.stars||0)/PER_STICKER);
+const gems=()=>S.rewards.gems||0;
+const owned=k=>(S.rewards.owned&&S.rewards.owned[k])||[];
+const ownsSticker=i=>owned("st").includes(i);
+function buyItem(kind,id,price){
+  if(gems()<price){sfx.nope();toast(`${price-gems()} more gems to go!`);return false;}
+  const o={...(S.rewards.owned||{})};o[kind]=[...new Set([...(o[kind]||[]),id])];
+  setRewards({gems:gems()-price,owned:o});sfx.win();return true;
+}
+function cheapestUnowned(){
+  const p=[];STICKERS.forEach((_,i)=>{if(!ownsSticker(i))p.push(stickerPrice(i));});
+  ACCS.forEach(a=>{if(!owned("acc").includes(a.id))p.push(a.price);});
+  Object.entries(WALL_PRICE).forEach(([k,v])=>{if(!owned("wall").includes(k))p.push(v);});
+  return p.length?Math.min(...p):Infinity;
+}
 
 function refresh(){applyWear();renderHome();if(!$("#room").hidden&&!drag)renderRoom();if(!$("#admin").hidden)renderAdmin();}
 
@@ -757,11 +832,12 @@ function streak(){
   let n=0;while(set.has(dayStr(d))){n++;d.setDate(d.getDate()-1);}
   return n;
 }
+const ticketDots=n=>Array.from({length:TICKETS_NEEDED},(_,i)=>`<span class="tk ${i<n?"on":""}"></span>`).join("");
 function renderHome(){
   const n=S.settings.childName.trim();
   $("#hi").textContent=n?`Hi, ${n}!`:"Hi there!";
-  const stars=S.rewards.stars||0;$("#homeStars").textContent=stars;$("#playStars").textContent=stars;
-  $("#roomBtn").textContent=`${bname()}'s room`;$("#dressBtn").textContent=`Dress up ${bname()}`;
+  const g=gems();$("#homeStars").textContent=g;$("#playStars").textContent=g;
+  $("#roomBtn").textContent=`${bname()}'s room`;$("#dressBtn").textContent=`Dress up ${bname()}`;$("#shopBtn").textContent=`${bname()}'s Shop`;
   const cur=currentList(),p=pool();
   $("#startBtn").disabled=!S.ready||!p.length;
   $("#testBtn").disabled=!S.ready||!cur||!(cur.words||[]).length;
@@ -774,7 +850,7 @@ function renderHome(){
     const lv=(cur.words||[]).map(w=>level(S.stats[key(w.w)]));
     $("#wordDots").innerHTML=lv.map(l=>`<span class="wd ${l}"></span>`).join("");
     const ready=lv.filter(l=>l==="mast").length,total=lv.length;
-    $("#tcReady").innerHTML=ready===total&&total?`<b>All ${total} words ready!</b> You're a star speller.`:`<b>${ready} of ${total}</b> words ready`+(ready?"":". Let's start!");
+    $("#tcReady").innerHTML=ready===total&&total?`<b>All ${total} words ready!</b> You're a super speller.`:`<b>${ready} of ${total}</b> words ready`+(ready?"":". Let's start!");
   }
   // week strip & treasure
   const set=new Set(S.rewards.days||[]),now=new Date();let h="";
@@ -782,15 +858,20 @@ function renderHome(){
     h+=`<span class="day ${set.has(s)?"done":""} ${i===0?"today":""}"><i>${set.has(s)?"✓":""}</i>${i===0?"Today":"SMTWTFS"[d.getDay()]}</span>`;}
   const st=streak();
   $("#week").innerHTML=h+(st>=2?`<span class="streakTxt">${st} days in a row!</span>`:"");
-  // Tricky Words challenge + practice-test nudge
-  const tricky=$("#trickyBtn"),hard=S.ready?notReady().length:0;
-  tricky.hidden=!S.ready||!hard;
-  if(!tricky.hidden){
-    const open=trickyUnlocked();
-    tricky.disabled=!open;
-    tricky.classList.toggle("hot",open);tricky.classList.toggle("locked",!open);
-    tricky.innerHTML=open?`Tricky Words<span class="x2">★ ×2</span>`:"Tricky Words · finish a round to unlock";
+  // Bonus Round (earned with tickets) + practice-test nudge
+  const bonus=$("#trickyBtn"),tk=tickets();
+  bonus.hidden=!S.ready||!p.length;
+  if(!bonus.hidden){
+    const open=bonusReady();
+    bonus.disabled=!open;
+    bonus.classList.toggle("hot",open);bonus.classList.toggle("locked",!open);
+    bonus.innerHTML=open?`Power Round<span class="x2">★ ×3</span>`
+      :`Power Round · ${ticketDots(tk)} ${tk} of ${TICKETS_NEEDED} tickets`;
+    $("#bonusNote").textContent=open
+      ? "Power Round: every word is worth 3 gems, and the words are harder."
+      : `Finish a practice round to earn a ticket. ${TICKETS_NEEDED} tickets = a Power Round: harder words, 3 gems each.`;
   }
+  $("#bonusNote").hidden=bonus.hidden;
   const du2=cur?daysUntil(cur.testDate):null,nudge=$("#nudgeLine");
   const testSoon=du2===0||du2===1;
   nudge.hidden=!testSoon;
@@ -824,16 +905,17 @@ document.addEventListener("keydown",e=>{
 function startSession(mode){
   audio();hush();
   const cur=currentList();
-  const items=mode==="test"?shuffle(cur?.words||[]):mode==="tricky"?shuffle(notReady().slice(0,8)):pickSession();
+  const items=mode==="test"?shuffle(cur?.words||[]):mode==="tricky"?shuffle(pickBonus(8)):pickSession();
   if(!items.length)return;
   const now=Date.now();
-  P={mode,queue:items.map(w=>({w:w.w,s:w.s,retry:false})),idx:0,marks:[],earned:0,combo:0,bestCombo:0,starsStart:S.rewards.stars||0,
+  P={mode,queue:items.map(w=>({w:w.w,s:w.s,retry:false})),idx:0,marks:[],earned:0,combo:0,bestCombo:0,starsStart:gems(),
     session:{mode,startedAt:now,endedAt:null,lists:mode==="test"?[cur.name]:[...new Set(listArr().filter(l=>l.id===cur?.id||l.review).map(l=>l.name))],items:[],firstTry:0,words:items.length},
     sid:"s"+now.toString(36)+Math.random().toString(36).slice(2,6)};
+  if(mode==="tricky")setRewards({tickets:Math.max(0,tickets()-TICKETS_NEEDED)});
   $("#modeTag").hidden=mode==="practice";
-  if(mode!=="practice")$("#modeTag").innerHTML=mode==="test"?"Practice test":`Tricky Words <span class="x2">★ ×2</span>`;
+  if(mode!=="practice")$("#modeTag").innerHTML=mode==="test"?"Practice test":`Power Round <span class="x2">★ ×3</span>`;
   show("play");buildKeyboard();renderCombo();
-  if(mode==="tricky"){banner("Double stars!");bubble("Tricky Words! These are the ones we're still learning. Every word is worth double stars.");hush();say("Tricky words! Double stars for these. You can do it!").then(()=>{if(P&&P.idx===0&&P.phase==="type")sayWord();});nextWord(true);}
+  if(mode==="tricky"){banner("Triple gems!");bubble("Power Round! These words are harder, and every one is worth three gems.");hush();say("Power round! The words are harder, and every one is worth three gems. You can do it!").then(()=>{if(P&&P.idx===0&&P.phase==="type")sayWord();});nextWord(true);}
   else if(mode==="test"){bubble(`Practice test time! I'll say each word. Spell it your best way. No hints. You can do it!`);hush();say("Practice test time! Spell each word your best way. You can do it!").then(()=>{if(P&&P.idx===0&&P.phase==="type")sayWord();});nextWord(true);}
   else nextWord();
 }
@@ -908,9 +990,9 @@ function success(){
   buddy($("#buddyPlay"),"cheer");sfx.win();confetti();
   const praise=PRAISE[Math.floor(Math.random()*PRAISE.length)];
   bubble(praise);hush();say(praise);say(`${spellOut(P.target)}. ${P.cur.w}!`);
-  addStar(P.mode==="tricky"?(first?2:1):1);
+  addStar(P.mode==="tricky"?(first?3:1):1);
   if(first){P.combo++;P.bestCombo=Math.max(P.bestCombo,P.combo);renderCombo(true);
-    if([3,5,8,12,16].includes(P.combo)){const c=P.combo;setTimeout(()=>{banner(`${c} in a row!`);addStar(1);toast("Bonus star!");},700);}}
+    if([3,5,8,12,16].includes(P.combo)){const c=P.combo;setTimeout(()=>{banner(`${c} in a row!`);addStar(1);toast("Bonus gem!");},700);}}
   else{P.combo=0;renderCombo();}
   record(first?"first":"second");
   setCheck("Next word →",true);
@@ -950,10 +1032,9 @@ function align(a,b){
 }
 function addStar(n){
   if(!P)return;
-  const before=S.rewards.stars||0,after=before+n;
-  setRewards({stars:after});P.earned+=n;
+  const after=gems()+n;
+  setRewards({gems:after});P.earned+=n;
   $("#playStars").textContent=after;
-  if(Math.floor(after/PER_STICKER)>Math.floor(before/PER_STICKER))setTimeout(()=>toast(`New sticker for ${bname()}'s room!`),900);
 }
 function record(res){
   const cur=P.cur;P.marks[P.idx]=res;renderDots();
@@ -980,26 +1061,25 @@ function finish(){
   saveSession();
   const name=S.settings.childName.trim();
   if(test)$("#sumTitle").textContent=firsts===n?`A perfect test${name?", "+name:""}!`:`You got ${firsts} of ${n}!`;
-  else if(P.mode==="tricky")$("#sumTitle").textContent=firsts===n?`Tricky words beaten${name?", "+name:""}!`:`Nice work on the tricky words!`;
+  else if(P.mode==="tricky")$("#sumTitle").textContent=firsts===n?`Perfect Power Round${name?", "+name:""}!`:`Nice work in the Power Round!`;
   else $("#sumTitle").textContent=firsts===n?`Wow${name?", "+name:""}! A perfect round!`:`Great practice${name?", "+name:""}!`;
   const prizes=[];const t=today();
-  if(P.mode==="practice"){const r=S.rewards.roundsDay===t?(S.rewards.roundsCount||0)+1:1;setRewards({roundsDay:t,roundsCount:r});
-    if(r===1&&notReady().length)setTimeout(()=>toast("Tricky Words unlocked! Double stars."),1400);}
+  if(P.mode!=="tricky"){const tk=Math.min(9,tickets()+1);setRewards({tickets:tk});
+    setTimeout(()=>toast(tk>=TICKETS_NEEDED?"Power Round unlocked! Triple gems.":`Ticket earned — ${tk} of ${TICKETS_NEEDED} for a Power Round`),1400);}
   const days=[...new Set([...(S.rewards.days||[]),t])].sort().slice(-120);
   const patch={days,bestCombo:Math.max(S.rewards.bestCombo||0,P.bestCombo)};
-  if(S.rewards.chest!==t){patch.chest=t;patch.stars=(S.rewards.stars||0)+3;P.earned+=3;prizes.push(`<span class="big">🎁</span>Today's treasure: 3 bonus stars!`);}
+  if(S.rewards.chest!==t){patch.chest=t;patch.gems=gems()+3;P.earned+=3;prizes.push(`<span class="big">🎁</span>Today's treasure: 3 bonus gems!`);}
   setRewards(patch);
-  if(test&&firsts===n)prizes.unshift(`<span class="big">🏆</span>Perfect test: 5 bonus stars!`);
-  $("#sumLine").innerHTML=(test?(firsts===n?"Every word right!":"The orange words will come back in practice."):`${firsts} of ${n} words on the first try`)+` · ${STAR} ${P.earned} new star${P.earned===1?"":"s"}`;
+  if(test&&firsts===n)prizes.unshift(`<span class="big">🏆</span>Perfect test: 5 bonus gems!`);
+  $("#sumLine").innerHTML=(test?(firsts===n?"Every word right!":"The orange words will come back in practice."):`${firsts} of ${n} words on the first try`)+` · ${STAR} ${P.earned} new gem${P.earned===1?"":"s"}`;
   const st=streak();if(st>=2)prizes.push(`<span class="big">🔥</span>${st} days in a row! Keep it going!`);
-  const stars=S.rewards.stars||0,before=P.starsStart;
-  const newStickers=Math.floor(stars/PER_STICKER)-Math.floor(before/PER_STICKER);
-  for(let k=Math.floor(before/PER_STICKER);k<Math.floor(stars/PER_STICKER);k++)prizes.push(`<span class="big">${STICKERS[k%STICKERS.length]}</span>New sticker for ${esc(bname())}'s room!`);
-  ACCS.filter(a=>before<a.at&&stars>=a.at).forEach(a=>prizes.push(`<span class="big">✨</span>${esc(bname())} can wear the ${a.name.toLowerCase()} now!`));
+  const now=gems(),before=P.starsStart,need=cheapestUnowned();
+  const canShopNow=before<need&&now>=need;
+  if(canShopNow)prizes.push(`<span class="big">🛍️</span>You have enough gems to buy something in the Shop!`);
   $("#sumPrizes").innerHTML=prizes.map(p=>`<div class="prize">${p}</div>`).join("");
   const firstRes={};P.session.items.forEach(it=>{if(!it.retry)firstRes[it.word]=it.result;});
   $("#sumChips").innerHTML=Object.entries(firstRes).map(([w,r])=>`<span class="chip ${r}">${esc(cased(w))}</span>`).join("");
-  $("#sumRoomBtn").hidden=newStickers<=0;$("#sumRoomBtn").textContent=`Decorate ${bname()}'s room`;
+  $("#sumRoomBtn").hidden=!canShopNow;$("#sumRoomBtn").textContent=`${bname()}'s Shop`;
   $("#againBtn").textContent=test?"Practice my words":"Play again";
   show("summary");buddy($("#buddySum"),"cheer");
   if(firsts>=n*0.6)confetti();
@@ -1013,9 +1093,45 @@ $("#againBtn").onclick=()=>startSession("practice");
 $("#homeBtn").onclick=()=>{show("home");buddy($("#buddyHome"),"idle");renderHome();};
 $("#stopBtn").onclick=()=>{hush();if(P&&P.session.items.length){P.session.endedAt=Date.now();P.session.stopped=true;saveSession();}P=null;show("home");renderHome();};
 
+/* ---------------- Pip's Shop ---------------- */
+function shopItem(kind,id,artHtml,price,label){
+  const has=kind==="st"?ownsSticker(id):owned(kind).includes(id);
+  const cls=has?"own":(gems()<price?"cant":"");
+  return `<button class="shopItem ${cls}" data-kind="${kind}" data-id="${esc(id)}" data-price="${price}">
+    ${artHtml}${label?`<span>${esc(label)}</span>`:""}
+    <span class="price">${has?"Yours":`${STAR} ${price}`}</span></button>`;
+}
+function renderShop(){
+  $("#shopTitle").textContent=`${bname()}'s Shop`;
+  $("#shopWearHead").textContent=`Things for ${bname()} to wear`;
+  $("#shopGems").textContent=gems();
+  const need=cheapestUnowned();
+  $("#shopIntro").textContent=need===Infinity?"You own everything in the shop! Wow."
+    :gems()>=need?"Tap something to buy it with your gems."
+    :`Spell words to earn gems. The next thing you can buy costs ${need}.`;
+  $("#shopStickers").innerHTML=STICKERS.map((em,i)=>shopItem("st",i,`<span class="art">${em}</span>`,stickerPrice(i),"")).join("");
+  $("#shopAccs").innerHTML=ACCS.map(a=>shopItem("acc",a.id,`<span class="art">${a.id==="bow"?"🎀":a.id==="glasses"?"👓":a.id==="flower"?"🌸":a.id==="hat"?"🎉":"👑"}</span>`,a.price,a.name)).join("");
+  $("#shopWalls").innerHTML=Object.entries(WALLS).map(([k,c])=>shopItem("wall",k,`<span class="swatchArt" style="background:${c}"></span>`,WALL_PRICE[k]||0,k[0].toUpperCase()+k.slice(1))).join("");
+  $$("#shop .shopItem").forEach(b=>b.onclick=()=>{
+    const kind=b.dataset.kind,price=+b.dataset.price;
+    const id=kind==="st"?+b.dataset.id:b.dataset.id;
+    const has=kind==="st"?ownsSticker(id):owned(kind).includes(id);
+    if(has){toast(kind==="st"?"Already yours — put it in the room!":kind==="acc"?`Already yours — dress ${bname()} up!`:"Already yours — pick it in the room.");return;}
+    if(buyItem(kind,id,price)){
+      confetti();
+      toast(kind==="st"?"Sticker bought! Put it in the room.":kind==="acc"?`Bought! Dress ${bname()} up to wear it.`:"Wallpaper bought! Pick it in the room.");
+      if(kind==="wall")setRewards({wall:id});
+      renderShop();renderHome();
+    }else renderShop();
+  });
+}
+function openShop(){show("shop");renderShop();}
+$("#shopBtn").onclick=openShop;
+$("#shopBack").onclick=()=>{show("home");renderHome();};
+
 /* ---------------- Pip's room ---------------- */
 let sel=null,drag=null;
-function roomItems(){const have=stickerCount();return(S.rewards.room||[]).filter(r=>r.i<have);}
+function roomItems(){return(S.rewards.room||[]).filter(r=>ownsSticker(r.i));}
 function openRoom(){sel=null;show("room");buddy($("#buddyRoom"),"idle");renderRoom();pipStart();}
 
 /* Pip's little life in the room: every few seconds Pip does something cute. */
@@ -1059,18 +1175,20 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden)pipStop();e
 function renderRoom(){
   $("#roomTitle").textContent=`${bname()}'s room`;
   const wallKey=S.rewards.wall||"mint";$("#scene").style.setProperty("--wall",WALLS[wallKey]||WALLS.mint);
-  $("#swatches").innerHTML=Object.entries(WALLS).map(([k,c])=>`<button class="swatch" data-wall="${k}" style="background:${c}" aria-label="${k} wall" aria-pressed="${k===wallKey}"></button>`).join("");
+  $("#swatches").innerHTML=Object.entries(WALLS).filter(([k])=>owned("wall").includes(k))
+    .map(([k,c])=>`<button class="swatch" data-wall="${k}" style="background:${c}" aria-label="${k} wall" aria-pressed="${k===wallKey}"></button>`).join("")
+    +`<button class="btn sm" id="wallShop">More in the Shop</button>`;
   const items=roomItems();
   $("#placed").innerHTML=items.map(r=>`<span class="placed ${sel===r.i?"sel":""}" data-i="${r.i}" style="left:${r.x}%;top:${r.y}%;--sz:${r.sz}">${STICKERS[r.i%STICKERS.length]}</span>`).join("");
-  const placedSet=new Set(items.map(r=>r.i)),have=stickerCount(),stars=S.rewards.stars||0;
-  const free=[];for(let i=0;i<have;i++)if(!placedSet.has(i))free.push(i);
-  const left=PER_STICKER-(stars%PER_STICKER);
-  $("#trayTitle").textContent=have?`My stickers (${have})`:"My stickers";
-  $("#trayMeter").style.width=((stars%PER_STICKER)/PER_STICKER*100)+"%";
-  $("#trayNext").textContent=`${left} more star${left===1?"":"s"} for a new one`;
+  const placedSet=new Set(items.map(r=>r.i)),mine=owned("st");
+  const free=mine.filter(i=>!placedSet.has(i));
+  $("#trayTitle").textContent=mine.length?`My stickers (${mine.length})`:"My stickers";
+  $("#trayMeter").style.width=Math.min(100,(gems()/Math.max(1,cheapestUnowned()))*100)+"%";
+  $("#trayNext").innerHTML=`${STAR} ${gems()} gems`;
   $("#tray").innerHTML=free.map(i=>`<button class="trayItem" data-add="${i}" aria-label="Put sticker in the room">${STICKERS[i%STICKERS.length]}</button>`).join("")+
-    `<button class="trayItem locked" disabled aria-label="Next sticker">?</button>`+
-    (free.length?"":`<span class="trayEmpty">${have?"All your stickers are in the room! Earn more stars for new ones.":"Spell words to earn stars. Every 10 stars gets a sticker to put here!"}</span>`);
+    `<button class="trayItem locked" id="trayShop" aria-label="Open the shop">+</button>`+
+    (free.length?"":`<span class="trayEmpty">${mine.length?"All your stickers are in the room! Buy more in the Shop.":"Buy stickers in Pip's Shop with the gems you earn."}</span>`);
+  const ts=$("#trayShop");if(ts){ts.disabled=false;ts.onclick=openShop;}
   renderTools();
 }
 function renderTools(){
@@ -1079,7 +1197,8 @@ function renderTools(){
   t.innerHTML=`<button class="softBtn" data-tool="big">Bigger</button><button class="softBtn" data-tool="small">Smaller</button><button class="softBtn" data-tool="back">Put back</button><button class="softBtn" data-tool="done">Done</button>`;
 }
 function saveRoom(room){setRewards({room});}
-$("#swatches").addEventListener("click",e=>{const b=e.target.closest("[data-wall]");if(!b)return;sfx.tap();setRewards({wall:b.dataset.wall});renderRoom();});
+$("#swatches").addEventListener("click",e=>{if(e.target.closest("#wallShop")){openShop();return;}
+  const b=e.target.closest("[data-wall]");if(!b)return;sfx.tap();setRewards({wall:b.dataset.wall});renderRoom();});
 $("#tray").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const i=+b.dataset.add;sfx.pop();
   const room=[...roomItems(),{i,x:+(15+Math.random()*70).toFixed(1),y:+(15+Math.random()*60).toFixed(1),sz:10}];sel=i;saveRoom(room);renderRoom();});
 $("#roomTools").addEventListener("click",e=>{const b=e.target.closest("[data-tool]");if(!b||sel===null)return;sfx.tap();const tool=b.dataset.tool;
@@ -1107,19 +1226,21 @@ function endDrag(){
   if(d.moved){const room=roomItems();const me=room.find(r=>r.i===d.i);if(me){const rest=room.filter(r=>r.i!==d.i);saveRoom([...rest,{...me,x:+d.x.toFixed(1),y:+d.y.toFixed(1)}]);}sfx.tap();renderRoom();}
 }
 $("#scene").addEventListener("pointerup",endDrag);$("#scene").addEventListener("pointercancel",endDrag);
-$("#roomBtn").onclick=openRoom;$("#starBtn").onclick=openRoom;$("#sumRoomBtn").onclick=openRoom;
+$("#roomBtn").onclick=openRoom;$("#starBtn").onclick=openShop;$("#sumRoomBtn").onclick=openShop;
 $("#roomBack").onclick=()=>{sel=null;pipStop();show("home");renderHome();};
 
 /* ---------------- Dress up ---------------- */
 function openDress(){
-  const stars=S.rewards.stars||0,wear=S.rewards.wear||[];
+  const wear=S.rewards.wear||[],mine=owned("acc");
   $("#dressTitle").textContent=`Dress up ${bname()}`;
-  $("#wearGrid").innerHTML=ACCS.map(a=>{const open=stars>=a.at;return`<button class="wearBtn" data-wear="${a.id}" aria-pressed="${wear.includes(a.id)}" ${open?"":"disabled"}>${a.name}<small>${open?(wear.includes(a.id)?"wearing":"tap to wear"):`${STAR} ${a.at} stars`}</small></button>`}).join("");
+  $("#wearGrid").innerHTML=ACCS.map(a=>{const open=mine.includes(a.id);
+    return`<button class="wearBtn" data-wear="${a.id}" aria-pressed="${wear.includes(a.id)}" ${open?"":"disabled"}>${a.name}<small>${open?(wear.includes(a.id)?"wearing":"tap to wear"):`${STAR} ${a.price} in the Shop`}</small></button>`}).join("");
   $$("#wearGrid .wearBtn").forEach(b=>b.onclick=()=>{const id=b.dataset.wear,w=new Set(S.rewards.wear||[]);w.has(id)?w.delete(id):w.add(id);setRewards({wear:[...w]});sfx.tap();applyWear();openDress();});
   buddy($("#buddyDress"),"idle");$("#dressOv").hidden=false;
 }
 $("#dressBtn").onclick=openDress;
 $("#dressClose").onclick=()=>{$("#dressOv").hidden=true;renderHome();};
+$("#dressShop").onclick=()=>{$("#dressOv").hidden=true;openShop();};
 
 /* ---------------- Grown-up gate ---------------- */
 // A two-digit x two-digit multiplication keeps the grown-ups area out of reach.
@@ -1307,7 +1428,7 @@ function renderSettings(){
   $("#setRate").value=s.rate;$("#setRateVal").textContent=s.rate<0.75?"slow":s.rate<0.95?"relaxed":"normal";
   fillVoiceSelect();
   $("#backupPanel").hidden=S.mode!=="local";
-  $("#setStars").innerHTML=`${STAR} ${S.rewards.stars||0} stars · ${stickerCount()} stickers`;
+  $("#setStars").innerHTML=`${STAR} ${gems()} gems · ${owned("st").length} stickers, ${owned("acc").length} outfits, ${owned("wall").length} wallpapers owned`;
 }
 let saveT=null;
 function saveSettings(patch){const next={...S.settings,...patch};S.settings=next;clearTimeout(saveT);saveT=setTimeout(()=>{setDoc("settings","main",next);$("#setSaved").textContent="Saved";setTimeout(()=>$("#setSaved").textContent="",1500);},500);renderSettings();renderHome();}
@@ -1334,7 +1455,7 @@ $("#restoreIn").onchange=async e=>{
 };
 $("#testVoice").onclick=()=>{hush();say("Hi! Can you spell the word friend? My friend likes to play.");};
 let resetArm=false;
-$("#resetStars").onclick=e=>{if(!resetArm){resetArm=true;e.target.textContent="Tap again to reset";setTimeout(()=>{resetArm=false;e.target.textContent="Reset stars";},3000);return;}resetArm=false;e.target.textContent="Reset stars";setRewards({stars:0});renderSettings();renderHome();};
+$("#resetStars").onclick=e=>{if(!resetArm){resetArm=true;e.target.textContent="Tap again to reset";setTimeout(()=>{resetArm=false;e.target.textContent="Reset gems";},3000);return;}resetArm=false;e.target.textContent="Reset gems";setRewards({gems:0});renderSettings();renderHome();};
 
 /* ---------------- Sentence helper (asks Claude) ---------------- */
 let sampleFn=null;
