@@ -469,8 +469,12 @@ td.word{font-weight:700;font-size:18px}
 
     <div data-pane="lists" hidden>
       <div class="panel">
-        <div class="panelHead"><div><h3>Spelling test lists</h3><p class="help">Pick <b>this week's test</b>. Pip mostly practices those words and mixes in a few words from lists marked <b>Review</b>, favoring ones she's missed.</p></div><button class="btn primary" id="newListBtn">Add this week's list</button></div>
+        <div class="panelHead"><div><h3>Spelling test lists</h3><p class="help">Pick <b>this week's test</b>. Pip mostly practices those words and mixes in a few words from lists marked <b>Review</b>, favoring ones she's missed.</p></div><div class="row"><button class="btn" id="presetBtn">Add from her spelling book</button><button class="btn primary" id="newListBtn">Type a new list</button></div></div>
         <div id="listRows"></div>
+      </div>
+      <div class="panel" id="presetPanel" hidden>
+        <div class="panelHead"><div><h3>Her spelling book</h3><p class="help" id="presetHelp">Pick a group of lessons. The words load into the list editor, where you can trim them, set the test date and save.</p></div><button class="btn" id="presetClose">Close</button></div>
+        <div id="presetRows"></div>
       </div>
       <div class="panel" id="listEditor" hidden>
         <h3 id="editorTitle">New list</h3>
@@ -1209,6 +1213,32 @@ function renderLists(){
     scoring=null;renderLists();renderHome();toast("Score saved");
   });
 }
+let PRESETS=null;
+async function loadPresets(){
+  if(PRESETS)return PRESETS;
+  try{const r=await fetch("presets.json",{cache:"no-cache"});if(!r.ok)throw 0;PRESETS=await r.json();}catch(e){PRESETS={groups:[]};}
+  return PRESETS;
+}
+async function openPresets(){
+  const box=$("#presetPanel");box.hidden=false;$("#presetRows").innerHTML='<p class="empty">Loading…</p>';
+  box.scrollIntoView({behavior:"smooth",block:"start"});
+  const p=await loadPresets();
+  if(!p.groups.length){$("#presetRows").innerHTML='<p class="empty">The spelling book lists aren\'t available in this version of the app.</p>';return;}
+  $("#presetRows").innerHTML=p.groups.map(g=>`<div class="listItem"><div class="listRow">
+    <div class="nm"><b>${esc(g.name)}</b><span class="meta">${g.words.length} words · ${esc(g.words.slice(0,6).join(", "))}…</span></div>
+    <button class="btn sm" data-preview="${esc(g.id)}">See all</button>
+    <button class="btn primary sm" data-use="${esc(g.id)}">Use these words</button></div>
+    <div class="scorePanel" data-words="${esc(g.id)}" hidden>${esc(g.words.join(", "))}</div></div>`).join("");
+  $$("#presetRows [data-preview]").forEach(b=>b.onclick=()=>{const d=$(`#presetRows [data-words="${b.dataset.preview}"]`);d.hidden=!d.hidden;b.textContent=d.hidden?"See all":"Hide";});
+  $$("#presetRows [data-use]").forEach(b=>b.onclick=()=>{
+    const g=PRESETS.groups.find(x=>x.id===b.dataset.use);if(!g)return;
+    box.hidden=true;openEditor(null);
+    $("#listName").value=g.name;$("#listWords").value=g.words.join("\n");
+    $("#listMsg").textContent=`${g.words.length} words loaded. Delete any she isn't tested on, set the test date, then save.`;
+  });
+}
+$("#presetBtn").onclick=openPresets;
+$("#presetClose").onclick=()=>{$("#presetPanel").hidden=true;};
 function openEditor(id){
   editing=id||null;const l=id?S.lists[id]:null;
   $("#editorTitle").textContent=l?`Edit “${l.name}”`:"This week's list";
@@ -1218,7 +1248,7 @@ function openEditor(id){
   $("#listMsg").textContent="";$("#listEditor").hidden=false;$("#listEditor").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function closeEditor(){editing=null;$("#listEditor").hidden=true;}
-$("#newListBtn").onclick=()=>openEditor(null);
+$("#newListBtn").onclick=()=>{$("#presetPanel").hidden=true;openEditor(null);};
 $("#listCancel").onclick=closeEditor;
 $("#listForm").onsubmit=e=>{
   e.preventDefault();
