@@ -1,0 +1,113 @@
+{
+ "app": "spellwithpip",
+ "version": 1,
+ "lists": {
+  "starter": {
+   "active": true,
+   "createdAt": 1789900000000,
+   "current": true,
+   "name": "Starter words (sample)",
+   "review": false,
+   "testDate": "2026-09-25",
+   "words": [
+    {
+     "s": "The dog likes the ball.",
+     "w": "the"
+    },
+    {
+     "s": "I have a cat and a fish.",
+     "w": "and"
+    },
+    {
+     "s": "Mom said it is time for bed.",
+     "w": "said"
+    },
+    {
+     "s": "The cake was yummy.",
+     "w": "was"
+    },
+    {
+     "s": "I like to play with you.",
+     "w": "you"
+    },
+    {
+     "s": "They ran to the park.",
+     "w": "they"
+    },
+    {
+     "s": "I have two red shoes.",
+     "w": "have"
+    },
+    {
+     "s": "What is in the box?",
+     "w": "what"
+    },
+    {
+     "s": "Can you come to my house?",
+     "w": "come"
+    },
+    {
+     "s": "We play tag at recess.",
+     "w": "play"
+    },
+    {
+     "s": "Frogs can jump very high.",
+     "w": "jump"
+    },
+    {
+     "s": "Look at the big moon!",
+     "w": "look"
+    },
+    {
+     "s": "The cat is taking a nap.",
+     "w": "cat"
+    },
+    {
+     "s": "My dog wags his tail.",
+     "w": "dog"
+    },
+    {
+     "s": "A strawberry is red.",
+     "w": "red"
+    },
+    {
+     "s": "An elephant is very big.",
+     "w": "big"
+    },
+    {
+     "s": "We went to the zoo.",
+     "w": "went"
+    },
+    {
+     "s": "I got a card from Grandma.",
+     "w": "from"
+    },
+    {
+     "s": "We were so happy!",
+     "w": "were"
+    },
+    {
+     "s": "My friend shares her crayons.",
+     "w": "friend"
+    }
+   ]
+  }
+ },
+ "settings": {
+  "childName": "",
+  "buddyName": "Pip",
+  "perSession": 10,
+  "layout": "qwerty",
+  "showBoxes": true,
+  "letterCase": "lower",
+  "voice": "",
+  "rate": 0.85
+ },
+ "stats": {},
+ "rewards": {
+  "stars": 0,
+  "days": [],
+  "wear": []
+ },
+ "sessions": {}
+}
