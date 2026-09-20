@@ -72,9 +72,9 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .homeRow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .softBtn.hot{background:var(--honey);border-color:var(--honeyDeep);box-shadow:0 4px 0 var(--honeyDeep);color:#4a3200}
 .softBtn.locked{opacity:.75;color:var(--muted)}
-.demoBar{background:var(--ink);color:#fff;font-size:14px;line-height:1.4;text-align:center;padding:7px 16px;margin-inline:-16px;text-wrap:balance}
+.demoBar{background:var(--ink);color:#fff;font-size:12.5px;line-height:1.35;text-align:center;padding:7px 16px;margin-inline:-16px;text-wrap:balance}
 .demoBar b{font-family:var(--display);font-weight:700}
-.demoBar .icon{width:15px;height:15px;opacity:.9;margin-right:5px;vertical-align:-2px}
+.demoBar .icon{width:13px;height:13px;opacity:.9;margin-right:5px;vertical-align:-2px}
 .nudgeLine{font-family:var(--display);font-weight:700;font-size:19px;color:var(--berryDeep);margin:0;text-wrap:balance}
 .x2{display:inline-block;background:var(--berry);color:#fff;border-radius:999px;padding:1px 8px;font-size:15px;margin-left:6px;vertical-align:2px}
 .stopBtn{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 16px;font-family:var(--display);font-weight:700;font-size:17px;color:var(--muted)}
@@ -326,6 +326,8 @@ td.word{font-weight:700;font-size:18px}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .set2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .empty{color:var(--muted);padding:12px 0}
+.privacy{margin:6px 0 0;padding-left:20px;color:var(--muted);font-size:14px;line-height:1.55}
+.privacy li{margin-bottom:6px}
 .small{font-size:13px;color:var(--muted)}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
 </style>
@@ -337,7 +339,7 @@ td.word{font-weight:700;font-size:18px}
 <div class="app" id="app">
   <div class="demoBar" id="demoBar" hidden>
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M4 13v6a2 2 0 002 2h12a2 2 0 002-2v-6"/></svg>
-<b>Just trying it out.</b> Nothing is saved in a browser tab. On an iPad or iPhone, tap Share → “Add to Home Screen”, and Pip keeps her stars and progress on that device.
+<b>You’re playing Pip in a web browser, so nothing is saved.</b> On an iPad or iPhone, tap the Share button and choose “Add to Home Screen.” Pip then works like any other app — its own icon, no internet needed, and her stars and word lists are saved on that device.
   </div>
   <!-- HOME -->
   <section class="screen" id="home">
@@ -530,6 +532,16 @@ td.word{font-weight:700;font-size:18px}
         <h3>Stars and prizes</h3>
         <p class="help">One star per word spelled in practice or a practice test, bonus stars for streaks and the daily treasure, and a sticker for Pip's room every 10 stars.</p>
         <div class="row" style="margin-top:10px"><span id="setStars"></span><button class="btn sm danger" id="resetStars">Reset stars</button></div>
+      </div>
+      <div class="panel">
+        <h3>Privacy</h3>
+        <ul class="privacy">
+          <li>Everything Pip knows — her name, word lists, stars and history — is stored on this device only. There's no account, no sign-in, and nothing is uploaded to a server.</li>
+          <li>No cookies, no analytics, no third-party services. The fonts and sounds are built into the app, so it makes no outside requests once it's open.</li>
+          <li>The voice comes from this device's own speech settings. Nothing she types or hears is sent anywhere.</li>
+          <li>Added to the Home Screen, Pip works offline. The web address it came from is public, and that host sees a normal web request (IP address and time) when the app is first downloaded or later updated.</li>
+          <li>Because her data lives only here, clearing the browser's website data or deleting the icon also deletes her progress. Use “Save a backup” in the installed app to keep a copy.</li>
+        </ul>
       </div>
     </div>
   </div>
