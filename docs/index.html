@@ -70,6 +70,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .softBtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
 .softBtn:disabled{opacity:.5;cursor:default}
 .homeRow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.softBtn.hot{background:var(--honey);border-color:var(--honeyDeep);box-shadow:0 4px 0 var(--honeyDeep);color:#4a3200}
+.softBtn.locked{opacity:.75;color:var(--muted)}
+.nudgeLine{font-family:var(--display);font-weight:700;font-size:19px;color:var(--berryDeep);margin:0;text-wrap:balance}
+.x2{display:inline-block;background:var(--berry);color:#fff;border-radius:999px;padding:1px 8px;font-size:15px;margin-left:6px;vertical-align:2px}
 .stopBtn{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:6px 16px;font-family:var(--display);font-weight:700;font-size:17px;color:var(--muted)}
 
 /* ---------- Home ---------- */
@@ -339,7 +343,9 @@ td.word{font-weight:700;font-size:18px}
         <h1 class="hi" id="hi">Hi there!</h1>
         <svg class="buddy idle homeBuddy" id="buddyHome" viewBox="0 0 200 200" aria-hidden="true"></svg>
         <button class="bigBtn" id="startBtn" disabled>Let's practice!</button>
+        <button class="softBtn" id="trickyBtn" hidden></button>
         <button class="softBtn" id="testBtn" disabled>Take a practice test</button>
+        <p class="nudgeLine" id="nudgeLine" hidden></p>
       </div>
       <div class="homeSide">
         <div class="testCard">
@@ -649,6 +655,13 @@ function pickSession(){
   while(out.length<n){const tot=cand.reduce((a,c)=>a+c.wt,0);let r=Math.random()*tot,i=0;for(;i<cand.length-1;i++){r-=cand[i].wt;if(r<=0)break;}out.push(cand[i].w);cand.splice(i,1);}
   return out;
 }
+function notReady(){
+  const rank=w=>{const st=S.stats[key(w.w)];return [(st?.box||0),(st&&st.seen?(st.first||0)/st.seen:1),Math.random()];};
+  return pool().filter(w=>level(S.stats[key(w.w)])!=="mast")
+    .sort((a,b)=>{const A=rank(a),B=rank(b);return A[0]-B[0]||A[1]-B[1]||A[2]-B[2];});
+}
+const roundsToday=()=>S.rewards.roundsDay===today()?(S.rewards.roundsCount||0):0;
+const trickyUnlocked=()=>roundsToday()>=1;
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 function parseWords(text){
   const out=[],skipped=[],seen=new Set();
@@ -744,6 +757,20 @@ function renderHome(){
     h+=`<span class="day ${set.has(s)?"done":""} ${i===0?"today":""}"><i>${set.has(s)?"✓":""}</i>${i===0?"Today":"SMTWTFS"[d.getDay()]}</span>`;}
   const st=streak();
   $("#week").innerHTML=h+(st>=2?`<span class="streakTxt">${st} days in a row!</span>`:"");
+  // Tricky Words challenge + practice-test nudge
+  const tricky=$("#trickyBtn"),hard=S.ready?notReady().length:0;
+  tricky.hidden=!S.ready||!hard;
+  if(!tricky.hidden){
+    const open=trickyUnlocked();
+    tricky.disabled=!open;
+    tricky.classList.toggle("hot",open);tricky.classList.toggle("locked",!open);
+    tricky.innerHTML=open?`Tricky Words<span class="x2">★ ×2</span>`:"Tricky Words · finish a round to unlock";
+  }
+  const du2=cur?daysUntil(cur.testDate):null,nudge=$("#nudgeLine");
+  const testSoon=du2===0||du2===1;
+  nudge.hidden=!testSoon;
+  if(testSoon)nudge.textContent=du2===0?"Test is today! A practice test is a great warm-up.":"Test tomorrow! Try a practice test to see which words are ready.";
+  $("#testBtn").classList.toggle("hot",!!testSoon);
   const got=S.rewards.chest===today();
   $("#goal").innerHTML=`<svg class="chest" viewBox="0 0 34 30"><rect x="2" y="12" width="30" height="16" rx="3" fill="#C9763A"/><path d="M2 14 Q17 ${got?"-6":"2"} 32 14 Z" fill="#E29A1E"/><rect x="14" y="12" width="6" height="8" rx="1.5" fill="#FFD23F"/>${got?'<circle cx="10" cy="6" r="2.5" fill="#FFD23F"/><circle cx="24" cy="4" r="2" fill="#FFD23F"/>':""}</svg>${got?"Treasure opened! A new one comes tomorrow.":"Finish a round to open today's treasure!"}`;
 }
@@ -771,14 +798,17 @@ document.addEventListener("keydown",e=>{
 function startSession(mode){
   audio();hush();
   const cur=currentList();
-  const items=mode==="test"?shuffle(cur?.words||[]):pickSession();if(!items.length)return;
+  const items=mode==="test"?shuffle(cur?.words||[]):mode==="tricky"?shuffle(notReady().slice(0,8)):pickSession();
+  if(!items.length)return;
   const now=Date.now();
   P={mode,queue:items.map(w=>({w:w.w,s:w.s,retry:false})),idx:0,marks:[],earned:0,combo:0,bestCombo:0,starsStart:S.rewards.stars||0,
     session:{mode,startedAt:now,endedAt:null,lists:mode==="test"?[cur.name]:[...new Set(listArr().filter(l=>l.id===cur?.id||l.review).map(l=>l.name))],items:[],firstTry:0,words:items.length},
     sid:"s"+now.toString(36)+Math.random().toString(36).slice(2,6)};
-  $("#modeTag").hidden=mode!=="test";
+  $("#modeTag").hidden=mode==="practice";
+  if(mode!=="practice")$("#modeTag").innerHTML=mode==="test"?"Practice test":`Tricky Words <span class="x2">★ ×2</span>`;
   show("play");buildKeyboard();renderCombo();
-  if(mode==="test"){bubble(`Practice test time! I'll say each word. Spell it your best way. No hints. You can do it!`);hush();say("Practice test time! Spell each word your best way. You can do it!").then(()=>{if(P&&P.idx===0&&P.phase==="type")sayWord();});nextWord(true);}
+  if(mode==="tricky"){banner("Double stars!");bubble("Tricky Words! These are the ones we're still learning. Every word is worth double stars.");hush();say("Tricky words! Double stars for these. You can do it!").then(()=>{if(P&&P.idx===0&&P.phase==="type")sayWord();});nextWord(true);}
+  else if(mode==="test"){bubble(`Practice test time! I'll say each word. Spell it your best way. No hints. You can do it!`);hush();say("Practice test time! Spell each word your best way. You can do it!").then(()=>{if(P&&P.idx===0&&P.phase==="type")sayWord();});nextWord(true);}
   else nextWord();
 }
 function renderCombo(bump){const c=$("#combo");c.hidden=!P||P.mode==="test"||P.combo<2;if(!P)return;c.textContent=`${P.combo} in a row!`;if(bump){c.classList.remove("hot");void c.offsetWidth;c.classList.add("hot");}}
@@ -851,7 +881,7 @@ function success(){
   buddy($("#buddyPlay"),"cheer");sfx.win();confetti();
   const praise=PRAISE[Math.floor(Math.random()*PRAISE.length)];
   bubble(praise);hush();say(praise);say(`${spellOut(P.target)}. ${P.cur.w}!`);
-  addStar(1);
+  addStar(P.mode==="tricky"?(first?2:1):1);
   if(first){P.combo++;P.bestCombo=Math.max(P.bestCombo,P.combo);renderCombo(true);
     if([3,5,8,12,16].includes(P.combo)){const c=P.combo;setTimeout(()=>{banner(`${c} in a row!`);addStar(1);toast("Bonus star!");},700);}}
   else{P.combo=0;renderCombo();}
@@ -923,8 +953,11 @@ function finish(){
   saveSession();
   const name=S.settings.childName.trim();
   if(test)$("#sumTitle").textContent=firsts===n?`A perfect test${name?", "+name:""}!`:`You got ${firsts} of ${n}!`;
+  else if(P.mode==="tricky")$("#sumTitle").textContent=firsts===n?`Tricky words beaten${name?", "+name:""}!`:`Nice work on the tricky words!`;
   else $("#sumTitle").textContent=firsts===n?`Wow${name?", "+name:""}! A perfect round!`:`Great practice${name?", "+name:""}!`;
   const prizes=[];const t=today();
+  if(P.mode==="practice"){const r=S.rewards.roundsDay===t?(S.rewards.roundsCount||0)+1:1;setRewards({roundsDay:t,roundsCount:r});
+    if(r===1&&notReady().length)setTimeout(()=>toast("Tricky Words unlocked! Double stars."),1400);}
   const days=[...new Set([...(S.rewards.days||[]),t])].sort().slice(-120);
   const patch={days,bestCombo:Math.max(S.rewards.bestCombo||0,P.bestCombo)};
   if(S.rewards.chest!==t){patch.chest=t;patch.stars=(S.rewards.stars||0)+3;P.earned+=3;prizes.push(`<span class="big">🎁</span>Today's treasure: 3 bonus stars!`);}
@@ -948,6 +981,7 @@ function finish(){
 }
 $("#startBtn").onclick=()=>startSession("practice");
 $("#testBtn").onclick=()=>startSession("test");
+$("#trickyBtn").onclick=()=>startSession("tricky");
 $("#againBtn").onclick=()=>startSession("practice");
 $("#homeBtn").onclick=()=>{show("home");buddy($("#buddyHome"),"idle");renderHome();};
 $("#stopBtn").onclick=()=>{hush();if(P&&P.session.items.length){P.session.endedAt=Date.now();P.session.stopped=true;saveSession();}P=null;show("home");renderHome();};

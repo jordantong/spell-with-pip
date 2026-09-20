@@ -2,95 +2,134 @@
  "app": "spellwithpip",
  "version": 1,
  "lists": {
-  "starter": {
-   "active": true,
-   "createdAt": 1789900000000,
-   "current": true,
-   "name": "Starter words (sample)",
-   "review": false,
-   "testDate": "2026-09-25",
+  "ls1_5": {
+   "name": "Lessons 1–5",
    "words": [
     {
-     "s": "The dog likes the ball.",
-     "w": "the"
+     "w": "beetle",
+     "s": "A shiny beetle crawled on the leaf."
     },
     {
-     "s": "I have a cat and a fish.",
-     "w": "and"
+     "w": "better",
+     "s": "I feel better after a nap."
     },
     {
-     "s": "Mom said it is time for bed.",
-     "w": "said"
+     "w": "book",
+     "s": "This book has funny pictures."
     },
     {
-     "s": "The cake was yummy.",
-     "w": "was"
+     "w": "done",
+     "s": "My homework is all done."
     },
     {
-     "s": "I like to play with you.",
-     "w": "you"
+     "w": "enough",
+     "s": "We have enough cups for everyone."
     },
     {
-     "s": "They ran to the park.",
-     "w": "they"
+     "w": "friends",
+     "s": "My friends came over to play."
     },
     {
-     "s": "I have two red shoes.",
-     "w": "have"
+     "w": "good",
+     "s": "That was a good idea!"
     },
     {
-     "s": "What is in the box?",
-     "w": "what"
+     "w": "green",
+     "s": "The grass is bright green."
     },
     {
-     "s": "Can you come to my house?",
-     "w": "come"
+     "w": "home",
+     "s": "We walked home after school."
     },
     {
-     "s": "We play tag at recess.",
-     "w": "play"
+     "w": "keep",
+     "s": "You can keep the blue crayon."
     },
     {
-     "s": "Frogs can jump very high.",
-     "w": "jump"
+     "w": "listen",
+     "s": "Please listen to the song."
     },
     {
-     "s": "Look at the big moon!",
-     "w": "look"
+     "w": "little",
+     "s": "A little puppy sat by me."
     },
     {
-     "s": "The cat is taking a nap.",
-     "w": "cat"
+     "w": "look",
+     "s": "Look at that big cloud!"
     },
     {
-     "s": "My dog wags his tail.",
-     "w": "dog"
+     "w": "many",
+     "s": "How many apples do we need?"
     },
     {
-     "s": "A strawberry is red.",
-     "w": "red"
+     "w": "meet",
+     "s": "Let's meet at the swings."
     },
     {
-     "s": "An elephant is very big.",
-     "w": "big"
+     "w": "need",
+     "s": "I need a pencil, please."
     },
     {
-     "s": "We went to the zoo.",
-     "w": "went"
+     "w": "over",
+     "s": "The ball flew over the fence."
     },
     {
-     "s": "I got a card from Grandma.",
-     "w": "from"
+     "w": "quiet",
+     "s": "The library is very quiet."
     },
     {
-     "s": "We were so happy!",
-     "w": "were"
+     "w": "see",
+     "s": "I can see the moon."
     },
     {
-     "s": "My friend shares her crayons.",
-     "w": "friend"
+     "w": "should",
+     "s": "We should clean up now."
+    },
+    {
+     "w": "shove",
+     "s": "Do not shove your little brother."
+    },
+    {
+     "w": "some",
+     "s": "Can I have some milk?"
+    },
+    {
+     "w": "street",
+     "s": "We live on a quiet street."
+    },
+    {
+     "w": "thought",
+     "s": "I thought today was Friday."
+    },
+    {
+     "w": "through",
+     "s": "The train went through the tunnel."
+    },
+    {
+     "w": "took",
+     "s": "She took her lunch to school."
+    },
+    {
+     "w": "was",
+     "s": "The cake was very yummy."
+    },
+    {
+     "w": "weed",
+     "s": "A weed grew in the garden."
+    },
+    {
+     "w": "where",
+     "s": "Where did you put my shoes?"
+    },
+    {
+     "w": "wonder",
+     "s": "I wonder what is in the box."
     }
-   ]
+   ],
+   "testDate": "2026-09-25",
+   "current": true,
+   "review": false,
+   "createdAt": 1789900000000
   }
  },
  "settings": {
