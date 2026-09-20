@@ -507,7 +507,7 @@ td.word{font-weight:700;font-size:18px}
           <label>Buddy's name<input type="text" id="setBuddy" autocomplete="off"></label>
           <label>Words per practice round: <span id="setPerVal"></span><input type="range" id="setPer" min="4" max="20" step="1"></label>
           <label>Keyboard<select id="setLayout"><option value="abc">a b c order</option><option value="qwerty">Tablet order (qwerty)</option></select></label>
-          <label>Letter boxes in practice<select id="setBoxes"><option value="1">Show how many letters (easier)</option><option value="0">Hide the count (harder)</option></select></label>
+          <label>Letter boxes in practice<select id="setBoxes"><option value="1">Show boxes after a wrong try (easier)</option><option value="0">Never show the letter count (harder)</option></select></label>
           <label>Letter case<select id="setCase"><option value="lower">lowercase letters</option><option value="upper">UPPERCASE LETTERS</option></select></label>
           <label>Voice<select id="setVoice"></select><span class="help">Automatic picks the nicest woman's voice on this iPad. For a much more natural voice, download one on the iPad: Settings → Accessibility → Spoken Content → Voices → English → tap <b>Ava</b> or <b>Zoe</b> and download the <b>Premium</b> version. Then reopen Pip and choose it here.</span></label>
           <label>Talking speed: <span id="setRateVal"></span><input type="range" id="setRate" min="0.6" max="1.1" step="0.05"></label>
@@ -833,7 +833,8 @@ function setCheck(label,isNext){const c=$("#checkKey");if(!c)return;c.textConten
 function renderDots(){
   $("#dots").innerHTML=P.queue.map((q,i)=>`<span class="dot ${P.mode==="test"?(P.marks[i]?"done":""):(P.marks[i]||"")} ${i===P.idx?"now":""}"></span>`).join("");
 }
-const boxesOn=()=>S.settings.showBoxes&&P.mode!=="test";
+// Letter boxes are a hint: they only appear after a wrong first try, never on a practice test.
+const boxesOn=()=>S.settings.showBoxes&&P.mode!=="test"&&P.tries>=1;
 function renderAnswer(){
   const a=$("#answer"),t=P.target,typed=P.typed;
   if(P.phase==="copy"||P.phase==="copydone"){

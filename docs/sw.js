@@ -1,5 +1,5 @@
 // Spell with Pip offline cache. The version changes whenever the app files change.
-const CACHE="pip-b759afbfb9";
+const CACHE="pip-8db3f4e9b9";
 const ASSETS=["./", "./fonts/andika-latin-400-normal.woff2", "./fonts/andika-latin-700-normal.woff2", "./fonts/baloo-2-latin-500-normal.woff2", "./fonts/baloo-2-latin-700-normal.woff2", "./fonts/baloo-2-latin-800-normal.woff2", "./icons/apple-touch-icon.png", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/icon-maskable-512.png", "./index.html", "./manifest.webmanifest", "./presets.json", "./seed.json"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
