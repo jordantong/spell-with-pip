@@ -189,64 +189,102 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .prize{display:flex;align-items:center;gap:12px;background:var(--paper);border-radius:18px;padding:10px 18px;box-shadow:0 4px 0 var(--line);font-family:var(--display);font-weight:700;font-size:21px;text-align:left}
 .prize .big{font-size:34px}
 
-/* ---------- Pip's room ---------- */
+/* ---------- Pip's house (isometric) ---------- */
 #room{padding-block:12px calc(env(safe-area-inset-bottom,0px) + 12px);gap:10px}
 .roomBar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .roomBar h2{font-family:var(--display);font-weight:800;font-size:28px;margin:0;flex:1;line-height:1}
-.swatches{display:flex;gap:8px;align-items:center}
+.roomTabs{display:flex;gap:6px}
+.roomTab{display:grid;justify-items:center;gap:0;width:54px;height:48px;border-radius:14px;border:2px solid var(--line);background:var(--paper);padding:2px 0 0;font-size:22px;line-height:1}
+.roomTab small{font-size:11px;font-family:var(--display);font-weight:700;color:var(--muted);display:inline-flex;align-items:center;gap:1px}
+.roomTab small .icon{width:11px;height:11px}
+.roomTab.on{background:var(--honeySoft,#FFF1C9);border-color:var(--honey);box-shadow:0 3px 0 var(--honey)}
+.roomTab.locked{opacity:.75;border-style:dashed}
+.swatches{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .swatch{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);padding:0}
+.swatch.fl{border-radius:8px}
 .swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
 .sceneWrap{flex:1;min-height:0;container-type:size;display:grid;place-items:center}
-.scene{position:relative;width:min(100cqw,133.33cqh);height:min(75cqw,100cqh);container-type:inline-size;border-radius:24px;overflow:hidden;
-  box-shadow:0 6px 0 var(--line);--wall:#BFE8D8;background:var(--wall);touch-action:none}
-.wall{position:absolute;inset:0 0 30% 0;background:var(--wall);background-image:radial-gradient(circle, rgba(255,255,255,.45) 18%, transparent 20%);background-size:6cqw 6cqw}
-.floor{position:absolute;left:0;right:0;bottom:0;height:30%;background:repeating-linear-gradient(90deg,#E9B982 0 11.5%,#D9A56A 11.5% 12%);border-top:1.2cqw solid #C98F52}
-.window{position:absolute;left:7%;top:9%;width:24%;height:34%;background:linear-gradient(#8FD3F5,#CDEEFF);border:1.1cqw solid #fff;border-radius:1.4cqw;box-sizing:border-box;box-shadow:0 .6cqw 0 rgba(0,0,0,.08)}
-.window::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1cqw;background:#fff;transform:translateX(-50%)}
-.window::after{content:"";position:absolute;top:50%;left:0;right:0;height:1cqw;background:#fff;transform:translateY(-50%)}
-.cloud{position:absolute;left:12%;top:20%;width:40%;height:18%;background:#fff;border-radius:99px;opacity:.9}
-.shelf{position:absolute;right:8%;top:34%;width:24%;height:1.4cqw;background:#C98F52;border-radius:.6cqw;box-shadow:0 .5cqw 0 rgba(0,0,0,.1)}
-.rug{position:absolute;left:26%;width:48%;bottom:4%;height:15%;border-radius:50%;background:#F7A3B7;box-shadow:inset 0 0 0 1.2cqw #F9C3D0}
-/* Pip wandering around the room */
-.pipWalker{position:absolute;left:50%;bottom:6%;width:20%;transform:translateX(-50%);cursor:pointer;touch-action:manipulation}
-.pipWalker svg{width:100%;display:block}
-.pipFlip{transition:transform .25s ease}
-.pipFlip.left{transform:scaleX(-1)}
-.pipMove{transform-origin:50% 100%}
-.pipWalker.walking .pipMove{animation:waddle .36s ease-in-out infinite}
-.pipWalker.hop .pipMove{animation:bigHop .55s ease-out 2}
-.pipWalker.spin .pipMove{animation:spinY 1.1s ease-in-out}
-.pipWalker.dance .pipMove{animation:dance .6s ease-in-out 4}
-.pipWalker.dance .buddy .armL{transform:rotate(55deg)}.pipWalker.dance .buddy .armR{transform:rotate(-55deg)}
-.pipWalker.wave .buddy .armR{animation:wave .38s ease-in-out 6 alternate}
-.pipWalker.peek .pipMove{animation:peek 2.4s ease-in-out}
-.pipWalker.sleep .pipMove{transform:rotate(7deg);transition:transform .6s}
-.pipWalker.sleep .buddy .eyes{animation:none;transform:scaleY(.12)}
-.pipWalker.sleep .buddy .bod{animation:breathe 2.4s ease-in-out infinite}
-@keyframes waddle{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-6%)}}
-@keyframes bigHop{0%,100%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.1,.88)}50%{transform:translateY(-32%) scale(.94,1.07)}85%{transform:translateY(0) scale(1.07,.93)}}
-@keyframes spinY{0%{transform:perspective(500px) rotateY(0)}100%{transform:perspective(500px) rotateY(360deg)}}
-@keyframes dance{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg) translateY(-5%)}75%{transform:rotate(10deg) translateY(-5%)}}
+.scene{position:relative;width:min(100cqw,153.8cqh);height:min(65cqw,100cqh);border-radius:24px;overflow:hidden;box-shadow:0 6px 0 var(--line);background:linear-gradient(#EAF6FF,#F7FBFF);touch-action:none}
+.scene.outdoor{background:linear-gradient(#CDEEFF,#EAF8FF)}
+#house{width:100%;height:100%;display:block;overflow:visible}
+#house .fur,#house .decal,#house .wallItem{cursor:grab}
+#house .decal text{user-select:none;-webkit-user-select:none}
+/* Pip in the room (sizes in SVG units; Pip is 120 tall) */
+.pipG{cursor:pointer}
+.pipG .pipFlip{transition:transform .25s ease}
+.pipG .pipFlip.left{transform:scaleX(-1)}
+.pipG .pipMove{transform-box:fill-box;transform-origin:50% 100%}
+.pipG.walking .pipMove{animation:waddle2 .36s ease-in-out infinite}
+.pipG.hop .pipMove{animation:bigHop2 .55s ease-out 2}
+.pipG.spin .pipMove{animation:spin2 1.1s ease-in-out}
+.pipG.dance .pipMove{animation:dance2 .6s ease-in-out 4}
+.pipG.dance .buddy .armL{transform:rotate(55deg)}.pipG.dance .buddy .armR{transform:rotate(-55deg)}
+.pipG.wave .buddy .armR{animation:wave .38s ease-in-out 6 alternate}
+.pipG.peek .pipMove{animation:peek 2.4s ease-in-out}
+.pipG.sleep .pipMove{transform:rotate(7deg);transition:transform .6s}
+.pipG.sleep .buddy .eyes{animation:none;transform:scaleY(.12)}
+.pipG.sleep .buddy .bod{animation:breathe 2.4s ease-in-out infinite}
+@keyframes waddle2{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-6px)}}
+@keyframes bigHop2{0%,100%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.1,.88)}50%{transform:translateY(-38px) scale(.94,1.07)}85%{transform:translateY(0) scale(1.07,.93)}}
+@keyframes spin2{0%{transform:scaleX(1)}25%{transform:scaleX(0)}50%{transform:scaleX(-1)}75%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@keyframes dance2{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg) translateY(-6px)}75%{transform:rotate(10deg) translateY(-6px)}}
 @keyframes wave{from{transform:rotate(-60deg)}to{transform:rotate(-115deg)}}
 @keyframes peek{0%,100%{transform:rotate(0)}20%,40%{transform:rotate(-12deg)}60%,80%{transform:rotate(12deg)}}
-.pipFx{position:absolute;left:0;right:0;top:0;height:0;pointer-events:none}
-.fx{position:absolute;top:-4%;font-family:var(--display);font-weight:800;line-height:1;color:var(--berry);font-size:4cqw;animation:floatUp 1.7s ease-out forwards}
-.fx.z{color:var(--skyDeep);font-size:3cqw}
-@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateY(-7cqw) scale(1.15)}}
-.placed{position:absolute;transform:translate(-50%,-50%);font-size:calc(var(--sz) * 8px);font-size:calc(var(--sz) * 1cqw);line-height:1;touch-action:none;cursor:grab;
-  filter:drop-shadow(0 .4cqw 0 rgba(0,0,0,.12));padding:.6cqw;border-radius:1.5cqw}
-.placed.sel{outline:.45cqw dashed var(--berry);background:rgba(255,255,255,.35)}
+.pipFx .fx{font-family:var(--display);font-weight:800;fill:var(--berry);font-size:30px;text-anchor:middle;animation:floatUp2 1.7s ease-out forwards;pointer-events:none}
+.pipFx .fx.z{fill:var(--skyDeep);font-size:24px}
+@keyframes floatUp2{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:1}100%{opacity:0;transform:translateY(-60px) scale(1.15)}}
+/* Living furniture */
+#house .fish{animation:swim 4s ease-in-out infinite alternate}
+#house .fish.f2{animation-duration:5.5s;animation-delay:-2s}
+@keyframes swim{from{transform:translateX(0)}to{transform:translateX(22px)}}
+#house .bubble{animation:bubble 3s linear infinite}
+#house .bubble.b2{animation-delay:-1.4s}
+@keyframes bubble{0%{transform:translateY(0);opacity:0}20%{opacity:.9}100%{transform:translateY(-40px);opacity:0}}
+#house .glow{animation:glow 3s ease-in-out infinite alternate}
+@keyframes glow{from{opacity:.35}to{opacity:.9}}
+#house .sway{transform-box:fill-box;transform-origin:50% 100%;animation:sway 4s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+#house .flame{transform-box:fill-box;transform-origin:50% 100%;animation:flame .5s ease-in-out infinite alternate}
+@keyframes flame{from{transform:scale(1,1)}to{transform:scale(.85,1.2)}}
+#house .steam,#house .puff{animation:steam 2.2s ease-out infinite}
+@keyframes steam{0%{transform:translateY(0);opacity:0}30%{opacity:.8}100%{transform:translateY(-26px);opacity:0}}
+#house .breathe{transform-box:fill-box;transform-origin:50% 100%;animation:breathe 3s ease-in-out infinite}
+#house .ripple{transform-box:fill-box;transform-origin:center;animation:ripple 3s ease-out infinite}
+@keyframes ripple{0%{transform:scale(.3);opacity:.9}100%{transform:scale(2.2);opacity:0}}
+#house .swingSeat{animation:swing 2.6s ease-in-out infinite alternate}
+@keyframes swing{from{transform:rotate(-14deg)}to{transform:rotate(14deg)}}
+#house .hopper{animation:hopper 2.4s ease-in-out infinite}
+@keyframes hopper{0%,60%,100%{transform:translateY(0)}75%{transform:translateY(-14px)}}
+#house .bird{animation:bird 5s ease-in-out infinite}
+@keyframes bird{0%,40%,100%{transform:translate(0,0)}55%{transform:translate(6px,-10px)}70%{transform:translate(-4px,-6px)}}
+#house .spin{transform-box:fill-box;transform-origin:center;animation:spinSlow 14s linear infinite}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+#house .floaty,#house .drift{animation:floaty 3.5s ease-in-out infinite alternate}
+@keyframes floaty{from{transform:translate(0,0)}to{transform:translate(4px,-8px)}}
+#house .rock{animation:rock 1.6s ease-in-out infinite alternate}
+@keyframes rock{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+#house .note{animation:noteUp 2.2s ease-out infinite;opacity:0}
+@keyframes noteUp{0%{transform:translateY(0);opacity:0}25%{opacity:1}100%{transform:translateY(-34px);opacity:0}}
+#house .tick{transform-box:fill-box;transform-origin:50% 90%;animation:spinSlow 60s linear infinite}
+@media (prefers-reduced-motion: reduce){#house *{animation:none!important}}
 .roomTools{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;min-height:44px}
 .roomTools .help{font-family:var(--display);font-weight:700;font-size:18px;color:var(--muted)}
 .tray{background:var(--paper);border-radius:var(--radius);padding:10px 14px;box-shadow:0 4px 0 var(--line)}
 .trayHead{display:flex;align-items:center;gap:12px;font-family:var(--display);font-weight:700;font-size:17px;color:var(--muted);flex-wrap:wrap}
 .trayHead .meter{flex:1;min-width:120px}
 .trayItems{display:flex;gap:10px;overflow-x:auto;padding-block:8px 2px}
-.trayItem{flex:none;width:62px;height:62px;border-radius:16px;border:2px solid var(--line);background:var(--ground);font-size:38px;line-height:1;padding:0}
+.trayItem{flex:none;width:62px;height:62px;border-radius:16px;border:2px solid var(--line);background:var(--ground);font-size:38px;line-height:1;padding:0;display:grid;place-items:center}
+.trayItem svg{display:block}
 .trayItem.locked{font-family:var(--display);font-size:22px;color:#B6C9C0;border-style:dashed;background:transparent;cursor:default}
 .trayEmpty{font-size:16px;color:var(--muted);padding-block:14px}
 .meter{height:14px;border-radius:99px;background:var(--ground2);overflow:hidden}
 .meter i{display:block;height:100%;background:var(--honey);border-radius:99px}
+.shopItem .art svg{display:block}
+.shopItem.lockedRoom{opacity:.5}
+.roomCard{grid-column:1/-1;display:flex;align-items:center;gap:14px;text-align:left}
+.roomCard .art{font-size:40px}
+.roomCard .desc{flex:1;font-size:15px;color:var(--muted);font-family:var(--body,inherit);font-weight:400}
+.roomCard b{display:block;font-family:var(--display);font-size:20px;color:var(--ink)}
 
 .shopWrap{flex:1;min-height:0;overflow:auto;padding-block:4px 20px}
 .shopIntro{margin:6px 0 0;color:var(--muted);font-size:15px}
@@ -382,7 +420,7 @@ td.word{font-weight:700;font-size:18px}
           <p class="tcReady" id="tcReady"></p>
         </div>
         <div class="dailyCard"><div class="week" id="week"></div><div class="goal" id="goal"></div></div>
-        <div class="homeRow"><button class="softBtn hot" id="shopBtn">Pip's Shop</button><button class="softBtn" id="roomBtn">Pip's room</button><button class="softBtn" id="dressBtn">Dress up Pip</button></div>
+        <div class="homeRow"><button class="softBtn hot" id="shopBtn">Pip's Shop</button><button class="softBtn" id="roomBtn">Pip's house</button><button class="softBtn" id="dressBtn">Dress up Pip</button></div>
       </div>
     </div>
   </section>
@@ -419,7 +457,7 @@ td.word{font-weight:700;font-size:18px}
     <p class="sumLine" id="sumLine"></p>
     <div class="prizeList" id="sumPrizes"></div>
     <div class="chips" id="sumChips"></div>
-    <div class="homeRow" style="margin-top:8px"><button class="bigBtn" id="againBtn">Play again</button><button class="softBtn" id="sumRoomBtn" hidden>Decorate Pip's room</button><button class="softBtn" id="homeBtn">Home</button></div>
+    <div class="homeRow" style="margin-top:8px"><button class="bigBtn" id="againBtn">Play again</button><button class="softBtn" id="sumRoomBtn" hidden>Pip's Shop</button><button class="softBtn" id="homeBtn">Home</button></div>
   </section>
 
   <!-- SHOP -->
@@ -431,36 +469,34 @@ td.word{font-weight:700;font-size:18px}
     </div>
     <div class="shopWrap">
       <p class="shopIntro" id="shopIntro"></p>
-      <h3 class="shopHead">Stickers for the room</h3>
-      <div class="shopGrid" id="shopStickers"></div>
+      <div id="shopRooms"></div>
       <h3 class="shopHead" id="shopWearHead">Things for Pip to wear</h3>
       <div class="shopGrid" id="shopAccs"></div>
+      <h3 class="shopHead">Wall stickers</h3>
+      <div class="shopGrid" id="shopStickers"></div>
       <h3 class="shopHead">Wallpaper</h3>
       <div class="shopGrid" id="shopWalls"></div>
+      <h3 class="shopHead">Floors</h3>
+      <div class="shopGrid" id="shopFloors"></div>
     </div>
   </section>
 
-  <!-- PIP'S ROOM -->
+  <!-- PIP'S HOUSE -->
   <section class="screen" id="room" hidden>
     <div class="roomBar">
       <button class="stopBtn" id="roomBack">Back</button>
       <h2 id="roomTitle">Pip's room</h2>
-      <div class="swatches" id="swatches" aria-label="Wall color"></div>
+      <div class="roomTabs" id="roomTabs" aria-label="Rooms"></div>
     </div>
     <div class="sceneWrap">
       <div class="scene" id="scene">
-        <div class="wall"></div>
-        <div class="window"><div class="cloud"></div></div>
-        <div class="shelf"></div>
-        <div class="floor"></div>
-        <div class="rug"></div>
-        <div class="pipWalker" id="pipWalker" role="button" aria-label="Tickle Pip"><div class="pipFlip" id="pipFlip"><div class="pipMove"><svg class="buddy idle" id="buddyRoom" viewBox="0 0 200 200" aria-hidden="true"></svg></div></div><div class="pipFx" id="pipFx"></div></div>
-        <div id="placed"></div>
+        <svg id="house" viewBox="0 0 800 500" aria-label="Pip's room"></svg>
       </div>
     </div>
     <div class="roomTools" id="roomTools"></div>
+    <div class="swatches" id="swatches" aria-label="Wall and floor colors"></div>
     <div class="tray">
-      <div class="trayHead"><span id="trayTitle">My stickers</span><div class="meter"><i id="trayMeter" style="width:0%"></i></div><span id="trayNext"></span></div>
+      <div class="trayHead"><span id="trayTitle">My things</span><div class="meter"><i id="trayMeter" style="width:0%"></i></div><span id="trayNext"></span></div>
       <div class="trayItems" id="tray"></div>
     </div>
   </section>
@@ -555,20 +591,21 @@ td.word{font-weight:700;font-size:18px}
           <label>Keyboard<select id="setLayout"><option value="abc">a b c order</option><option value="qwerty">Tablet order (qwerty)</option></select></label>
           <label>Letter boxes in practice<select id="setBoxes"><option value="1">Show boxes after a wrong try (easier)</option><option value="0">Never show the letter count (harder)</option></select></label>
           <label>Letter case<select id="setCase"><option value="lower">lowercase letters</option><option value="upper">UPPERCASE LETTERS</option></select></label>
-          <label>Voice<select id="setVoice"></select><span class="help">Automatic picks the nicest woman's voice on this iPad. For a much more natural voice, download one on the iPad: Settings → Accessibility → Spoken Content → Voices → English → tap <b>Ava</b> or <b>Zoe</b> and download the <b>Premium</b> version. Then reopen Pip and choose it here.</span></label>
+          <label>Voice<select id="setVoice"></select><span class="help" id="voiceInfo"></span><span class="help">Automatic picks the best woman's voice on this iPad. For a much more natural voice, download one: Settings → Accessibility → Spoken Content → Voices → English → tap <b>Ava</b> or <b>Zoe</b> and download the <b>Premium</b> version (about 200 MB). Then swipe Pip closed from the app switcher, reopen it, and pick the “· Premium” one here. (Siri voices don't show up in apps; Ava and Zoe do.)</span></label>
           <label>Talking speed: <span id="setRateVal"></span><input type="range" id="setRate" min="0.6" max="1.1" step="0.05"></label>
         </div>
-        <div class="row" style="margin-top:14px"><button class="btn" id="testVoice">Test the voice</button><span class="small" id="setSaved"></span></div>
+        <div class="row" style="margin-top:14px"><button class="btn" id="testVoice">Test the voice</button><button class="btn" id="rescanVoice">Look again</button><span class="small" id="setSaved"></span></div>
       </div>
       <div class="panel" id="backupPanel" hidden>
         <h3>Backup</h3>
-        <p class="help">Her lists and progress are saved on this iPad. Save a backup file now and then (for example to Files or iCloud Drive). You can restore it if the app is deleted or you move to a new iPad.</p>
+        <p class="help">Her lists, gems, stickers and room are saved inside this home-screen app. <b>Updates never erase them</b> — new versions load in place. They are lost only if the app icon is deleted and added again, or the iPad is reset. So before ever deleting the icon, save a backup here (to Files or iCloud Drive) and restore it afterwards.</p>
         <div class="row" style="margin-top:10px"><button class="btn" id="backupBtn">Save a backup</button><label class="btn" for="restoreIn" style="cursor:pointer">Restore from a backup</label><input type="file" id="restoreIn" accept=".json,application/json" hidden><span class="small" id="backupMsg"></span></div>
       </div>
       <div class="panel">
         <h3>Gems and the Shop</h3>
-        <p class="help">She earns 1 gem per word in practice or a practice test, 3 gems per word in a Power Round, plus bonus gems for streaks and the daily treasure. Gems are spent in Pip's Shop on stickers (10–35), things for Pip to wear (25–120) and wallpaper (15–25).</p>
+        <p class="help">She earns 1 gem per word in practice or a practice test, 3 gems per word in a Power Round, plus bonus gems for streaks and the daily treasure. Gems are spent in Pip's Shop on furniture for Pip's house (20–150), wall stickers (10–35), things for Pip to wear (25–120), wallpaper and floors (15–30), and new rooms: the kitchen (250), garden (450) and playroom (700).</p>
         <div class="row" style="margin-top:10px"><span id="setStars"></span><button class="btn sm danger" id="resetStars">Reset gems</button></div>
+        <div class="row" style="margin-top:10px"><label style="margin:0">Give gems: <input type="number" id="giftAmt" min="1" max="999" value="20" style="width:80px"></label><button class="btn sm" id="giftBtn">Give</button><span class="small">For a reward from you, or to hand back gems after a reinstall.</span></div>
       </div>
       <div class="panel">
         <h3>Privacy</h3>
@@ -693,6 +730,7 @@ function applyData(o){
     r.owned=own;
   }
   if(!r.owned)r.owned={st:[],acc:[],wall:["mint"]};
+  Object.assign(r,migrateRoom(r));
   if(!r.owned.wall||!r.owned.wall.length)r.owned.wall=["mint"];
   S.rewards=r;
 }
@@ -768,7 +806,12 @@ function parseWords(text){
 
 /* ---------------- Speech & sound ---------------- */
 let voices=[];
-function loadVoices(){try{voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));}catch(e){voices=[]}fillVoiceSelect();}
+// iOS quirks: the voice list can be empty (or missing freshly downloaded voices) until speech has been
+// used once, and a built-in "Ava" and a downloaded Premium "Ava" share the same *name* — only voiceURI
+// tells them apart. So we re-read the list often, key choices by voiceURI, and warm the engine up on
+// the first tap.
+function readVoices(){try{const all=speechSynthesis.getVoices()||[];const en=all.filter(v=>/^en/i.test(v.lang));if(en.length||!voices.length)voices=en;}catch(e){}return voices;}
+function loadVoices(){readVoices();fillVoiceSelect();}
 // Rank voices: women's voices first, then Premium > Enhanced > standard, US English preferred.
 const FEMALE=/\b(Ava|Zoe|Samantha|Allison|Susan|Karen|Moira|Tessa|Serena|Nicky|Joelle|Noelle|Victoria|Kate|Fiona|Veena|Catherine|Martha|Stephanie|Google US English|Google UK English Female|Aria|Jenny|Zira|Libby|Sonia)\b/i;
 const MALE=/\b(Alex|Daniel|Fred|Tom|Evan|Nathan|Aaron|Arthur|Oliver|Gordon|Rishi|Lee|Jamie|Malcolm|Guy|Ryan|David|Mark|George|Male)\b/i;
@@ -776,15 +819,26 @@ const NOVELTY=/\b(Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jest
 function vQuality(v){const s=v.name+" "+(v.voiceURI||"");return /premium/i.test(s)?3:/enhanced|neural|natural|siri/i.test(s)?2:1;}
 function vScore(v){let sc=vQuality(v)*4;if(FEMALE.test(v.name))sc+=10;else if(MALE.test(v.name))sc-=6;if(NOVELTY.test(v.name))sc-=30;
   if(/en[-_]US/i.test(v.lang))sc+=2;else if(/en[-_](GB|AU|IE|CA|NZ)/i.test(v.lang))sc+=1;return sc;}
-function vLabel(v){const q=vQuality(v);return `${v.name.replace(/\s*\((Premium|Enhanced)\)/i,"")}${q===3?" · Premium":q===2?" · Enhanced":""} (${v.lang})`;}
+function vLabel(v){const q=vQuality(v);return `${v.name.replace(/\s*\((Premium|Enhanced)\)/i,"")}${q===3?" · Premium":q===2?" · Enhanced":" · basic"} (${v.lang})`;}
+const vKey=v=>v.voiceURI||v.name;
 function pickVoice(){
-  const n=S.settings.voice;
-  return voices.find(v=>v.name===n)||voices.slice().sort((a,b)=>vScore(b)-vScore(a))[0];
+  const n=S.settings.voice;const vs=readVoices();
+  if(n){const exact=vs.find(v=>vKey(v)===n);if(exact)return exact;
+    // Older saves stored the name only: take the best-quality voice with that name.
+    const same=vs.filter(v=>v.name===n).sort((a,b)=>vQuality(b)-vQuality(a));if(same.length)return same[0];}
+  return vs.slice().sort((a,b)=>vScore(b)-vScore(a))[0];
 }
-if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;}
+let voicesWarm=false;
+function warmVoices(){if(voicesWarm||!("speechSynthesis" in window))return;voicesWarm=true;
+  try{const u=new SpeechSynthesisUtterance(" ");u.volume=0;u.rate=2;speechSynthesis.speak(u);}catch(e){}
+  [200,800,2000].forEach(t=>setTimeout(loadVoices,t));}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices;
+  document.addEventListener("pointerdown",warmVoices,{once:true,capture:true});
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden)setTimeout(loadVoices,300);});}
 function say(text,rate){
   return new Promise(res=>{
     if(!("speechSynthesis" in window)){res();return;}
+    try{speechSynthesis.resume();}catch(e){}
     const u=new SpeechSynthesisUtterance(text);const v=pickVoice();if(v){u.voice=v;u.lang=v.lang;}else u.lang="en-US";
     u.rate=rate||S.settings.rate||0.85;u.pitch=1;let done=false;const fin=()=>{if(!done){done=true;res();}};
     u.onend=fin;u.onerror=fin;speechSynthesis.speak(u);setTimeout(fin,1500+text.length*140);
@@ -820,6 +874,9 @@ function cheapestUnowned(){
   const p=[];STICKERS.forEach((_,i)=>{if(!ownsSticker(i))p.push(stickerPrice(i));});
   ACCS.forEach(a=>{if(!owned("acc").includes(a.id))p.push(a.price);});
   Object.entries(WALL_PRICE).forEach(([k,v])=>{if(!owned("wall").includes(k))p.push(v);});
+  Object.entries(FLOORS).forEach(([k,f])=>{if(!ownsFloor(k))p.push(f.price);});
+  Object.entries(ROOMS).forEach(([k,r])=>{if(!ownsRoom(k))p.push(r.price);});
+  FUR.forEach(f=>{if(!ownsFur(f.id)&&ownsRoom(f.room))p.push(f.price);});
   return p.length?Math.min(...p):Infinity;
 }
 
@@ -837,7 +894,7 @@ function renderHome(){
   const n=S.settings.childName.trim();
   $("#hi").textContent=n?`Hi, ${n}!`:"Hi there!";
   const g=gems();$("#homeStars").textContent=g;$("#playStars").textContent=g;
-  $("#roomBtn").textContent=`${bname()}'s room`;$("#dressBtn").textContent=`Dress up ${bname()}`;$("#shopBtn").textContent=`${bname()}'s Shop`;
+  $("#roomBtn").textContent=`${bname()}'s house`;$("#dressBtn").textContent=`Dress up ${bname()}`;$("#shopBtn").textContent=`${bname()}'s Shop`;
   const cur=currentList(),p=pool();
   $("#startBtn").disabled=!S.ready||!p.length;
   $("#testBtn").disabled=!S.ready||!cur||!(cur.words||[]).length;
@@ -1094,10 +1151,10 @@ $("#homeBtn").onclick=()=>{show("home");buddy($("#buddyHome"),"idle");renderHome
 $("#stopBtn").onclick=()=>{hush();if(P&&P.session.items.length){P.session.endedAt=Date.now();P.session.stopped=true;saveSession();}P=null;show("home");renderHome();};
 
 /* ---------------- Pip's Shop ---------------- */
-function shopItem(kind,id,artHtml,price,label){
-  const has=kind==="st"?ownsSticker(id):owned(kind).includes(id);
+function shopItem(kind,id,artHtml,price,label,extra){
+  const has=shopHas(kind,id);
   const cls=has?"own":(gems()<price?"cant":"");
-  return `<button class="shopItem ${cls}" data-kind="${kind}" data-id="${esc(id)}" data-price="${price}">
+  return `<button class="shopItem ${cls} ${extra||""}" data-kind="${kind}" data-id="${esc(id)}" data-price="${price}">
     ${artHtml}${label?`<span>${esc(label)}</span>`:""}
     <span class="price">${has?"Yours":`${STAR} ${price}`}</span></button>`;
 }
@@ -1109,125 +1166,359 @@ function renderShop(){
   $("#shopIntro").textContent=need===Infinity?"You own everything in the shop! Wow."
     :gems()>=need?"Tap something to buy it with your gems."
     :`Spell words to earn gems. The next thing you can buy costs ${need}.`;
+  $("#shopRooms").innerHTML=Object.entries(ROOMS).map(([k,rm])=>{const own=ownsRoom(k);
+    const card=own?"":`<div class="shopGrid">${shopItem("room",k,`<span class="art">${rm.icon}</span>`,rm.price,`Unlock the ${rm.name}`,"roomCard")}</div>`;
+    const items=furFor(k).map(f=>shopItem("fur",f.id,`<span class="art">${thumb(f,54)}</span>`,f.price,f.name,own?"":"lockedRoom")).join("");
+    return `<h3 class="shopHead">${rm.icon} ${rm.name}${own?"":` <span class="small">(${rm.price} gems to unlock)</span>`}</h3>${card}<div class="shopGrid">${items}</div>`;}).join("");
   $("#shopStickers").innerHTML=STICKERS.map((em,i)=>shopItem("st",i,`<span class="art">${em}</span>`,stickerPrice(i),"")).join("");
   $("#shopAccs").innerHTML=ACCS.map(a=>shopItem("acc",a.id,`<span class="art">${a.id==="bow"?"🎀":a.id==="glasses"?"👓":a.id==="flower"?"🌸":a.id==="hat"?"🎉":"👑"}</span>`,a.price,a.name)).join("");
   $("#shopWalls").innerHTML=Object.entries(WALLS).map(([k,c])=>shopItem("wall",k,`<span class="swatchArt" style="background:${c}"></span>`,WALL_PRICE[k]||0,k[0].toUpperCase()+k.slice(1))).join("");
+  $("#shopFloors").innerHTML=Object.entries(FLOORS).map(([k,f])=>shopItem("floor",k,`<span class="swatchArt" style="background:linear-gradient(135deg,${f.a} 50%,${f.b} 50%);border-radius:10px"></span>`,f.price,f.name)).join("");
   $$("#shop .shopItem").forEach(b=>b.onclick=()=>{
     const kind=b.dataset.kind,price=+b.dataset.price;
     const id=kind==="st"?+b.dataset.id:b.dataset.id;
-    const has=kind==="st"?ownsSticker(id):owned(kind).includes(id);
-    if(has){toast(kind==="st"?"Already yours — put it in the room!":kind==="acc"?`Already yours — dress ${bname()} up!`:"Already yours — pick it in the room.");return;}
+    const has=shopHas(kind,id);
+    if(has){toast(kind==="st"?"Already yours — put it on the wall!":kind==="acc"?`Already yours — dress ${bname()} up!`:kind==="room"?"Already yours — go visit it!":"Already yours — find it in the room.");return;}
+    if(kind==="fur"&&!ownsRoom(FUR_BY[id].room)){sfx.nope();toast(`Unlock the ${ROOMS[FUR_BY[id].room].name.toLowerCase()} first.`);return;}
     if(buyItem(kind,id,price)){
       confetti();
-      toast(kind==="st"?"Sticker bought! Put it in the room.":kind==="acc"?`Bought! Dress ${bname()} up to wear it.`:"Wallpaper bought! Pick it in the room.");
-      if(kind==="wall")setRewards({wall:id});
+      const cur=curRoom();
+      if(kind==="wall"&&cur.key!=="gar")saveRoomState(cur.key,{wall:id});
+      if(kind==="floor")saveRoomState(cur.key,{floor:id});
+      if(kind==="room")saveHouse({cur:id});
+      toast(kind==="st"?"Sticker bought! Put it on the wall.":kind==="acc"?`Bought! Dress ${bname()} up to wear it.`:kind==="wall"?"Wallpaper bought and hung up!":kind==="floor"?"New floor! It's in the room now.":kind==="room"?`The ${ROOMS[id].name.toLowerCase()} is yours! Go see it.`:"Bought! Put it in the room.");
       renderShop();renderHome();
     }else renderShop();
   });
 }
+function shopHas(kind,id){return kind==="st"?ownsSticker(id):kind==="room"?ownsRoom(id):kind==="floor"?ownsFloor(id):kind==="wall"?ownsWall(id):owned(kind).includes(id);}
 function openShop(){show("shop");renderShop();}
 $("#shopBtn").onclick=openShop;
 $("#shopBack").onclick=()=>{show("home");renderHome();};
 
-/* ---------------- Pip's room ---------------- */
-let sel=null,drag=null;
-function roomItems(){return(S.rewards.room||[]).filter(r=>ownsSticker(r.i));}
-function openRoom(){sel=null;show("room");buddy($("#buddyRoom"),"idle");renderRoom();pipStart();}
+/* ---------------- Pip's house: isometric rooms ---------------- */
+// Geometry: a 6x6 tile floor drawn in 2:1 isometric projection inside an 800x520 SVG.
+const G=6,TW=40,TH=20,ZH=54,OX=400,OY=232,WH=210;
+const ISO=(x,y,z=0)=>[OX+(x-y)*TW,OY+(x+y)*TH-z*ZH];
+const pt=(x,y,z)=>ISO(x,y,z).map(n=>n.toFixed(1)).join(",");
+function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;
+  const f=c=>Math.max(0,Math.min(255,Math.round(amt<0?c*(1+amt):c+(255-c)*amt)));
+  return "#"+[f(r),f(g),f(b)].map(c=>c.toString(16).padStart(2,"0")).join("");}
+// A cuboid at tile (x,y), raised z, size w (along x), d (along y), h tall. Origin = the item's own tile.
+function box(x,y,z,w,d,h,c,o={}){const top=o.top||shade(c,.28),L=o.left||c,R=o.right||shade(c,-.22);
+  return `<polygon points="${pt(x,y,z+h)} ${pt(x+w,y,z+h)} ${pt(x+w,y+d,z+h)} ${pt(x,y+d,z+h)}" fill="${top}"/>`+
+    `<polygon points="${pt(x,y+d,z)} ${pt(x+w,y+d,z)} ${pt(x+w,y+d,z+h)} ${pt(x,y+d,z+h)}" fill="${L}"/>`+
+    `<polygon points="${pt(x+w,y,z)} ${pt(x+w,y+d,z)} ${pt(x+w,y+d,z+h)} ${pt(x+w,y,z+h)}" fill="${R}"/>`;}
+// Flat shape on the floor
+const tile=(x,y,w,d,c,z=0)=>`<polygon points="${pt(x,y,z)} ${pt(x+w,y,z)} ${pt(x+w,y+d,z)} ${pt(x,y+d,z)}" fill="${c}"/>`;
+const disc=(x,y,z,r,c,ry)=>{const [cx,cy]=ISO(x,y,z);return `<ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${ry||r/2}" fill="${c}"/>`;};
+const cyl=(x,y,z,r,h,c)=>{const [cx,cy]=ISO(x,y,z),[,ty]=ISO(x,y,z+h);const ry=r/2;
+  return `<path d="M${cx-r} ${cy} A${r} ${ry} 0 0 0 ${cx+r} ${cy} L${cx+r} ${ty} A${r} ${ry} 0 0 1 ${cx-r} ${ty} Z" fill="${c}"/><ellipse cx="${cx}" cy="${ty}" rx="${r}" ry="${ry}" fill="${shade(c,.3)}"/>`;};
+// Draw functions are called with the item's own origin at tile (0,0); items are translated into place.
+const FLOWER=(x,y,z,c)=>{const [cx,cy]=ISO(x,y,z);return `<line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy-16}" stroke="#2FB673" stroke-width="3"/><circle cx="${cx}" cy="${cy-20}" r="7" fill="${c}"/><circle cx="${cx}" cy="${cy-20}" r="3" fill="#FFD23F"/>`;};
+const NOTE=(x,y,dl)=>`<text class="note" style="animation-delay:${dl}s" x="${x}" y="${y}" font-size="22" fill="#EF5B7B" font-weight="800">♪</text>`;
+const WOOD="#C98F52",WHITE="#FFFFFF",PINK="#F8A5B6",BERRY="#EF5B7B",SKY="#5BB8EA",LEAF="#2FB673",HONEY="#F7B538",LAV="#B18CF0",INK="#26305C";
 
-/* Pip's little life in the room: every few seconds Pip does something cute. */
-const PIP={x:50,timer:null,busy:false};
-const pipEl=()=>$("#pipWalker");
-const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
-function pipStart(){pipStop();const w=pipEl();w.style.transition="none";w.style.left=PIP.x+"%";PIP.timer=setTimeout(pipAct,1800+Math.random()*1500);}
-function pipStop(){clearTimeout(PIP.timer);PIP.timer=null;const w=pipEl();w.className="pipWalker";PIP.busy=false;}
-function pipFx(text,cls,n=1){for(let i=0;i<n;i++){const f=document.createElement("span");f.className="fx "+(cls||"");f.textContent=text;
-  f.style.left=(45+Math.random()*30)+"%";f.style.animationDelay=(i*0.45)+"s";$("#pipFx").appendChild(f);setTimeout(()=>f.remove(),1800+i*450);}}
-function pipDo(cls,ms,mood){const w=pipEl();w.classList.add(cls);if(mood)buddy($("#buddyRoom"),mood);
-  return new Promise(r=>setTimeout(()=>{w.classList.remove(cls);if(mood)buddy($("#buddyRoom"),"idle");r();},ms));}
-function pipWalkTo(x){
-  x=clamp(x,12,88);const d=Math.abs(x-PIP.x);if(d<3)return Promise.resolve();
-  const w=pipEl(),ms=Math.max(900,d*70);
-  $("#pipFlip").classList.toggle("left",x<PIP.x);
-  w.classList.add("walking");w.style.transition=`left ${ms}ms linear`;void w.offsetWidth;w.style.left=x+"%";PIP.x=x;
-  return new Promise(r=>setTimeout(()=>{w.classList.remove("walking");r();},ms));
+const ROOMS={
+  bed:{name:"Bedroom",icon:"🛏️",price:0,wall:"mint",floor:"wood"},
+  kit:{name:"Kitchen",icon:"🍳",price:250,wall:"butter",floor:"checker"},
+  gar:{name:"Garden",icon:"🌳",price:450,wall:"hedge",floor:"grass"},
+  play:{name:"Playroom",icon:"🎠",price:700,wall:"sky",floor:"carpet"},
+};
+const FLOORS={wood:{name:"Wood",price:0,a:"#E9B982",b:"#D9A56A"},carpet:{name:"Pink carpet",price:20,a:"#F9CCD8",b:"#F4BCCB"},checker:{name:"Checkers",price:25,a:"#FFF6DC",b:"#8FD3F5"},tile:{name:"Blue tiles",price:25,a:"#CDEEFF",b:"#A9DDF7"},grass:{name:"Grass",price:0,a:"#9EDB8C",b:"#8CD07A"},stone:{name:"Stone path",price:30,a:"#D9D4CC",b:"#C6C0B6"}};
+const WALL_EXTRA={hedge:"#8FCB7A"};
+const wallColor=k=>WALLS[k]||WALL_EXTRA[k]||WALLS.mint;
+
+const FUR=[
+  // ---- Bedroom ----
+  {id:"bed",room:"bed",name:"Bed",price:60,w:2,d:1,h:1.2,draw:()=>box(0,0,0,2,.12,1.1,WOOD)+box(0,0,0,2,1,.35,WOOD)+box(0,.05,.35,2,.9,.25,"#F4F1EA")+box(.9,.08,.6,1.05,.84,.14,PINK)+box(.12,.2,.6,.6,.6,.2,WHITE)},
+  {id:"rug",room:"bed",name:"Rug",price:30,w:2,d:2,h:.1,draw:()=>disc(1,1,.02,70,PINK,35)+disc(1,1,.03,50,"#F9C3D0",25)+disc(1,1,.04,26,PINK,13)},
+  {id:"lamp",room:"bed",name:"Lamp",price:40,w:1,d:1,h:1.9,draw:()=>disc(.5,.5,0,16,"#8A6A45",8)+cyl(.5,.5,0,3,1.2,"#8A6A45")+`<g class="glow">${disc(.5,.5,1.35,40,"#FFF1B8",22)}</g>`+box(.2,.2,1.2,.6,.6,.45,HONEY,{top:"#FFE29A"})},
+  {id:"shelf",room:"bed",name:"Bookshelf",price:70,w:2,d:1,h:1.8,draw:()=>box(0,.3,0,2,.1,1.8,WOOD)+box(0,.3,0,.08,.7,1.8,WOOD)+box(0,.3,0,2,.7,.1,WOOD)+box(0.18,.42,0.1,.22,.45,.55,BERRY)+box(0.46,.42,0.1,.22,.45,.55,SKY)+box(0.74,.42,0.1,.22,.45,.55,LEAF)+box(1.02,.42,0.1,.22,.45,.55,LAV)+box(1.3,.42,0.1,.22,.45,.55,HONEY)+box(1.58,.42,0.1,.22,.45,.55,BERRY)+box(0,.3,.9,2,.7,.08,WOOD)+box(0.18,.42,0.98,.22,.45,.55,BERRY)+box(0.46,.42,0.98,.22,.45,.55,SKY)+box(0.74,.42,0.98,.22,.45,.55,LEAF)+box(1.02,.42,0.98,.22,.45,.55,LAV)+box(1.3,.42,0.98,.22,.45,.55,HONEY)+box(1.58,.42,0.98,.22,.45,.55,BERRY)+box(0,.3,1.72,2,.7,.08,WOOD)+box(1.92,.3,0,.08,.7,1.8,WOOD)},
+  {id:"chair",room:"bed",name:"Chair",price:35,w:1,d:1,h:1.2,draw:()=>box(.15,.15,0,.7,.7,.45,SKY)+box(.15,.15,.45,.7,.12,.7,SKY)},
+  {id:"desk",room:"bed",name:"Desk",price:50,w:2,d:1,h:.9,draw:()=>box(.05,.1,0,.12,.12,.7,WOOD)+box(1.83,.1,0,.12,.12,.7,WOOD)+box(.05,.78,0,.12,.12,.7,WOOD)+box(1.83,.78,0,.12,.12,.7,WOOD)+box(0,0,.7,2,1,.12,WOOD)+cyl(1.5,.5,.82,9,.3,SKY)+box(.3,.25,.82,.7,.5,.06,WHITE)+box(.3,.2,.82,.7,.05,.5,"#DDE9F5")},
+  {id:"toybox",room:"bed",name:"Toy box",price:45,w:1,d:1,h:.8,draw:()=>box(.1,.1,0,.8,.8,.55,BERRY)+box(.05,.05,.55,.9,.9,.12,"#C93D5E",{top:BERRY})+`<text x="${ISO(.5,1,.2)[0]}" y="${ISO(.5,1,.2)[1]}" font-size="20" text-anchor="middle" fill="#FFD23F">★</text>`},
+  {id:"teddy",room:"bed",name:"Big teddy",price:55,w:1,d:1,h:1.3,draw:()=>{const [cx,cy]=ISO(.5,.5,0);return `<ellipse cx="${cx}" cy="${cy}" rx="22" ry="10" fill="rgba(0,0,0,.1)"/><circle cx="${cx-20}" cy="${cy-30}" r="11" fill="#B07A45"/><circle cx="${cx+20}" cy="${cy-30}" r="11" fill="#B07A45"/><ellipse cx="${cx}" cy="${cy-24}" rx="24" ry="26" fill="#C48A52"/><ellipse cx="${cx}" cy="${cy-18}" rx="14" ry="15" fill="#E8C7A0"/><circle cx="${cx}" cy="${cy-58}" r="21" fill="#C48A52"/><circle cx="${cx-16}" cy="${cy-74}" r="8" fill="#C48A52"/><circle cx="${cx+16}" cy="${cy-74}" r="8" fill="#C48A52"/><circle cx="${cx-8}" cy="${cy-60}" r="3" fill="${INK}"/><circle cx="${cx+8}" cy="${cy-60}" r="3" fill="${INK}"/><ellipse cx="${cx}" cy="${cy-50}" rx="5" ry="3.5" fill="${INK}"/>`;}},
+  {id:"plant",room:"bed",name:"Plant",price:25,w:1,d:1,h:1.2,draw:()=>{const [cx,cy]=ISO(.5,.5,.5);return cyl(.5,.5,0,14,.5,"#D9805B")+`<g class="sway"><ellipse cx="${cx-14}" cy="${cy-18}" rx="9" ry="18" fill="${LEAF}" transform="rotate(-30 ${cx-14} ${cy-18})"/><ellipse cx="${cx+14}" cy="${cy-18}" rx="9" ry="18" fill="#27A365" transform="rotate(30 ${cx+14} ${cy-18})"/><ellipse cx="${cx}" cy="${cy-26}" rx="9" ry="22" fill="#3BC580"/></g>`;}},
+  {id:"tank",room:"bed",name:"Fish tank",price:120,w:1,d:1,h:1.4,draw:()=>{const [ax,ay]=ISO(.1,.9,.55),[bx]=ISO(.9,.9,.55);return box(.1,.1,0,.8,.8,.55,"#6B7C8F")+`<g class="water"><clipPath id="tankClip"><rect x="${ax}" y="${ay-58}" width="${bx-ax}" height="56"/></clipPath>`+box(.1,.1,.55,.8,.8,.7,"#8FD3F5",{top:"#CDEEFF",left:"rgba(143,211,245,.75)",right:"rgba(91,184,234,.75)"})+`<g clip-path="url(#tankClip)"><g class="fish"><ellipse cx="${ax+18}" cy="${ay-26}" rx="9" ry="5" fill="${HONEY}"/><polygon points="${ax+9},${ay-26} ${ax+2},${ay-31} ${ax+2},${ay-21}" fill="${HONEY}"/></g><g class="fish f2"><ellipse cx="${ax+30}" cy="${ay-42}" rx="7" ry="4" fill="${BERRY}"/><polygon points="${ax+23},${ay-42} ${ax+17},${ay-46} ${ax+17},${ay-38}" fill="${BERRY}"/></g><circle class="bubble" cx="${ax+40}" cy="${ay-10}" r="2" fill="#fff"/><circle class="bubble b2" cx="${ax+46}" cy="${ay-6}" r="1.5" fill="#fff"/></g></g>`;}},
+  {id:"window",room:"bed",name:"Window",price:35,wall:true,draw:wallWindow},
+  {id:"picture",room:"bed",name:"Rainbow picture",price:25,wall:true,draw:()=>`<rect x="-30" y="-26" width="60" height="52" rx="4" fill="#fff" stroke="${WOOD}" stroke-width="5"/>`+["#EF5B7B","#F7B538","#2FB673","#5BB8EA","#B18CF0"].map((c,i)=>`<path d="M-20 14 A20 20 0 0 1 20 14" fill="none" stroke="${c}" stroke-width="4" transform="scale(${1-i*.17})" transform-origin="0 14"/>`).join("")},
+  {id:"clock",room:"bed",name:"Clock",price:40,wall:true,draw:()=>`<circle r="24" fill="#fff" stroke="${INK}" stroke-width="4"/><line x1="0" y1="0" x2="0" y2="-14" stroke="${INK}" stroke-width="3"/><line x1="0" y1="0" x2="10" y2="0" stroke="${INK}" stroke-width="3"/><line class="tick" x1="0" y1="2" x2="0" y2="-18" stroke="${BERRY}" stroke-width="1.5"/>`},
+  {id:"wshelf",room:"bed",name:"Trophy shelf",price:45,wall:true,draw:()=>`<rect x="-36" y="10" width="72" height="7" fill="${WOOD}"/><path d="M-22 10 v-14 h12 v14 z" fill="${HONEY}"/><path d="M-16 -4 v-10" stroke="${HONEY}" stroke-width="4"/><circle cx="4" cy="2" r="8" fill="${SKY}"/><rect x="16" y="-2" width="12" height="12" fill="${LAV}"/>`},
+  // ---- Kitchen ----
+  {id:"fridge",room:"kit",name:"Fridge",price:60,w:1,d:1,h:2,draw:()=>box(.1,.1,0,.8,.8,2,"#EEF2F5")+`<line x1="${ISO(.95,.9,.6)[0]}" y1="${ISO(.95,.9,.6)[1]}" x2="${ISO(.95,.9,1.3)[0]}" y2="${ISO(.95,.9,1.3)[1]}" stroke="#9AA7B4" stroke-width="4" stroke-linecap="round"/>`+`<text x="${ISO(.5,1,1.5)[0]}" y="${ISO(.5,1,1.5)[1]}" font-size="16" text-anchor="middle">🍎</text>`},
+  {id:"stove",room:"kit",name:"Stove",price:70,w:1,d:1,h:1,draw:()=>box(.05,.05,0,.9,.9,.9,"#F4F1EA")+disc(.3,.3,.9,8,INK)+disc(.7,.3,.9,8,INK)+disc(.3,.7,.9,8,INK)+disc(.7,.7,.9,8,INK)+tile(.15,.95,.7,0,"#000")+box(.15,.9,.25,.7,.1,.4,"#B8C4CF",{top:"#B8C4CF"})},
+  {id:"table",room:"kit",name:"Table",price:50,w:2,d:1,h:.9,draw:()=>box(.08,.08,0,.12,.12,.7,WOOD)+box(1.8,.08,0,.12,.12,.7,WOOD)+box(.08,.8,0,.12,.12,.7,WOOD)+box(1.8,.8,0,.12,.12,.7,WOOD)+box(0,0,.7,2,1,.1,WOOD,{top:"#E8C08C"})+disc(1.4,.5,.8,12,BERRY,6)},
+  {id:"stool",room:"kit",name:"Stool",price:25,w:1,d:1,h:.6,draw:()=>cyl(.5,.5,0,4,.5,WOOD)+disc(.5,.5,.5,14,HONEY,7)},
+  {id:"cake",room:"kit",name:"Birthday cake",price:45,w:1,d:1,h:1,draw:()=>disc(.5,.5,.01,22,"#fff",11)+cyl(.5,.5,0,18,.35,PINK)+cyl(.5,.5,.35,12,.3,"#F9C3D0")+`<line x1="${ISO(.5,.5,.65)[0]}" y1="${ISO(.5,.5,.65)[1]}" x2="${ISO(.5,.5,.9)[0]}" y2="${ISO(.5,.5,.9)[1]}" stroke="${SKY}" stroke-width="3"/><ellipse class="flame" cx="${ISO(.5,.5,.95)[0]}" cy="${ISO(.5,.5,.95)[1]}" rx="3" ry="5" fill="${HONEY}"/>`},
+  {id:"sink",room:"kit",name:"Sink",price:55,w:1,d:1,h:1.2,draw:()=>box(.05,.05,0,.9,.9,.85,"#F4F1EA")+disc(.5,.5,.86,18,"#B8C4CF",9)+`<path d="M${ISO(.5,.2,.85).join(" ")} L${ISO(.5,.2,1.2).join(" ")} L${ISO(.5,.5,1.2).join(" ")}" fill="none" stroke="#9AA7B4" stroke-width="4" stroke-linecap="round"/>`},
+  {id:"kettle",room:"kit",name:"Tea set",price:30,w:1,d:1,h:.6,draw:()=>disc(.5,.5,.01,20,"#fff",10)+cyl(.35,.35,0,9,.3,SKY)+cyl(.7,.6,0,5,.18,BERRY)+cyl(.6,.85,0,5,.18,LEAF)+`<g class="steam"><circle cx="${ISO(.35,.35,.5)[0]}" cy="${ISO(.35,.35,.5)[1]}" r="3" fill="#fff" opacity=".8"/></g>`},
+  {id:"fruit",room:"kit",name:"Fruit bowl",price:20,w:1,d:1,h:.5,draw:()=>disc(.5,.5,.01,18,SKY,9)+disc(.4,.4,.15,6,BERRY)+disc(.65,.45,.15,6,HONEY)+disc(.5,.7,.15,6,LEAF)+disc(.55,.5,.3,5,"#FF8C42")},
+  {id:"catbed",room:"kit",name:"Sleepy cat",price:80,w:1,d:1,h:.5,draw:()=>{const [cx,cy]=ISO(.5,.5,0);return disc(.5,.5,.01,24,"#8FA3B8",12)+`<g class="breathe"><ellipse cx="${cx}" cy="${cy-8}" rx="17" ry="9" fill="#F0A85C"/><circle cx="${cx+12}" cy="${cy-14}" r="8" fill="#F0A85C"/><polygon points="${cx+7},${cy-20} ${cx+9},${cy-28} ${cx+12},${cy-20}" fill="#F0A85C"/><polygon points="${cx+13},${cy-20} ${cx+16},${cy-28} ${cx+18},${cy-20}" fill="#F0A85C"/><path d="M${cx+9} ${cy-13} q2 1 4 0 M${cx+14} ${cy-13} q2 1 4 0" stroke="${INK}" stroke-width="1.5" fill="none"/><path d="M${cx-16} ${cy-6} q-10 -8 -2 -14" stroke="#F0A85C" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;}},
+  {id:"kwindow",room:"kit",name:"Sunny window",price:35,wall:true,draw:()=>wallWindow(true)},
+  {id:"potrack",room:"kit",name:"Pot rack",price:30,wall:true,draw:()=>`<rect x="-36" y="-16" width="72" height="6" fill="${WOOD}"/><path d="M-24 -10 v10 M0 -10 v10 M24 -10 v10" stroke="#9AA7B4" stroke-width="2"/><rect x="-32" y="0" width="16" height="14" rx="3" fill="#B8C4CF"/><ellipse cx="0" cy="8" rx="9" ry="7" fill="#EF5B7B"/><rect x="16" y="0" width="16" height="14" rx="3" fill="#F7B538"/>`},
+  {id:"menu",room:"kit",name:"Menu board",price:25,wall:true,draw:()=>`<rect x="-30" y="-26" width="60" height="52" rx="4" fill="#2E4A3F" stroke="${WOOD}" stroke-width="4"/><text x="0" y="-6" font-size="12" text-anchor="middle" fill="#fff" font-weight="700">today:</text><text x="0" y="12" font-size="14" text-anchor="middle" fill="#FFD23F" font-weight="800">pancakes</text>`},
+  // ---- Garden ----
+  {id:"tree",room:"gar",name:"Apple tree",price:80,w:1,d:1,h:2.6,draw:()=>{const [cx,cy]=ISO(.5,.5,1.4);return disc(.5,.5,0,26,"rgba(0,0,0,.08)",13)+cyl(.5,.5,0,8,1.4,"#8A6A45")+`<g class="sway"><circle cx="${cx-24}" cy="${cy-8}" r="28" fill="#3BC580"/><circle cx="${cx+24}" cy="${cy-8}" r="28" fill="#27A365"/><circle cx="${cx}" cy="${cy-30}" r="32" fill="${LEAF}"/><circle cx="${cx-14}" cy="${cy-14}" r="5" fill="${BERRY}"/><circle cx="${cx+18}" cy="${cy-30}" r="5" fill="${BERRY}"/><circle cx="${cx+4}" cy="${cy-2}" r="5" fill="${BERRY}"/></g>`;}},
+  {id:"flowers",room:"gar",name:"Flower bed",price:40,w:2,d:1,h:.6,draw:()=>box(0,0,0,2,1,.15,"#9C6B43")+FLOWER(.35,.3,.15,BERRY)+FLOWER(.9,.6,.15,HONEY)+FLOWER(1.4,.3,.15,LAV)+FLOWER(1.7,.7,.15,"#FF8C42")+FLOWER(.6,.8,.15,"#fff")},
+  {id:"pond",room:"gar",name:"Pond",price:120,w:2,d:2,h:.2,draw:()=>disc(1,1,.01,76,"#7FC5E8",38)+disc(1,1,.02,64,"#8FD3F5",32)+`<ellipse class="ripple" cx="${ISO(1,1,.03)[0]}" cy="${ISO(1,1,.03)[1]}" rx="20" ry="10" fill="none" stroke="#fff" stroke-width="2" opacity=".7"/>`+disc(1.4,.7,.05,10,LEAF,5)+disc(1.4,.7,.1,3,PINK)+`<g class="fish"><ellipse cx="${ISO(.7,1.3,.04)[0]}" cy="${ISO(.7,1.3,.04)[1]}" rx="8" ry="4" fill="#FF8C42"/></g>`},
+  {id:"swing",room:"gar",name:"Swing",price:90,w:2,d:1,h:2.2,draw:()=>{const [tx,ty]=ISO(1,.5,2.1);return cyl(.15,.5,0,4,2.1,"#8A6A45")+cyl(1.85,.5,0,4,2.1,"#8A6A45")+`<line x1="${ISO(.15,.5,2.1)[0]}" y1="${ISO(.15,.5,2.1)[1]}" x2="${ISO(1.85,.5,2.1)[0]}" y2="${ISO(1.85,.5,2.1)[1]}" stroke="#8A6A45" stroke-width="6" stroke-linecap="round"/><g class="swingSeat" style="transform-origin:${tx}px ${ty}px"><line x1="${tx-14}" y1="${ty}" x2="${tx-14}" y2="${ty+70}" stroke="#C9B08A" stroke-width="2"/><line x1="${tx+14}" y1="${ty}" x2="${tx+14}" y2="${ty+70}" stroke="#C9B08A" stroke-width="2"/><rect x="${tx-18}" y="${ty+68}" width="36" height="8" rx="3" fill="${BERRY}"/></g>`;}},
+  {id:"bench",room:"gar",name:"Bench",price:50,w:2,d:1,h:1,draw:()=>box(.1,.2,0,.1,.5,.45,"#8A6A45")+box(1.8,.2,0,.1,.5,.45,"#8A6A45")+box(0,.2,.45,2,.5,.1,WOOD)+box(0,.2,.55,2,.1,.5,WOOD)},
+  {id:"mushroom",room:"gar",name:"Mushroom",price:25,w:1,d:1,h:1,draw:()=>{const [cx,cy]=ISO(.5,.5,.55);return cyl(.5,.5,0,9,.55,"#FFF3E0")+`<ellipse cx="${cx}" cy="${cy}" rx="30" ry="18" fill="${BERRY}"/><circle cx="${cx-10}" cy="${cy-6}" r="4" fill="#fff"/><circle cx="${cx+10}" cy="${cy-2}" r="4" fill="#fff"/><circle cx="${cx}" cy="${cy+6}" r="3" fill="#fff"/>`;}},
+  {id:"birdhouse",room:"gar",name:"Birdhouse",price:45,w:1,d:1,h:1.9,draw:()=>{const [cx,cy]=ISO(.5,.5,1.3);return cyl(.5,.5,0,3,1.3,"#8A6A45")+`<rect x="${cx-16}" y="${cy-26}" width="32" height="28" fill="${HONEY}"/><polygon points="${cx-22},${cy-26} ${cx},${cy-44} ${cx+22},${cy-26}" fill="${BERRY}"/><circle cx="${cx}" cy="${cy-12}" r="6" fill="${INK}"/><g class="bird"><circle cx="${cx+20}" cy="${cy-38}" r="5" fill="${SKY}"/><circle cx="${cx+25}" cy="${cy-41}" r="3.5" fill="${SKY}"/><polygon points="${cx+28},${cy-41} ${cx+33},${cy-40} ${cx+28},${cy-38}" fill="${HONEY}"/></g>`;}},
+  {id:"bunny",room:"gar",name:"Bunny",price:70,w:1,d:1,h:.9,draw:()=>{const [cx,cy]=ISO(.5,.5,0);return disc(.5,.5,.01,16,"rgba(0,0,0,.08)",8)+`<g class="hopper"><ellipse cx="${cx}" cy="${cy-12}" rx="15" ry="11" fill="#fff"/><circle cx="${cx+10}" cy="${cy-22}" r="9" fill="#fff"/><ellipse cx="${cx+6}" cy="${cy-36}" rx="3" ry="9" fill="#fff"/><ellipse cx="${cx+14}" cy="${cy-36}" rx="3" ry="9" fill="#fff"/><ellipse cx="${cx+6}" cy="${cy-36}" rx="1.5" ry="6" fill="${PINK}"/><ellipse cx="${cx+14}" cy="${cy-36}" rx="1.5" ry="6" fill="${PINK}"/><circle cx="${cx+13}" cy="${cy-23}" r="1.8" fill="${INK}"/><circle cx="${cx+18}" cy="${cy-20}" r="1.5" fill="${PINK}"/><circle cx="${cx-14}" cy="${cy-10}" r="4" fill="#fff"/></g>`;}},
+  {id:"sun",room:"gar",name:"Sunshine",price:30,wall:true,draw:()=>`<g class="spin"><g stroke="${HONEY}" stroke-width="4" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>`<line x1="0" y1="-26" x2="0" y2="-34" transform="rotate(${a})"/>`).join("")}</g></g><circle r="20" fill="#FFD23F"/><circle cx="-6" cy="-3" r="2.5" fill="${INK}"/><circle cx="6" cy="-3" r="2.5" fill="${INK}"/><path d="M-7 5 q7 7 14 0" stroke="${INK}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`},
+  {id:"kite",room:"gar",name:"Kite",price:35,wall:true,draw:()=>`<g class="floaty"><polygon points="0,-30 18,0 0,26 -18,0" fill="${BERRY}"/><polygon points="0,-30 18,0 0,0" fill="#F98BA3"/><path d="M0 26 q10 14 0 26 q-10 12 4 24" stroke="${INK}" stroke-width="2" fill="none"/><circle cx="6" cy="42" r="3" fill="${HONEY}"/><circle cx="-2" cy="58" r="3" fill="${SKY}"/></g>`},
+  {id:"rainbow",room:"gar",name:"Rainbow",price:60,wall:true,draw:()=>["#EF5B7B","#F7B538","#FFD23F","#2FB673","#5BB8EA","#B18CF0"].map((c,i)=>`<path d="M-48 20 A48 48 0 0 1 48 20" fill="none" stroke="${c}" stroke-width="7" transform="scale(${1-i*.13})" transform-origin="0 20"/>`).join("")+`<ellipse cx="-44" cy="22" rx="16" ry="9" fill="#fff"/><ellipse cx="44" cy="22" rx="16" ry="9" fill="#fff"/>`},
+  // ---- Playroom ----
+  {id:"slide",room:"play",name:"Slide",price:100,w:1,d:2,h:1.8,draw:()=>box(.3,.05,0,.4,.3,1.5,"#9AA7B4")+box(.15,.02,1.5,.7,.36,.1,"#B8C4CF")+`<polygon points="${pt(.2,.38,1.5)} ${pt(.8,.38,1.5)} ${pt(.8,1.95,.08)} ${pt(.2,1.95,.08)}" fill="${HONEY}"/><polygon points="${pt(.2,.38,1.5)} ${pt(.2,.38,1.65)} ${pt(.2,1.95,.23)} ${pt(.2,1.95,.08)}" fill="#E29A1E"/><polygon points="${pt(.8,.38,1.5)} ${pt(.8,.38,1.65)} ${pt(.8,1.95,.23)} ${pt(.8,1.95,.08)}" fill="#E29A1E"/>`},
+  {id:"ballpit",room:"play",name:"Ball pit",price:120,w:2,d:2,h:.8,draw:()=>box(0,0,0,2,2,.5,SKY,{top:"#9BD9F7"})+[[.4,.4,BERRY],[1,.5,HONEY],[1.6,.4,LEAF],[.5,1,LAV],[1.1,1.1,BERRY],[1.6,1.2,SKY],[.8,1.6,HONEY],[1.4,1.6,LEAF],[.3,1.4,"#FF8C42"]].map(([x,y,c])=>disc(x,y,.5,9,c,9)).join("")},
+  {id:"easel",room:"play",name:"Easel",price:50,w:1,d:1,h:1.7,draw:()=>{const [cx,cy]=ISO(.5,.5,0);return `<line x1="${cx-14}" y1="${cy}" x2="${cx}" y2="${cy-84}" stroke="${WOOD}" stroke-width="4"/><line x1="${cx+14}" y1="${cy}" x2="${cx}" y2="${cy-84}" stroke="${WOOD}" stroke-width="4"/><rect x="${cx-22}" y="${cy-70}" width="44" height="40" fill="#fff" stroke="${WOOD}" stroke-width="3"/><circle cx="${cx-8}" cy="${cy-52}" r="7" fill="${HONEY}"/><path d="M${cx-18} ${cy-36} l8 -8 l6 5 l8 -10 l10 13 z" fill="${LEAF}"/>`;}},
+  {id:"piano",room:"play",name:"Piano",price:90,w:2,d:1,h:1.4,draw:()=>box(.05,.05,0,1.9,.9,1.1,"#3C3F5A")+box(.05,.55,1.1,1.9,.45,.12,"#fff",{top:"#fff"})+[.25,.55,.85,1.15,1.45].map(x=>box(x,.55,1.22,.15,.28,.05,INK,{top:INK})).join("")+NOTE(ISO(1,.5,1.6)[0],ISO(1,.5,1.6)[1],0)+NOTE(ISO(.6,.5,1.6)[0],ISO(.6,.5,1.6)[1],1.1)},
+  {id:"tent",room:"play",name:"Play tent",price:70,w:2,d:2,h:1.6,draw:()=>`<polygon points="${pt(0,2,0)} ${pt(2,2,0)} ${pt(1,1,1.5)}" fill="${BERRY}"/><polygon points="${pt(2,2,0)} ${pt(2,0,0)} ${pt(1,1,1.5)}" fill="#C93D5E"/><polygon points="${pt(.8,2,0)} ${pt(1.2,2,0)} ${pt(1,1,1.5)}" fill="#FFE6AE"/><circle cx="${ISO(1,1,1.55)[0]}" cy="${ISO(1,1,1.55)[1]}" r="6" fill="${HONEY}"/>`},
+  {id:"blocks",room:"play",name:"ABC blocks",price:30,w:1,d:1,h:1,draw:()=>box(.1,.3,0,.4,.4,.35,BERRY)+box(.55,.35,0,.4,.4,.35,SKY)+box(.3,.3,.35,.4,.4,.35,LEAF)+`<text x="${ISO(.3,.7,.17)[0]}" y="${ISO(.3,.7,.17)[1]}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">A</text><text x="${ISO(.75,.75,.17)[0]}" y="${ISO(.75,.75,.17)[1]}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">B</text><text x="${ISO(.5,.7,.52)[0]}" y="${ISO(.5,.7,.52)[1]}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">C</text>`},
+  {id:"train",room:"play",name:"Toy train",price:150,w:2,d:1,h:1,draw:()=>tile(0,.4,2,.2,"#8A6A45")+box(.05,.3,.15,.6,.4,.5,BERRY)+box(.1,.35,.65,.5,.3,.3,"#C93D5E")+cyl(.55,.5,.95,4,.15,INK)+box(.75,.3,.15,.5,.4,.35,SKY)+box(1.35,.3,.15,.5,.4,.35,HONEY)+[.2,.5,.9,1.2,1.5,1.8].map(x=>disc(x,.75,.1,5,INK,5)).join("")+`<g class="puff"><circle cx="${ISO(.55,.5,1.3)[0]}" cy="${ISO(.55,.5,1.3)[1]}" r="6" fill="#fff" opacity=".8"/></g>`},
+  {id:"horse",room:"play",name:"Rocking horse",price:65,w:1,d:1,h:1.2,draw:()=>{const [cx,cy]=ISO(.5,.5,0);return `<g class="rock" style="transform-origin:${cx}px ${cy}px"><path d="M${cx-30} ${cy-6} q30 16 60 0" stroke="${WOOD}" stroke-width="5" fill="none" stroke-linecap="round"/><rect x="${cx-16}" y="${cy-34}" width="32" height="20" rx="8" fill="${LAV}"/><rect x="${cx+8}" y="${cy-54}" width="14" height="26" rx="6" fill="${LAV}"/><path d="M${cx+10} ${cy-54} q-8 -6 -6 8" stroke="${BERRY}" stroke-width="4" fill="none"/><circle cx="${cx+18}" cy="${cy-48}" r="2" fill="${INK}"/><line x1="${cx-10}" y1="${cy-14}" x2="${cx-12}" y2="${cy-4}" stroke="${WOOD}" stroke-width="4"/><line x1="${cx+10}" y1="${cy-14}" x2="${cx+12}" y2="${cy-4}" stroke="${WOOD}" stroke-width="4"/></g>`;}},
+  {id:"garland",room:"play",name:"Star garland",price:35,wall:true,draw:()=>`<path d="M-50 -10 q25 20 50 0 q25 20 50 0" stroke="${INK}" stroke-width="2" fill="none"/>`+[-40,-20,0,20,40].map((x,i)=>`<text x="${x}" y="${i%2?-2:6}" font-size="16" text-anchor="middle" fill="${[HONEY,BERRY,SKY,LEAF,LAV][i]}">★</text>`).join("")},
+  {id:"abc",room:"play",name:"ABC poster",price:25,wall:true,draw:()=>`<rect x="-30" y="-28" width="60" height="56" rx="4" fill="#FFF6DC" stroke="${SKY}" stroke-width="4"/><text x="0" y="-4" font-size="20" font-weight="800" text-anchor="middle" fill="${BERRY}">ABC</text><text x="0" y="18" font-size="14" font-weight="700" text-anchor="middle" fill="${INK}">spell!</text>`},
+  {id:"balloons",room:"play",name:"Balloons",price:40,wall:true,draw:()=>`<g class="floaty"><line x1="-10" y1="-8" x2="0" y2="40" stroke="${INK}" stroke-width="1.5"/><line x1="8" y1="-14" x2="0" y2="40" stroke="${INK}" stroke-width="1.5"/><line x1="18" y1="0" x2="0" y2="40" stroke="${INK}" stroke-width="1.5"/><ellipse cx="-10" cy="-20" rx="12" ry="15" fill="${BERRY}"/><ellipse cx="8" cy="-28" rx="12" ry="15" fill="${SKY}"/><ellipse cx="18" cy="-12" rx="12" ry="15" fill="${HONEY}"/></g>`},
+];
+function wallWindow(sunny){return `<rect x="-34" y="-34" width="68" height="68" rx="5" fill="#8FD3F5" stroke="#fff" stroke-width="6"/><rect x="-34" y="-34" width="68" height="68" rx="5" fill="url(#skyGrad)" stroke="#fff" stroke-width="6"/><line x1="0" y1="-34" x2="0" y2="34" stroke="#fff" stroke-width="4"/><line x1="-34" y1="0" x2="34" y2="0" stroke="#fff" stroke-width="4"/>`+(sunny?`<circle cx="18" cy="-16" r="9" fill="#FFD23F"/>`:"")+`<g class="drift"><ellipse cx="-12" cy="14" rx="14" ry="7" fill="#fff" opacity=".95"/><ellipse cx="-4" cy="10" rx="9" ry="6" fill="#fff" opacity=".95"/></g>`;}
+const FUR_BY=Object.fromEntries(FUR.map(f=>[f.id,f]));
+const furFor=room=>FUR.filter(f=>f.room===room);
+
+/* ---- House state ---- */
+function house(){
+  const h=S.rewards.house||{};const rooms={...(h.rooms||{})};
+  Object.keys(ROOMS).forEach(k=>{rooms[k]={wall:ROOMS[k].wall,floor:ROOMS[k].floor,items:[],decals:[],...(rooms[k]||{})};});
+  return {cur:ROOMS[h.cur]?h.cur:"bed",rooms};
 }
+function saveHouse(patch){setRewards({house:{...house(),...patch}});}
+function saveRoomState(key,patch){const h=house();h.rooms[key]={...h.rooms[key],...patch};saveHouse(h);}
+const ownsRoom=k=>ROOMS[k]&&(ROOMS[k].price===0||owned("room").includes(k));
+const ownsFur=id=>owned("fur").includes(id);
+const ownsFloor=k=>FLOORS[k]&&(FLOORS[k].price===0||owned("floor").includes(k));
+const ownsWall=k=>k==="hedge"||WALL_PRICE[k]===0||owned("wall").includes(k);
+function curRoom(){const h=house();return {key:h.cur,...h.rooms[h.cur]};}
+function roomFurniture(r){return (r.items||[]).filter(it=>ownsFur(it.id)&&FUR_BY[it.id]&&!FUR_BY[it.id].wall);}
+function roomWallItems(r){return (r.items||[]).filter(it=>ownsFur(it.id)&&FUR_BY[it.id]&&FUR_BY[it.id].wall);}
+function roomDecals(r){return (r.decals||[]).filter(d=>ownsSticker(d.i));}
+function footprint(it){const f=FUR_BY[it.id];return it.f?{w:f.d,d:f.w}:{w:f.w,d:f.d};}
+function occupied(r,skipUid){const m=Array.from({length:G},()=>Array(G).fill(false));
+  roomFurniture(r).forEach(it=>{if(it.u===skipUid)return;const {w,d}=footprint(it);for(let x=it.x;x<it.x+w;x++)for(let y=it.y;y<it.y+d;y++)if(m[x]&&y<G)m[x][y]=true;});return m;}
+function fits(r,it,x,y){const {w,d}=footprint({...it});if(x<0||y<0||x+w>G||y+d>G)return false;const m=occupied(r,it.u);
+  for(let i=x;i<x+w;i++)for(let j=y;j<y+d;j++)if(m[i][j])return false;return true;}
+function freeWallSpot(r){const taken=roomWallItems(r).concat(roomDecals(r));const slots=[];
+  for(const h of [.62,.32,.86])for(const p of [.5,.22,.78])for(const w of ["L","R"])slots.push({w,p,h});
+  return slots.find(sl=>!taken.some(t=>t.w===sl.w&&Math.abs(t.p-sl.p)<.25&&Math.abs(t.h-sl.h)<.25))||{w:Math.random()<.5?"L":"R",p:.2+Math.random()*.6,h:.3+Math.random()*.5};}
+function freeSpot(r,it){const order=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)order.push([x,y]);
+  order.sort((a,b)=>(Math.abs(a[0]-2.5)+Math.abs(a[1]-2.5))-(Math.abs(b[0]-2.5)+Math.abs(b[1]-2.5)));
+  return order.find(([x,y])=>fits(r,it,x,y))||null;}
+// Old flat room → wall stickers in the bedroom (runs once, in applyData).
+function migrateRoom(r){
+  if(r.house||!r.room)return r;
+  const decals=(r.room||[]).map(s=>{const x=+s.x||50,y=+s.y||40;const w=x<50?"L":"R";return {i:s.i,w,p:clamp(w==="L"?x/50:(x-50)/50,.08,.92),h:clamp(1-y/75,.15,.9),sz:s.sz||10};});
+  const rooms={bed:{wall:r.wall||"mint",floor:"wood",items:[],decals}};
+  return {...r,house:{cur:"bed",rooms}};
+}
+
+/* ---- Drawing the room ---- */
+let sel=null,drag=null;   // sel = {kind:"fur"|"decal", u | i}
+const uid=()=>Math.random().toString(36).slice(2,8);
+function wallPoint(w,p,h){ // position along a wall (0..1) and height (0..1) → screen point
+  if(w==="L"){const y=p*G;const [x0,y0]=ISO(0,y,0);return [x0,y0-h*WH];}
+  const x=p*G;const [x0,y0]=ISO(x,0,0);return [x0,y0-h*WH];
+}
+function wallTransform(w,p,h,scale=1){const [x,y]=wallPoint(w,p,h);
+  // shear so the item lies flat on the wall: left wall runs down-left, right wall runs down-right
+  const k=w==="L"?-0.5:0.5;return `translate(${x.toFixed(1)},${y.toFixed(1)}) matrix(1,${k},0,1,0,0) scale(${scale})`;}
+function furSvg(it,selected){const f=FUR_BY[it.id];const [sx,sy]=ISO(it.x,it.y,0);const {w,d}=footprint(it);
+  const key=it.x+w+it.y+d;
+  const inner=it.f?`<g transform="translate(${OX*2},0) scale(-1,1)">${f.draw()}</g>`:f.draw();
+  return `<g class="fur ${selected?"sel":""} ${f.anim||""}" data-u="${it.u}" data-key="${key}" transform="translate(${(sx-OX).toFixed(1)},${(sy-OY).toFixed(1)})">${selected?tile(0,0,w,d,"rgba(239,91,123,.35)",.01):""}${inner}</g>`;}
+function renderRoom(){
+  const r=curRoom();const room=ROOMS[r.key];
+  $("#roomTitle").textContent=`${bname()}'s ${room.name.toLowerCase()}`;
+  // room tabs
+  $("#roomTabs").innerHTML=Object.entries(ROOMS).map(([k,rm])=>{const own=ownsRoom(k);
+    return `<button class="roomTab ${k===r.key?"on":""} ${own?"":"locked"}" data-room="${k}" aria-label="${rm.name}"><span>${rm.icon}</span>${own?"":`<small>${STAR}${rm.price}</small>`}</button>`;}).join("");
+  const wall=wallColor(r.wall),fl=FLOORS[r.floor]||FLOORS.wood;
+  const svg=$("#house");
+  const floorTiles=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)floorTiles.push(tile(x,y,1,1,(x+y)%2?fl.b:fl.a));
+  const outdoor=r.key==="gar";
+  const wallL=`<polygon points="${pt(0,0,0)} ${pt(0,G,0)} ${ISO(0,G,0)[0]},${ISO(0,G,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="${outdoor?"#A5D98F":wall}"/>`;
+  const wallR=`<polygon points="${pt(0,0,0)} ${pt(G,0,0)} ${ISO(G,0,0)[0]},${ISO(G,0,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="${outdoor?"#8FCB7A":shade(wall,-.12)}"/>`;
+  const skirting=`<polygon points="${pt(0,0,0)} ${pt(0,G,0)} ${pt(0,G,.12)} ${pt(0,0,.12)}" fill="${outdoor?"#7FB86A":shade(wall,-.3)}"/><polygon points="${pt(0,0,0)} ${pt(G,0,0)} ${pt(G,0,.12)} ${pt(0,0,.12)}" fill="${outdoor?"#7FB86A":shade(wall,-.38)}"/>`;
+  const hedgeDots=outdoor?Array.from({length:40},(_,i)=>{const w=i<20?"L":"R";const [x,y]=wallPoint(w,(i%20)/20+.025,((i*7)%9)/9*.9+.05);return `<circle cx="${x}" cy="${y}" r="${5+(i%3)*2}" fill="${i%2?"#B3E39E":"#7FB86A"}" opacity=".8"/>`;}).join(""):
+    `<pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="2" fill="#fff" opacity=".35"/></pattern><polygon points="${pt(0,0,0)} ${pt(0,G,0)} ${ISO(0,G,0)[0]},${ISO(0,G,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="url(#dots)"/><polygon points="${pt(0,0,0)} ${pt(G,0,0)} ${ISO(G,0,0)[0]},${ISO(G,0,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="url(#dots)"/>`;
+  const wallItems=roomWallItems(r).map(it=>{const f=FUR_BY[it.id];return `<g class="wallItem ${sel&&sel.u===it.u?"sel":""}" data-u="${it.u}" transform="${wallTransform(it.w,it.p,it.h)}">${sel&&sel.u===it.u?`<circle r="52" fill="rgba(239,91,123,.25)"/>`:""}${f.draw()}</g>`;}).join("");
+  const decals=roomDecals(r).map(d=>`<g class="decal ${sel&&sel.i===d.i?"sel":""}" data-i="${d.i}" transform="${wallTransform(d.w,d.p,d.h)}"><text text-anchor="middle" dominant-baseline="central" font-size="${(d.sz||10)*4.2}">${STICKERS[d.i%STICKERS.length]}</text></g>`).join("");
+  const furs=roomFurniture(r).map(it=>furSvg(it,sel&&sel.u===it.u));
+  svg.innerHTML=`<defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD3F5"/><stop offset="1" stop-color="#DDF3FF"/></linearGradient></defs>
+    <ellipse cx="${OX}" cy="${OY+G*TH+6}" rx="${G*TW+20}" ry="${G*TH+12}" fill="rgba(0,0,0,.06)"/>
+    ${wallL}${wallR}${hedgeDots}${skirting}<g id="wallLayer">${wallItems}${decals}</g>
+    <g id="floorTiles">${floorTiles.join("")}</g>
+    <g id="floorLayer">${furs.join("")}<g id="pipG" class="pipG" data-key="0"><g class="pipFlip"><g class="pipMove"><svg class="buddy idle" id="buddyRoom" viewBox="0 0 200 200" width="104" height="104" x="-52" y="-99" overflow="visible"></svg></g></g><g class="pipFx" id="pipFx"></g></g></g>`;
+  $("#buddyRoom").innerHTML=BUDDY;applyWear();
+  pipInterrupt();placePip();sortFloor();
+  // swatches: walls + floors owned
+  $("#swatches").innerHTML=(outdoor?"":Object.keys(WALLS).filter(ownsWall).map(k=>`<button class="swatch" data-wall="${k}" style="background:${WALLS[k]}" aria-label="${k} wall" aria-pressed="${k===r.wall}"></button>`).join(""))
+    +Object.keys(FLOORS).filter(ownsFloor).map(k=>`<button class="swatch fl" data-floor="${k}" style="background:linear-gradient(135deg,${FLOORS[k].a} 50%,${FLOORS[k].b} 50%)" aria-label="${FLOORS[k].name} floor" aria-pressed="${k===r.floor}"></button>`).join("")
+    +`<button class="btn sm" id="wallShop">Shop</button>`;
+  renderTray();renderTools();
+}
+function sortFloor(){const layer=$("#floorLayer");if(!layer)return;const kids=[...layer.children].sort((a,b)=>(+a.dataset.key)-(+b.dataset.key));
+  if(kids.some((k,i)=>layer.children[i]!==k))kids.forEach(k=>layer.appendChild(k));}
+function renderTray(){
+  const r=curRoom();const placedF=new Set(roomFurniture(r).concat(roomWallItems(r)).map(it=>it.id));
+  const allPlacedDecals=new Set(Object.values(house().rooms).flatMap(rm=>(rm.decals||[]).map(d=>d.i)));
+  const freeFur=furFor(r.key).filter(f=>ownsFur(f.id)&&!placedF.has(f.id));
+  const freeSt=owned("st").filter(i=>!allPlacedDecals.has(i));
+  const nOwned=furFor(r.key).filter(f=>ownsFur(f.id)).length;
+  $("#trayTitle").textContent=`My things (${nOwned+owned("st").length})`;
+  $("#trayMeter").style.width=Math.min(100,(gems()/Math.max(1,cheapestUnowned()))*100)+"%";
+  $("#trayNext").innerHTML=`${STAR} ${gems()} gems`;
+  $("#tray").innerHTML=freeFur.map(f=>`<button class="trayItem" data-addfur="${f.id}" aria-label="Put ${f.name} in the room">${thumb(f,54)}</button>`).join("")
+    +freeSt.map(i=>`<button class="trayItem" data-add="${i}" aria-label="Put sticker on the wall">${STICKERS[i%STICKERS.length]}</button>`).join("")
+    +`<button class="trayItem locked" id="trayShop" aria-label="Open the shop">+</button>`
+    +(freeFur.length||freeSt.length?"":`<span class="trayEmpty">${nOwned?"Everything is in the room! Buy more in the Shop.":`Buy things for the ${ROOMS[r.key].name.toLowerCase()} in ${bname()}'s Shop with the gems you earn.`}</span>`);
+  const ts=$("#trayShop");if(ts)ts.onclick=openShop;
+}
+function thumb(f,size){ // small SVG preview for the tray and shop
+  if(f.wall)return `<svg viewBox="-60 -60 120 120" width="${size}" height="${size}" aria-hidden="true">${f.draw()}</svg>`;
+  const [x0]=ISO(0,f.d,0),[x1]=ISO(f.w,0,0),[,y0]=ISO(0,0,f.h||1),[,y1]=ISO(f.w,f.d,0);
+  const w=x1-x0+16,h=y1-y0+16,s=Math.max(w,h);
+  return `<svg viewBox="${(x0-8-(s-w)/2).toFixed(0)} ${(y0-8-(s-h)/2).toFixed(0)} ${s.toFixed(0)} ${s.toFixed(0)}" width="${size}" height="${size}" aria-hidden="true">${f.draw()}</svg>`;
+}
+function renderTools(){
+  const t=$("#roomTools");const r=curRoom();
+  if(!sel){t.innerHTML=`<span class="help">${roomFurniture(r).length||roomDecals(r).length||roomWallItems(r).length?"Drag things to move them. Tap one to change it.":"Tap something below to put it in the room."}</span>`;return;}
+  if(sel.kind==="decal")t.innerHTML=`<button class="softBtn" data-tool="big">Bigger</button><button class="softBtn" data-tool="small">Smaller</button><button class="softBtn" data-tool="back">Put away</button><button class="softBtn" data-tool="done">Done</button>`;
+  else{const it=(r.items||[]).find(i=>i.u===sel.u);const f=it&&FUR_BY[it.id];
+    t.innerHTML=(f&&!f.wall?`<button class="softBtn" data-tool="flip">Turn around</button>`:"")+`<button class="softBtn" data-tool="back">Put away</button><button class="softBtn" data-tool="done">Done</button>`;}
+}
+$("#roomTabs").addEventListener("click",e=>{const b=e.target.closest("[data-room]");if(!b)return;const k=b.dataset.room;sfx.tap();
+  if(!ownsRoom(k)){toast(`The ${ROOMS[k].name.toLowerCase()} costs ${ROOMS[k].price} gems in the Shop.`);openShop();return;}
+  sel=null;pipStop();saveHouse({cur:k});PIP.x=-1;renderRoom();pipStart();});
+$("#swatches").addEventListener("click",e=>{if(e.target.closest("#wallShop")){openShop();return;}
+  const b=e.target.closest("[data-wall],[data-floor]");if(!b)return;sfx.tap();const r=curRoom();
+  if(b.dataset.wall)saveRoomState(r.key,{wall:b.dataset.wall});else saveRoomState(r.key,{floor:b.dataset.floor});renderRoom();});
+$("#tray").addEventListener("click",e=>{
+  const r=curRoom();
+  const bf=e.target.closest("[data-addfur]");
+  if(bf){const f=FUR_BY[bf.dataset.addfur];sfx.pop();
+    if(f.wall){const it={u:uid(),id:f.id,...freeWallSpot(r)};saveRoomState(r.key,{items:[...(r.items||[]),it]});sel={kind:"fur",u:it.u};}
+    else{const it={u:uid(),id:f.id,x:0,y:0,f:0};const spot=freeSpot(r,it);if(!spot){toast("The room is full! Put something away first.");return;}
+      it.x=spot[0];it.y=spot[1];saveRoomState(r.key,{items:[...(r.items||[]),it]});sel={kind:"fur",u:it.u};}
+    renderRoom();return;}
+  const b=e.target.closest("[data-add]");if(!b)return;const i=+b.dataset.add;sfx.pop();
+  const d={i,...freeWallSpot(r),sz:10};
+  saveRoomState(r.key,{decals:[...(r.decals||[]),d]});sel={kind:"decal",i};renderRoom();});
+$("#roomTools").addEventListener("click",e=>{const b=e.target.closest("[data-tool]");if(!b||!sel)return;sfx.tap();const tool=b.dataset.tool;const r=curRoom();
+  if(tool==="done"){sel=null;renderRoom();return;}
+  if(sel.kind==="decal"){let decals=r.decals||[];
+    if(tool==="back"){decals=decals.filter(d=>d.i!==sel.i);sel=null;}
+    else decals=decals.map(d=>d.i===sel.i?{...d,sz:clamp((d.sz||10)+(tool==="big"?2.5:-2.5),5,24)}:d);
+    saveRoomState(r.key,{decals});}
+  else{let items=r.items||[];
+    if(tool==="back"){items=items.filter(i=>i.u!==sel.u);sel=null;}
+    else if(tool==="flip"){items=items.map(i=>{if(i.u!==sel.u)return i;const n={...i,f:i.f?0:1};if(!fits(r,n,n.x,n.y)){const sp=freeSpot(r,n);if(!sp){toast("No room to turn it around here.");return i;}n.x=sp[0];n.y=sp[1];}return n;});}
+    saveRoomState(r.key,{items});}
+  renderRoom();});
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function svgPoint(e){const svg=$("#house");const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=svg.getScreenCTM();const q=m?p.matrixTransform(m.inverse()):p;return [q.x,q.y];}
+function toTile(sx,sy){const dx=sx-OX,dy=sy-OY;return [(dx/TW+dy/TH)/2,(dy/TH-dx/TW)/2];}
+function toWall(sx,sy){ // nearest wall position for a screen point
+  const dx=sx-OX;const w=dx<0?"L":"R";const along=clamp(Math.abs(dx)/(G*TW),.06,.94);
+  const [,y0]=wallPoint(w,along,0);const h=clamp((y0-sy)/WH,.1,.92);return {w,p:along,h};}
+$("#house").addEventListener("pointerdown",e=>{
+  const el=e.target.closest(".fur,.decal,.wallItem");
+  if(!el){if(sel){sel=null;renderRoom();}return;}
+  e.preventDefault();const r=curRoom();
+  if(el.classList.contains("decal")){const i=+el.dataset.i;if(!sel||sel.i!==i){sel={kind:"decal",i};renderRoom();}
+    drag={kind:"decal",i,moved:false};}
+  else{const u=el.dataset.u;const it=(r.items||[]).find(x=>x.u===u);if(!it)return;
+    if(!sel||sel.u!==u){sel={kind:"fur",u};renderRoom();}
+    const [sx,sy]=svgPoint(e);const [tx,ty]=toTile(sx,sy);
+    drag={kind:FUR_BY[it.id].wall?"wall":"fur",u,it:{...it},offX:tx-it.x,offY:ty-it.y,moved:false,x:it.x,y:it.y};}
+  try{$("#house").setPointerCapture(e.pointerId);}catch(_){}
+});
+$("#house").addEventListener("pointermove",e=>{
+  if(!drag)return;const [sx,sy]=svgPoint(e);const r=curRoom();
+  if(drag.kind==="fur"){const [tx,ty]=toTile(sx,sy);const x=Math.round(tx-drag.offX),y=Math.round(ty-drag.offY);
+    if((x!==drag.x||y!==drag.y)&&fits(r,drag.it,x,y)){drag.x=x;drag.y=y;drag.moved=true;
+      const g=$(`#house .fur[data-u="${drag.u}"]`);if(g){const [px,py]=ISO(x,y,0);g.setAttribute("transform",`translate(${(px-OX).toFixed(1)},${(py-OY).toFixed(1)})`);const {w,d}=footprint(drag.it);g.dataset.key=x+w+y+d;sortFloor();}}
+  }else{const wp=toWall(sx,sy);drag.wp=wp;drag.moved=true;
+    const g=drag.kind==="decal"?$(`#house .decal[data-i="${drag.i}"]`):$(`#house .wallItem[data-u="${drag.u}"]`);
+    if(g)g.setAttribute("transform",wallTransform(wp.w,wp.p,wp.h));}
+});
+function endDrag(){
+  if(!drag)return;const d=drag;drag=null;if(!d.moved)return;const r=curRoom();sfx.tap();
+  if(d.kind==="fur")saveRoomState(r.key,{items:(r.items||[]).map(i=>i.u===d.u?{...i,x:d.x,y:d.y}:i)});
+  else if(d.kind==="wall")saveRoomState(r.key,{items:(r.items||[]).map(i=>i.u===d.u?{...i,...d.wp}:i)});
+  else saveRoomState(r.key,{decals:(r.decals||[]).map(x=>x.i===d.i?{...x,...d.wp}:x)});
+  renderRoom();
+}
+$("#house").addEventListener("pointerup",endDrag);$("#house").addEventListener("pointercancel",endDrag);
+function openRoom(){sel=null;show("room");renderRoom();pipStart();}
+$("#roomBtn").onclick=openRoom;$("#starBtn").onclick=openShop;$("#sumRoomBtn").onclick=openShop;
+$("#roomBack").onclick=()=>{sel=null;pipStop();show("home");renderHome();};
+
+/* ---- Pip's little life in the house ---- */
+const PIP={x:-1,y:-1,timer:null,busy:false,anim:null,gen:0};
+function pipInterrupt(){PIP.gen++;if(PIP.anim){cancelAnimationFrame(PIP.anim);PIP.anim=null;}}
+const pipEl=()=>$("#pipG");
+const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+function pipSet(x,y){PIP.x=x;PIP.y=y;const g=pipEl();if(!g)return;const [sx,sy]=ISO(x+.5,y+.5,0);
+  g.setAttribute("transform",`translate(${sx.toFixed(1)},${sy.toFixed(1)})`);g.dataset.key=(x+1+y+1+.5).toFixed(1);sortFloor();}
+function placePip(){const r=curRoom();const m=occupied(r);
+  if(PIP.x<0||!m[PIP.x]||m[PIP.x][PIP.y]){const free=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)if(!m[x][y])free.push([x,y]);
+    const [x,y]=free.length?free[Math.floor(Math.random()*free.length)]:[2,3];PIP.x=x;PIP.y=y;}
+  pipSet(PIP.x,PIP.y);}
+function pipStart(){pipStop();placePip();PIP.timer=setTimeout(pipAct,1500+Math.random()*1500);}
+function pipStop(){clearTimeout(PIP.timer);PIP.timer=null;const g=pipEl();if(g)g.setAttribute("class","pipG");PIP.busy=false;pipInterrupt();}
+function pipFx(text,cls,n=1){const box=$("#pipFx");if(!box)return;for(let i=0;i<n;i++){const t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("class","fx "+(cls||""));t.textContent=text;
+  t.setAttribute("x",(-20+Math.random()*40).toFixed(0));t.setAttribute("y","-70");t.style.animationDelay=(i*0.45)+"s";box.appendChild(t);setTimeout(()=>t.remove(),1800+i*450);}}
+function pipDo(cls,ms,mood){const g=pipEl();if(!g)return Promise.resolve();g.classList.add(cls);if(mood)buddy($("#buddyRoom"),mood);
+  return new Promise(r=>setTimeout(()=>{const g2=pipEl();if(g2){g2.classList.remove(cls);}if(mood&&$("#buddyRoom"))buddy($("#buddyRoom"),"idle");r();},ms));}
+function pathTo(tx,ty){ // BFS over free tiles
+  const m=occupied(curRoom());if(m[tx][ty])return null;const key=(x,y)=>x*G+y;const prev=new Map();prev.set(key(PIP.x,PIP.y),null);const q=[[PIP.x,PIP.y]];
+  while(q.length){const [x,y]=q.shift();if(x===tx&&y===ty)break;
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=G||ny>=G||m[nx][ny]||prev.has(key(nx,ny)))continue;prev.set(key(nx,ny),[x,y]);q.push([nx,ny]);}}
+  if(!prev.has(key(tx,ty)))return null;const path=[];let c=[tx,ty];while(c){path.unshift(c);c=prev.get(key(c[0],c[1]));}return path.slice(1);}
+function step(x,y,ms){return new Promise(res=>{const g=pipEl();if(!g){res();return;}const x0=PIP.x,y0=PIP.y,t0=performance.now(),gen=PIP.gen;
+  $("#pipG .pipFlip").classList.toggle("left",(x-x0)<0||(y-y0)>0);
+  const tick=now=>{const t=Math.min(1,(now-t0)/ms);const cx=x0+(x-x0)*t,cy=y0+(y-y0)*t;const [sx,sy]=ISO(cx+.5,cy+.5,0);
+    g.setAttribute("transform",`translate(${sx.toFixed(1)},${sy.toFixed(1)})`);g.dataset.key=(cx+1+cy+1+.5).toFixed(1);sortFloor();
+    if(gen!==PIP.gen){res();return;}
+    if(t<1)PIP.anim=requestAnimationFrame(tick);else{PIP.x=x;PIP.y=y;PIP.anim=null;res();}};
+  PIP.anim=requestAnimationFrame(tick);});}
+async function pipWalkTo(tx,ty){const path=pathTo(tx,ty);if(!path||!path.length)return false;const g=pipEl();if(!g)return false;
+  const gen=PIP.gen;g.classList.add("walking");for(const [x,y] of path){if(gen!==PIP.gen||!PIP.timer)break;await step(x,y,420);}const g2=pipEl();if(g2)g2.classList.remove("walking");return true;}
+function randomFreeTile(){const m=occupied(curRoom());const free=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)if(!m[x][y]&&!(x===PIP.x&&y===PIP.y))free.push([x,y]);return free.length?free[Math.floor(Math.random()*free.length)]:null;}
+function tileBeside(it){const {w,d}=footprint(it);const c=[];for(let x=it.x-1;x<=it.x+w;x++)for(let y=it.y-1;y<=it.y+d;y++){if(x<0||y<0||x>=G||y>=G)continue;if(x>=it.x&&x<it.x+w&&y>=it.y&&y<it.y+d)continue;c.push([x,y]);}
+  const m=occupied(curRoom());const ok=c.filter(([x,y])=>!m[x][y]);return ok.length?ok[Math.floor(Math.random()*ok.length)]:null;}
 const PIP_ACTS=[
-  async()=>{await pipWalkTo(12+Math.random()*76);},                                   // stroll
-  async()=>{await pipWalkTo(12+Math.random()*76);},
-  async()=>{await pipDo("wave",2300,"cheer");},                                       // wave hello
-  async()=>{pipFx("♪","",2);await pipDo("dance",2400,"cheer");},                     // little dance
-  async()=>{await pipDo("hop",1100,"cheer");},                                        // bouncy hops
-  async()=>{await pipDo("spin",1100);},                                               // twirl
-  async()=>{await pipDo("peek",2400,"think");},                                       // look around
-  async()=>{pipFx("z","z",3);await pipDo("sleep",4200);},                             // quick nap
-  async()=>{const it=roomItems();if(!it.length)return pipDo("hop",1100,"cheer");      // visit a sticker
-    const r=it[Math.floor(Math.random()*it.length)];await pipWalkTo(r.x+(r.x>PIP.x?-13:13));
-    pipFx("♥");await pipDo("hop",1100,"cheer");},
+  async()=>{const t=randomFreeTile();if(t)await pipWalkTo(t[0],t[1]);},
+  async()=>{const t=randomFreeTile();if(t)await pipWalkTo(t[0],t[1]);},
+  async()=>{await pipDo("wave",2300,"cheer");},
+  async()=>{pipFx("♪","",2);await pipDo("dance",2400,"cheer");},
+  async()=>{await pipDo("hop",1100,"cheer");},
+  async()=>{await pipDo("spin",1100);},
+  async()=>{await pipDo("peek",2400,"think");},
+  async()=>{const r=curRoom();const bed=roomFurniture(r).find(i=>i.id==="bed"||i.id==="tent"||i.id==="catbed");
+    if(bed){const t=tileBeside(bed);if(t)await pipWalkTo(t[0],t[1]);}pipFx("z","z",3);await pipDo("sleep",4200);},
+  async()=>{const r=curRoom();const it=roomFurniture(r);if(!it.length)return pipDo("hop",1100,"cheer");
+    const t=tileBeside(it[Math.floor(Math.random()*it.length)]);if(t)await pipWalkTo(t[0],t[1]);pipFx("♥");await pipDo("hop",1100,"cheer");},
 ];
 async function pipAct(){
   if($("#room").hidden)return;
   if(!calm()&&!PIP.busy&&!drag){PIP.busy=true;try{await PIP_ACTS[Math.floor(Math.random()*PIP_ACTS.length)]();}catch(_){}PIP.busy=false;}
   if(!$("#room").hidden)PIP.timer=setTimeout(pipAct,2500+Math.random()*4500);
 }
-$("#pipWalker").addEventListener("click",async e=>{e.stopPropagation();sfx.pop();pipFx("♥","",2);
+$("#house").addEventListener("click",async e=>{if(!e.target.closest("#pipG"))return;e.stopPropagation();sfx.pop();pipFx("♥","",2);
   if(PIP.busy)return;PIP.busy=true;await pipDo(Math.random()<.5?"hop":"spin",1100,"cheer");PIP.busy=false;});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)pipStop();else if(!$("#room").hidden)pipStart();});
-function renderRoom(){
-  $("#roomTitle").textContent=`${bname()}'s room`;
-  const wallKey=S.rewards.wall||"mint";$("#scene").style.setProperty("--wall",WALLS[wallKey]||WALLS.mint);
-  $("#swatches").innerHTML=Object.entries(WALLS).filter(([k])=>owned("wall").includes(k))
-    .map(([k,c])=>`<button class="swatch" data-wall="${k}" style="background:${c}" aria-label="${k} wall" aria-pressed="${k===wallKey}"></button>`).join("")
-    +`<button class="btn sm" id="wallShop">More in the Shop</button>`;
-  const items=roomItems();
-  $("#placed").innerHTML=items.map(r=>`<span class="placed ${sel===r.i?"sel":""}" data-i="${r.i}" style="left:${r.x}%;top:${r.y}%;--sz:${r.sz}">${STICKERS[r.i%STICKERS.length]}</span>`).join("");
-  const placedSet=new Set(items.map(r=>r.i)),mine=owned("st");
-  const free=mine.filter(i=>!placedSet.has(i));
-  $("#trayTitle").textContent=mine.length?`My stickers (${mine.length})`:"My stickers";
-  $("#trayMeter").style.width=Math.min(100,(gems()/Math.max(1,cheapestUnowned()))*100)+"%";
-  $("#trayNext").innerHTML=`${STAR} ${gems()} gems`;
-  $("#tray").innerHTML=free.map(i=>`<button class="trayItem" data-add="${i}" aria-label="Put sticker in the room">${STICKERS[i%STICKERS.length]}</button>`).join("")+
-    `<button class="trayItem locked" id="trayShop" aria-label="Open the shop">+</button>`+
-    (free.length?"":`<span class="trayEmpty">${mine.length?"All your stickers are in the room! Buy more in the Shop.":"Buy stickers in Pip's Shop with the gems you earn."}</span>`);
-  const ts=$("#trayShop");if(ts){ts.disabled=false;ts.onclick=openShop;}
-  renderTools();
-}
-function renderTools(){
-  const t=$("#roomTools");
-  if(sel===null){t.innerHTML=`<span class="help">${roomItems().length?"Drag stickers to move them. Tap one to change it.":"Tap a sticker below to put it in the room."}</span>`;return;}
-  t.innerHTML=`<button class="softBtn" data-tool="big">Bigger</button><button class="softBtn" data-tool="small">Smaller</button><button class="softBtn" data-tool="back">Put back</button><button class="softBtn" data-tool="done">Done</button>`;
-}
-function saveRoom(room){setRewards({room});}
-$("#swatches").addEventListener("click",e=>{if(e.target.closest("#wallShop")){openShop();return;}
-  const b=e.target.closest("[data-wall]");if(!b)return;sfx.tap();setRewards({wall:b.dataset.wall});renderRoom();});
-$("#tray").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;const i=+b.dataset.add;sfx.pop();
-  const room=[...roomItems(),{i,x:+(15+Math.random()*70).toFixed(1),y:+(15+Math.random()*60).toFixed(1),sz:10}];sel=i;saveRoom(room);renderRoom();});
-$("#roomTools").addEventListener("click",e=>{const b=e.target.closest("[data-tool]");if(!b||sel===null)return;sfx.tap();const tool=b.dataset.tool;
-  let room=roomItems();
-  if(tool==="done"){sel=null;renderRoom();return;}
-  if(tool==="back"){room=room.filter(r=>r.i!==sel);sel=null;}
-  else room=room.map(r=>r.i===sel?{...r,sz:Math.max(5,Math.min(24,(r.sz||10)+(tool==="big"?2.5:-2.5)))}:r);
-  saveRoom(room);renderRoom();});
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-$("#scene").addEventListener("pointerdown",e=>{
-  const el=e.target.closest(".placed");
-  if(!el){if(sel!==null){sel=null;renderRoom();}return;}
-  e.preventDefault();const i=+el.dataset.i;
-  if(sel!==i){sel=i;$$(".placed").forEach(p=>p.classList.toggle("sel",+p.dataset.i===i));renderTools();}
-  drag={i,el,r:$("#scene").getBoundingClientRect(),moved:false,x:0,y:0};
-  try{el.setPointerCapture(e.pointerId);}catch(_){}
-});
-$("#scene").addEventListener("pointermove",e=>{
-  if(!drag)return;
-  drag.x=clamp((e.clientX-drag.r.left)/drag.r.width*100,3,97);drag.y=clamp((e.clientY-drag.r.top)/drag.r.height*100,4,96);
-  drag.el.style.left=drag.x+"%";drag.el.style.top=drag.y+"%";drag.moved=true;
-});
-function endDrag(){
-  if(!drag)return;const d=drag;drag=null;
-  if(d.moved){const room=roomItems();const me=room.find(r=>r.i===d.i);if(me){const rest=room.filter(r=>r.i!==d.i);saveRoom([...rest,{...me,x:+d.x.toFixed(1),y:+d.y.toFixed(1)}]);}sfx.tap();renderRoom();}
-}
-$("#scene").addEventListener("pointerup",endDrag);$("#scene").addEventListener("pointercancel",endDrag);
-$("#roomBtn").onclick=openRoom;$("#starBtn").onclick=openShop;$("#sumRoomBtn").onclick=openShop;
-$("#roomBack").onclick=()=>{sel=null;pipStop();show("home");renderHome();};
 
 /* ---------------- Dress up ---------------- */
 function openDress(){
@@ -1417,7 +1708,9 @@ $("#listForm").onsubmit=e=>{
 function fillVoiceSelect(){
   const sel=$("#setVoice");if(!sel)return;const cur=S.settings.voice;const pv=pickVoice();
   const ranked=voices.filter(v=>!NOVELTY.test(v.name)).sort((a,b)=>vScore(b)-vScore(a));
-  sel.innerHTML=`<option value="">Automatic${pv?`: ${esc(vLabel(pv))}`:""}</option>`+ranked.map(v=>`<option value="${esc(v.name)}" ${v.name===cur?"selected":""}>${esc(vLabel(v))}</option>`).join("");
+  sel.innerHTML=`<option value="">Automatic${pv?`: ${esc(vLabel(pv))}`:""}</option>`+ranked.map(v=>`<option value="${esc(vKey(v))}" ${pv&&cur&&vKey(v)===vKey(pv)?"selected":""}>${esc(vLabel(v))}</option>`).join("");
+  const info=$("#voiceInfo");if(info){const best=ranked.filter(v=>vQuality(v)>=2).length;
+    info.textContent=voices.length?`${voices.length} English voice${voices.length===1?"":"s"} found on this iPad, ${best} of them upgraded.`+(best?"":" No Premium or Enhanced voice yet — download one, then fully close and reopen Pip."):"No voices found yet — tap “Look again” after tapping anywhere on the screen.";}
 }
 function renderSettings(){
   const s=S.settings;
@@ -1428,7 +1721,7 @@ function renderSettings(){
   $("#setRate").value=s.rate;$("#setRateVal").textContent=s.rate<0.75?"slow":s.rate<0.95?"relaxed":"normal";
   fillVoiceSelect();
   $("#backupPanel").hidden=S.mode!=="local";
-  $("#setStars").innerHTML=`${STAR} ${gems()} gems · ${owned("st").length} stickers, ${owned("acc").length} outfits, ${owned("wall").length} wallpapers owned`;
+  $("#setStars").innerHTML=`${STAR} ${gems()} gems · ${owned("fur").length} furniture, ${owned("st").length} stickers, ${owned("acc").length} outfits, ${Object.keys(ROOMS).filter(ownsRoom).length} rooms`;
 }
 let saveT=null;
 function saveSettings(patch){const next={...S.settings,...patch};S.settings=next;clearTimeout(saveT);saveT=setTimeout(()=>{setDoc("settings","main",next);$("#setSaved").textContent="Saved";setTimeout(()=>$("#setSaved").textContent="",1500);},500);renderSettings();renderHome();}
@@ -1453,7 +1746,9 @@ $("#restoreIn").onchange=async e=>{
     applyData(d);lsSave();refresh();$("#backupMsg").textContent=`Restored from ${new Date(d.savedAt||Date.now()).toLocaleDateString()}.`;}
   catch(_){$("#backupMsg").textContent="That file isn't a Spell with Pip backup.";}
 };
-$("#testVoice").onclick=()=>{hush();say("Hi! Can you spell the word friend? My friend likes to play.");};
+$("#testVoice").onclick=()=>{hush();warmVoices();say("Hi! Can you spell the word friend? My friend likes to play.");};
+$("#rescanVoice").onclick=()=>{voicesWarm=false;warmVoices();setTimeout(()=>{loadVoices();toast(voices.length?`Found ${voices.length} voices`:"Still no voices — try Test the voice, then Look again");},900);};
+$("#giftBtn").onclick=()=>{const n=Math.max(1,Math.min(999,Math.round(+$("#giftAmt").value||0)));if(!n)return;setRewards({gems:gems()+n});sfx.win&&sfx.win();renderSettings();renderHome();toast(`Gave ${n} gems`);};
 let resetArm=false;
 $("#resetStars").onclick=e=>{if(!resetArm){resetArm=true;e.target.textContent="Tap again to reset";setTimeout(()=>{resetArm=false;e.target.textContent="Reset gems";},3000);return;}resetArm=false;e.target.textContent="Reset gems";setRewards({gems:0});renderSettings();renderHome();};
 
