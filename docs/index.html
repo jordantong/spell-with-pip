@@ -43,6 +43,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .icon{width:1.2em;height:1.2em;vertical-align:-0.2em;flex:none}
 
 /* ---------- Buddy ---------- */
+.buddy{--p1:#F7B538;--p2:#E9A42A;--p3:#FFE6AE;--p4:#E29A1E}
+.buddy .p1{fill:var(--p1)}.buddy .p2{fill:var(--p2)}.buddy .p3{fill:var(--p3)}.buddy .p4{fill:var(--p4)}.buddy .p4s{stroke:var(--p4)}
+.buddy[data-color="strawberry"]{--p1:#F49AB4;--p2:#E6829E;--p3:#FFE1EA;--p4:#D46C8B}
+.buddy[data-color="mint"]{--p1:#7FD8AE;--p2:#66C59A;--p3:#E1F8EC;--p4:#4AAA80}
+.buddy[data-color="peach"]{--p1:#FFAE80;--p2:#F29A6A;--p3:#FFE6D6;--p4:#E0825A}
+.buddy[data-color="blueberry"]{--p1:#82C3F0;--p2:#69AFDF;--p3:#E2F2FD;--p4:#4D96C8}
+.buddy[data-color="lavender"]{--p1:#B9A0F2;--p2:#A489E6;--p3:#EEE7FF;--p4:#8B6FD3}
+.buddy[data-color="cocoa"]{--p1:#B98256;--p2:#A4704A;--p3:#F1DDC8;--p4:#8B5B38}
+.buddy[data-color="snowball"]{--p1:#F2F3F8;--p2:#DADCE6;--p3:#FFFFFF;--p4:#B7BACA}
+.colorRow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.colorBtn{display:grid;justify-items:center;gap:2px;border:0;background:none;padding:0;font-family:var(--display);font-weight:700;font-size:12px;color:var(--muted)}
+.colorBtn i{width:46px;height:46px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 2px var(--line);display:block}
+.colorBtn[aria-pressed="true"] i{box-shadow:0 0 0 4px var(--berry)}
+.colorBtn.locked i{opacity:.45}
 .buddy{display:block;overflow:visible}
 .buddy .eyes{transform-box:fill-box;transform-origin:center;animation:blink 5s infinite}
 .buddy .arm{transform-box:fill-box;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
@@ -190,7 +204,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .prize .big{font-size:34px}
 
 /* ---------- Pip's house (isometric) ---------- */
-#room{padding-block:12px calc(env(safe-area-inset-bottom,0px) + 12px);gap:10px}
+#room{padding-block:10px calc(env(safe-area-inset-bottom,0px) + 10px);gap:8px}
 .roomBar{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .roomBar h2{font-family:var(--display);font-weight:800;font-size:28px;margin:0;flex:1;line-height:1}
 .roomTabs{display:flex;gap:6px}
@@ -199,12 +213,14 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .roomTab small .icon{width:11px;height:11px}
 .roomTab.on{background:var(--honeySoft,#FFF1C9);border-color:var(--honey);box-shadow:0 3px 0 var(--honey)}
 .roomTab.locked{opacity:.75;border-style:dashed}
+.roomTab.all{width:auto;padding:4px 12px 0;font-family:var(--display);font-weight:700;font-size:15px}
+#house .forSale{cursor:pointer}
 .swatches{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .swatch{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);padding:0}
 .swatch.fl{border-radius:8px}
 .swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--ink)}
 .sceneWrap{flex:1;min-height:0;container-type:size;display:grid;place-items:center}
-.scene{position:relative;width:min(100cqw,153.8cqh);height:min(65cqw,100cqh);border-radius:24px;overflow:hidden;box-shadow:0 6px 0 var(--line);background:linear-gradient(#EAF6FF,#F7FBFF);touch-action:none}
+.scene{position:relative;width:min(100cqw,139.4cqh);height:min(71.7cqw,100cqh);border-radius:24px;overflow:hidden;box-shadow:0 6px 0 var(--line);background:linear-gradient(#DDF1FF,#F4FBF7);touch-action:none}
 .scene.outdoor{background:linear-gradient(#CDEEFF,#EAF8FF)}
 #house{width:100%;height:100%;display:block;overflow:visible}
 #house .fur,#house .decal,#house .wallItem{cursor:grab}
@@ -470,6 +486,8 @@ td.word{font-weight:700;font-size:18px}
     <div class="shopWrap">
       <p class="shopIntro" id="shopIntro"></p>
       <div id="shopRooms"></div>
+      <h3 class="shopHead" id="shopColorHead">Pip's colors</h3>
+      <div class="shopGrid" id="shopColors"></div>
       <h3 class="shopHead" id="shopWearHead">Things for Pip to wear</h3>
       <div class="shopGrid" id="shopAccs"></div>
       <h3 class="shopHead">Wall stickers</h3>
@@ -490,7 +508,7 @@ td.word{font-weight:700;font-size:18px}
     </div>
     <div class="sceneWrap">
       <div class="scene" id="scene">
-        <svg id="house" viewBox="0 0 800 500" aria-label="Pip's room"></svg>
+        <svg id="house" viewBox="0 0 1160 832" aria-label="Pip's house"></svg>
       </div>
     </div>
     <div class="roomTools" id="roomTools"></div>
@@ -506,8 +524,9 @@ td.word{font-weight:700;font-size:18px}
 <div class="overlay" id="dressOv" hidden>
   <div class="card">
     <h2 id="dressTitle">Dress up Pip</h2>
-    <p class="help">Tap something to put it on or take it off. Buy new things with gems in the Shop.</p>
+    <p class="help">Tap a color, or something to put on or take off. Buy new colors and things to wear with gems in the Shop.</p>
     <svg class="buddy idle" id="buddyDress" viewBox="0 0 200 200" aria-hidden="true" style="width:150px;margin:10px auto 0"></svg>
+    <div class="colorRow" id="colorRow" aria-label="Colors"></div>
     <div class="wearGrid" id="wearGrid"></div>
     <div class="homeRow"><button class="softBtn" id="dressShop">Pip's Shop</button><button class="softBtn" id="dressClose">Done</button></div>
   </div>
@@ -632,6 +651,7 @@ const STICKERS=["🧸","🪴","🌈","🦊","⭐","🎈","🐢","🦄","🌙","�
 const stickerPrice=i=>10+Math.min(5,Math.floor(i/6))*5;   // 10,15,20,25,30,35 gems
 const WALL_PRICE={mint:0,sky:15,pink:15,lavender:20,butter:25};
 const WALLS={mint:"#BFE8D8",sky:"#BFE0F5",pink:"#F9CCD8",lavender:"#DCD2F7",butter:"#FBE7A6"};
+const PIP_COLORS=[{id:"honey",name:"Honey",price:0,a:"#F7B538",b:"#FFE6AE"},{id:"strawberry",name:"Strawberry",price:15,a:"#F49AB4",b:"#FFE1EA"},{id:"mint",name:"Mint",price:15,a:"#7FD8AE",b:"#E1F8EC"},{id:"peach",name:"Peach",price:15,a:"#FFAE80",b:"#FFE6D6"},{id:"blueberry",name:"Blueberry",price:20,a:"#82C3F0",b:"#E2F2FD"},{id:"lavender",name:"Lavender",price:20,a:"#B9A0F2",b:"#EEE7FF"},{id:"cocoa",name:"Cocoa",price:25,a:"#B98256",b:"#F1DDC8"},{id:"snowball",name:"Snowball",price:25,a:"#F2F3F8",b:"#FFFFFF"}];
 const ACCS=[{id:"bow",name:"Bow",price:25},{id:"glasses",name:"Glasses",price:40},{id:"flower",name:"Flower",price:55},{id:"hat",name:"Party hat",price:80},{id:"crown",name:"Crown",price:120}];
 const PRAISE=["Yes! You got it!","Great spelling!","Wow, super job!","That's right!","You're a spelling star!","Perfect!","Hooray, you did it!"];
 const DEFAULTS={childName:"",buddyName:"Pip",perSession:10,layout:"qwerty",showBoxes:true,letterCase:"lower",voice:"",rate:0.85};
@@ -644,19 +664,19 @@ let db=null;
 const BUDDY=`
 <ellipse cx="100" cy="190" rx="62" ry="8" fill="#26305C" opacity=".12"/>
 <g class="bod">
-  <circle cx="58" cy="44" r="23" fill="#F7B538"/><circle cx="58" cy="46" r="12" fill="#F8A5B6"/>
-  <circle cx="142" cy="44" r="23" fill="#F7B538"/><circle cx="142" cy="46" r="12" fill="#F8A5B6"/>
-  <ellipse class="arm armL" cx="30" cy="124" rx="13" ry="20" fill="#E9A42A"/>
-  <ellipse class="arm armR" cx="170" cy="124" rx="13" ry="20" fill="#E9A42A"/>
-  <ellipse cx="100" cy="112" rx="78" ry="72" fill="#F7B538"/>
-  <ellipse cx="100" cy="138" rx="50" ry="42" fill="#FFE6AE"/>
-  <path d="M84 44 q16 -16 32 0" fill="none" stroke="#E29A1E" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="58" cy="44" r="23" class="p1"/><circle cx="58" cy="46" r="12" fill="#F8A5B6"/>
+  <circle cx="142" cy="44" r="23" class="p1"/><circle cx="142" cy="46" r="12" fill="#F8A5B6"/>
+  <ellipse class="arm armL p2" cx="30" cy="124" rx="13" ry="20"/>
+  <ellipse class="arm armR p2" cx="170" cy="124" rx="13" ry="20"/>
+  <ellipse cx="100" cy="112" rx="78" ry="72" class="p1"/>
+  <ellipse cx="100" cy="138" rx="50" ry="42" class="p3"/>
+  <path d="M84 44 q16 -16 32 0" fill="none" class="p4s" stroke-width="5" stroke-linecap="round"/>
   <g class="eyes"><circle cx="74" cy="96" r="11" fill="#26305C"/><circle cx="126" cy="96" r="11" fill="#26305C"/>
   <circle cx="78" cy="91" r="4" fill="#fff"/><circle cx="130" cy="91" r="4" fill="#fff"/></g>
   <ellipse cx="55" cy="117" rx="12" ry="7" fill="#F58FA6" opacity=".75"/><ellipse cx="145" cy="117" rx="12" ry="7" fill="#F58FA6" opacity=".75"/>
   <ellipse cx="100" cy="108" rx="7" ry="5" fill="#C9766B"/>
   <path class="mouth" d="M88 118 Q100 130 112 118" fill="none" stroke="#26305C" stroke-width="4" stroke-linecap="round"/>
-  <ellipse cx="74" cy="182" rx="19" ry="9" fill="#E29A1E"/><ellipse cx="126" cy="182" rx="19" ry="9" fill="#E29A1E"/>
+  <ellipse cx="74" cy="182" rx="19" ry="9" class="p4"/><ellipse cx="126" cy="182" rx="19" ry="9" class="p4"/>
   <g class="acc acc-flower"><g fill="#B18CF0"><circle cx="40" cy="18" r="8"/><circle cx="51" cy="26" r="8"/><circle cx="47" cy="39" r="8"/><circle cx="33" cy="39" r="8"/><circle cx="29" cy="26" r="8"/></g><circle cx="40" cy="30" r="7" fill="#FFD23F"/></g>
   <g class="acc acc-bow"><path d="M142 26 L122 11 L124 40 Z M142 26 L162 11 L160 40 Z" fill="#EF5B7B" stroke="#C93D5E" stroke-width="2" stroke-linejoin="round"/><circle cx="142" cy="26" r="7" fill="#C93D5E"/></g>
   <g class="acc acc-glasses"><circle cx="74" cy="96" r="18" fill="#fff" fill-opacity=".25" stroke="#26305C" stroke-width="4"/><circle cx="126" cy="96" r="18" fill="#fff" fill-opacity=".25" stroke="#26305C" stroke-width="4"/><path d="M92 93 Q100 86 108 93" fill="none" stroke="#26305C" stroke-width="4"/></g>
@@ -666,7 +686,7 @@ const BUDDY=`
 const MOUTH={idle:["M88 118 Q100 130 112 118","none"],cheer:["M84 116 Q100 142 116 116 Z","#B8384F"],think:["M90 122 Q100 117 110 122","none"]};
 $$(".buddy").forEach(s=>s.innerHTML=BUDDY);
 function buddy(el,state){el.classList.remove("idle","cheer","think");void el.offsetWidth;el.classList.add(state);const m=el.querySelector(".mouth");m.setAttribute("d",MOUTH[state][0]);m.setAttribute("fill",MOUTH[state][1]);}
-function applyWear(){const w=(S.rewards.wear||[]).join(" ");$$(".buddy").forEach(s=>s.setAttribute("data-wear",w));}
+function applyWear(){const w=(S.rewards.wear||[]).join(" "),c=S.rewards.color||"honey";$$(".buddy").forEach(s=>{s.setAttribute("data-wear",w);s.setAttribute("data-color",c);});}
 const bname=()=>S.settings.buddyName||"Pip";
 
 /* ---------------- Storage ---------------- */
@@ -865,11 +885,16 @@ function setRewards(patch){setDoc("rewards","main",{...S.rewards,...patch});}
 const gems=()=>S.rewards.gems||0;
 const owned=k=>(S.rewards.owned&&S.rewards.owned[k])||[];
 const ownsSticker=i=>owned("st").includes(i);
+const ownsColor=id=>id==="honey"||owned("color").includes(id);
 function buyItem(kind,id,price){
   if(gems()<price){sfx.nope();toast(`${price-gems()} more gems to go!`);return false;}
   const o={...(S.rewards.owned||{})};o[kind]=[...new Set([...(o[kind]||[]),id])];
   setRewards({gems:gems()-price,owned:o});sfx.win();return true;
 }
+function lifetimeGems(){let t=gems();
+  owned("st").forEach(i=>t+=stickerPrice(i));owned("acc").forEach(id=>{const a=ACCS.find(x=>x.id===id);if(a)t+=a.price;});
+  owned("wall").forEach(k=>t+=WALL_PRICE[k]||0);owned("floor").forEach(k=>t+=(FLOORS[k]||{}).price||0);
+  owned("room").forEach(k=>t+=(ROOMS[k]||{}).price||0);owned("fur").forEach(id=>t+=(FUR_BY[id]||{}).price||0);owned("color").forEach(id=>t+=((PIP_COLORS.find(c=>c.id===id)||{}).price||0));return t;}
 function cheapestUnowned(){
   const p=[];STICKERS.forEach((_,i)=>{if(!ownsSticker(i))p.push(stickerPrice(i));});
   ACCS.forEach(a=>{if(!owned("acc").includes(a.id))p.push(a.price);});
@@ -877,6 +902,7 @@ function cheapestUnowned(){
   Object.entries(FLOORS).forEach(([k,f])=>{if(!ownsFloor(k))p.push(f.price);});
   Object.entries(ROOMS).forEach(([k,r])=>{if(!ownsRoom(k))p.push(r.price);});
   FUR.forEach(f=>{if(!ownsFur(f.id)&&ownsRoom(f.room))p.push(f.price);});
+  PIP_COLORS.forEach(c=>{if(!ownsColor(c.id))p.push(c.price);});
   return p.length?Math.min(...p):Infinity;
 }
 
@@ -1170,6 +1196,8 @@ function renderShop(){
     const card=own?"":`<div class="shopGrid">${shopItem("room",k,`<span class="art">${rm.icon}</span>`,rm.price,`Unlock the ${rm.name}`,"roomCard")}</div>`;
     const items=furFor(k).map(f=>shopItem("fur",f.id,`<span class="art">${thumb(f,54)}</span>`,f.price,f.name,own?"":"lockedRoom")).join("");
     return `<h3 class="shopHead">${rm.icon} ${rm.name}${own?"":` <span class="small">(${rm.price} gems to unlock)</span>`}</h3>${card}<div class="shopGrid">${items}</div>`;}).join("");
+  $("#shopColorHead").textContent=`${bname()}'s colors`;
+  $("#shopColors").innerHTML=PIP_COLORS.map(c=>shopItem("color",c.id,`<span class="swatchArt" style="background:radial-gradient(circle at 50% 68%,${c.b} 0 34%,${c.a} 35%)"></span>`,c.price,c.name)).join("");
   $("#shopStickers").innerHTML=STICKERS.map((em,i)=>shopItem("st",i,`<span class="art">${em}</span>`,stickerPrice(i),"")).join("");
   $("#shopAccs").innerHTML=ACCS.map(a=>shopItem("acc",a.id,`<span class="art">${a.id==="bow"?"🎀":a.id==="glasses"?"👓":a.id==="flower"?"🌸":a.id==="hat"?"🎉":"👑"}</span>`,a.price,a.name)).join("");
   $("#shopWalls").innerHTML=Object.entries(WALLS).map(([k,c])=>shopItem("wall",k,`<span class="swatchArt" style="background:${c}"></span>`,WALL_PRICE[k]||0,k[0].toUpperCase()+k.slice(1))).join("");
@@ -1178,10 +1206,11 @@ function renderShop(){
     const kind=b.dataset.kind,price=+b.dataset.price;
     const id=kind==="st"?+b.dataset.id:b.dataset.id;
     const has=shopHas(kind,id);
-    if(has){toast(kind==="st"?"Already yours — put it on the wall!":kind==="acc"?`Already yours — dress ${bname()} up!`:kind==="room"?"Already yours — go visit it!":"Already yours — find it in the room.");return;}
+    if(has){if(kind==="color"){setRewards({color:id});applyWear();renderShop();toast(`${bname()} is ${PIP_COLORS.find(c=>c.id===id).name.toLowerCase()} now!`);return;}toast(kind==="st"?"Already yours — put it on the wall!":kind==="acc"?`Already yours — dress ${bname()} up!`:kind==="room"?"Already yours — go visit it!":"Already yours — find it in the room.");return;}
     if(kind==="fur"&&!ownsRoom(FUR_BY[id].room)){sfx.nope();toast(`Unlock the ${ROOMS[FUR_BY[id].room].name.toLowerCase()} first.`);return;}
     if(buyItem(kind,id,price)){
       confetti();
+      if(kind==="color"){setRewards({color:id});applyWear();toast(`${bname()} is ${PIP_COLORS.find(c=>c.id===id).name.toLowerCase()} now! Change colors any time in Dress up.`);renderShop();renderHome();return;}
       const cur=curRoom();
       if(kind==="wall"&&cur.key!=="gar")saveRoomState(cur.key,{wall:id});
       if(kind==="floor")saveRoomState(cur.key,{floor:id});
@@ -1191,14 +1220,14 @@ function renderShop(){
     }else renderShop();
   });
 }
-function shopHas(kind,id){return kind==="st"?ownsSticker(id):kind==="room"?ownsRoom(id):kind==="floor"?ownsFloor(id):kind==="wall"?ownsWall(id):owned(kind).includes(id);}
+function shopHas(kind,id){return kind==="color"?ownsColor(id):kind==="st"?ownsSticker(id):kind==="room"?ownsRoom(id):kind==="floor"?ownsFloor(id):kind==="wall"?ownsWall(id):owned(kind).includes(id);}
 function openShop(){show("shop");renderShop();}
 $("#shopBtn").onclick=openShop;
 $("#shopBack").onclick=()=>{show("home");renderHome();};
 
 /* ---------------- Pip's house: isometric rooms ---------------- */
 // Geometry: a 6x6 tile floor drawn in 2:1 isometric projection inside an 800x520 SVG.
-const G=6,TW=40,TH=20,ZH=54,OX=400,OY=232,WH=210;
+const G=6,TW=40,TH=20,ZH=54,OX=580,OY=244,WH=210,N=14,VBW=1160,VBH=832;
 const ISO=(x,y,z=0)=>[OX+(x-y)*TW,OY+(x+y)*TH-z*ZH];
 const pt=(x,y,z)=>ISO(x,y,z).map(n=>n.toFixed(1)).join(",");
 function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;
@@ -1322,54 +1351,91 @@ function migrateRoom(r){
   return {...r,house:{cur:"bed",rooms}};
 }
 
-/* ---- Drawing the room ---- */
+/* ---- Drawing the whole house ---- */
+// All four rooms share one isometric map (14x14 tiles): bedroom at the back, kitchen to the right, garden to the
+// left, playroom in front, joined by short hallways and doorways. Each room keeps its own 0-5 coordinates in the
+// save (nothing about her saved house changes); ROFF just says where each room sits on the map.
 let sel=null,drag=null;   // sel = {kind:"fur"|"decal", u | i}
 const uid=()=>Math.random().toString(36).slice(2,8);
-function wallPoint(w,p,h){ // position along a wall (0..1) and height (0..1) → screen point
-  if(w==="L"){const y=p*G;const [x0,y0]=ISO(0,y,0);return [x0,y0-h*WH];}
-  const x=p*G;const [x0,y0]=ISO(x,0,0);return [x0,y0-h*WH];
-}
-function wallTransform(w,p,h,scale=1){const [x,y]=wallPoint(w,p,h);
-  // shear so the item lies flat on the wall: left wall runs down-left, right wall runs down-right
-  const k=w==="L"?-0.5:0.5;return `translate(${x.toFixed(1)},${y.toFixed(1)}) matrix(1,${k},0,1,0,0) scale(${scale})`;}
-function furSvg(it,selected){const f=FUR_BY[it.id];const [sx,sy]=ISO(it.x,it.y,0);const {w,d}=footprint(it);
-  const key=it.x+w+it.y+d;
+const ROFF={bed:[0,0],kit:[8,0],gar:[0,8],play:[8,8]};
+const LAYER_ORDER=["bed","kit","gar","play"];   // back to front
+const HALLS=[{a:"bed",b:"kit",t:[[6,5],[7,5]]},{a:"bed",b:"gar",t:[[5,6],[5,7]]},{a:"kit",b:"play",t:[[13,6],[13,7]]},{a:"gar",b:"play",t:[[6,13],[7,13]]}];
+const DOORS={kit:{L:"bed"},gar:{R:"bed"},play:{R:"kit",L:"gar"}};  // which wall has a doorway, and to where
+const INTERIOR={bed:[],kit:["L"],gar:["R"],play:["L","R"]};          // walls between rooms (cut down in the whole-house view)
+const DOOR_T=5/6,DOORH=.56,LOWWALL=.2;
+let VIEW_ALL=true,VIEW=[0,0,VBW,VBH],VIEW_SET=false,viewAnim=null;
+const focusKey=()=>VIEW_ALL?null:house().cur;
+const hasDoor=(k,side)=>{const o=DOORS[k]&&DOORS[k][side];return !!o&&ownsRoom(o)&&ownsRoom(k);};
+const hallOpen=hl=>ownsRoom(hl.a)&&ownsRoom(hl.b);
+function roomAt(gx,gy){for(const k of LAYER_ORDER){const [ox,oy]=ROFF[k];if(gx>=ox&&gx<ox+G&&gy>=oy&&gy<oy+G)return k;}return null;}
+function hallAt(gx,gy){return HALLS.find(hl=>hl.t.some(([x,y])=>x===gx&&y===gy))||null;}
+const wallFull=(k,side)=>!INTERIOR[k].includes(side)||focusKey()===k;
+function wallPoint(w,p,h,k){const [ox,oy]=ROFF[k||"bed"];if(w==="L"){const [x0,y0]=ISO(ox,oy+p*G,0);return [x0,y0-h*WH];}const [x0,y0]=ISO(ox+p*G,oy,0);return [x0,y0-h*WH];}
+function wallTransform(w,p,h,k,scale=1){const [x,y]=wallPoint(w,p,h,k);
+  const sk=w==="L"?-0.5:0.5;return `translate(${x.toFixed(1)},${y.toFixed(1)}) matrix(1,${sk},0,1,0,0) scale(${scale})`;}
+function wallQuad(k,side,t0,t1,h0,h1,fill){const q=[wallPoint(side,t0,h0,k),wallPoint(side,t1,h0,k),wallPoint(side,t1,h1,k),wallPoint(side,t0,h1,k)];
+  return `<polygon points="${q.map(p=>p.map(n=>n.toFixed(1)).join(",")).join(" ")}" fill="${fill}"/>`;}
+function furSvg(it,selected,k){const f=FUR_BY[it.id];const [ox,oy]=ROFF[k];const [sx,sy]=ISO(ox+it.x,oy+it.y,0);const {w,d}=footprint(it);
   const inner=it.f?`<g transform="translate(${OX*2},0) scale(-1,1)">${f.draw()}</g>`:f.draw();
-  return `<g class="fur ${selected?"sel":""} ${f.anim||""}" data-u="${it.u}" data-key="${key}" transform="translate(${(sx-OX).toFixed(1)},${(sy-OY).toFixed(1)})">${selected?tile(0,0,w,d,"rgba(239,91,123,.35)",.01):""}${inner}</g>`;}
+  return `<g class="fur ${selected?"sel":""} ${f.anim||""}" data-u="${it.u}" data-room="${k}" data-key="${it.x+w+it.y+d}" transform="translate(${(sx-OX).toFixed(1)},${(sy-OY).toFixed(1)})">${selected?tile(0,0,w,d,"rgba(239,91,123,.35)",.01):""}${inner}</g>`;}
+function wallSvg(k,side,r){
+  const outdoor=k==="gar",full=wallFull(k,side),H=full?1:LOWWALL,door=hasDoor(k,side),wall=wallColor(r.wall);
+  const col=outdoor?(side==="L"?"#A5D98F":"#8FCB7A"):(side==="L"?wall:shade(wall,-.12));
+  const skirt=outdoor?"#7FB86A":shade(wall,side==="L"?-.3:-.38),end=door?DOOR_T:1;
+  let s=wallQuad(k,side,0,end,0,H,col);
+  if(door&&full)s+=wallQuad(k,side,DOOR_T,1,DOORH,H,col);
+  if(full&&!outdoor){s+=wallQuad(k,side,0,end,0,H,"url(#dots)");if(door)s+=wallQuad(k,side,DOOR_T,1,DOORH,H,"url(#dots)");}
+  if(full&&outdoor)s+=Array.from({length:20},(_,i)=>{const p=(i/20)+.025;if(door&&p>DOOR_T-.02&&((i*7)%9)/9*.9+.05<DOORH)return"";const [x,y]=wallPoint(side,p,((i*7)%9)/9*.9+.05,k);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${5+(i%3)*2}" fill="${i%2?"#B3E39E":"#7FB86A"}" opacity=".8"/>`;}).join("");
+  s+=wallQuad(k,side,0,end,0,.031,skirt);
+  if(!full)s+=wallQuad(k,side,0,end,H,H+.012,shade(col,.35));   // a light top edge on the cut-down wall
+  if(door){const fr="#FFFFFF";const a=wallPoint(side,DOOR_T,0,k),b=wallPoint(side,DOOR_T,full?DOORH:H,k),c=wallPoint(side,1,full?DOORH:H,k);
+    s+=`<polyline points="${a.map(n=>n.toFixed(1)).join(",")} ${b.map(n=>n.toFixed(1)).join(",")}${full?" "+c.map(n=>n.toFixed(1)).join(","):""}" fill="none" stroke="${fr}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;}
+  return s;
+}
+function roomSvg(k,h){
+  const r={key:k,...h.rooms[k]},[ox,oy]=ROFF[k],fl=FLOORS[r.floor]||FLOORS.wood;
+  if(!ownsRoom(k)){const rm=ROOMS[k];const [cx,cy]=ISO(ox+G/2,oy+G/2,0);
+    return `<g class="room forSale" data-room="${k}"><polygon points="${pt(ox,oy,0)} ${pt(ox+G,oy,0)} ${pt(ox+G,oy+G,0)} ${pt(ox,oy+G,0)}" fill="rgba(255,255,255,.5)" stroke="#B8C9C1" stroke-width="3" stroke-dasharray="10 8"/>
+      <g transform="translate(${cx},${cy-30})"><rect x="-74" y="-46" width="148" height="92" rx="20" fill="#fff" stroke="#CFE3DA" stroke-width="3"/><text x="0" y="-8" font-size="34" text-anchor="middle">${rm.icon}</text>
+      <text x="-22" y="32" font-size="22" text-anchor="middle">🔒</text><g transform="translate(-6,14)">${STAR.replace('class="icon"','width="22" height="22"')}</g><text x="40" y="31" font-size="22" font-weight="800" text-anchor="middle" fill="${INK}" font-family="Baloo 2, sans-serif">${rm.price}</text></g></g>`;}
+  let s="";
+  HALLS.filter(hl=>hl.b===k&&hallOpen(hl)).forEach(hl=>hl.t.forEach(([x,y])=>{s+=tile(x,y,1,1,(x+y)%2?"#E6CFAE":"#F1DFC2");}));
+  s+=wallSvg(k,"L",r)+wallSvg(k,"R",r);
+  const wallItems=roomWallItems(r).filter(it=>wallFull(k,it.w)).map(it=>{const f=FUR_BY[it.id];const on=sel&&sel.u===it.u;
+    return `<g class="wallItem ${on?"sel":""}" data-u="${it.u}" data-room="${k}" transform="${wallTransform(it.w,it.p,it.h,k)}">${on?`<circle r="52" fill="rgba(239,91,123,.25)"/>`:""}${f.draw()}</g>`;}).join("");
+  const decals=roomDecals(r).filter(d=>wallFull(k,d.w)).map(d=>`<g class="decal ${sel&&sel.i===d.i?"sel":""}" data-i="${d.i}" data-room="${k}" transform="${wallTransform(d.w,d.p,d.h,k)}"><text text-anchor="middle" dominant-baseline="central" font-size="${(d.sz||10)*4.2}">${STICKERS[d.i%STICKERS.length]}</text></g>`).join("");
+  let tiles="";for(let x=0;x<G;x++)for(let y=0;y<G;y++)tiles+=tile(ox+x,oy+y,1,1,(x+y)%2?fl.b:fl.a);
+  const furs=roomFurniture(r).map(it=>furSvg(it,sel&&sel.u===it.u,k)).join("");
+  return `<g class="room" data-room="${k}">${s}<g class="wallLayer">${wallItems}${decals}</g>${tiles}<g class="flr" id="fl-${k}" data-room="${k}">${furs}</g></g>`;
+}
 function renderRoom(){
-  const r=curRoom();const room=ROOMS[r.key];
-  $("#roomTitle").textContent=`${bname()}'s ${room.name.toLowerCase()}`;
-  // room tabs
-  $("#roomTabs").innerHTML=Object.entries(ROOMS).map(([k,rm])=>{const own=ownsRoom(k);
-    return `<button class="roomTab ${k===r.key?"on":""} ${own?"":"locked"}" data-room="${k}" aria-label="${rm.name}"><span>${rm.icon}</span>${own?"":`<small>${STAR}${rm.price}</small>`}</button>`;}).join("");
-  const wall=wallColor(r.wall),fl=FLOORS[r.floor]||FLOORS.wood;
+  const h=house(),f=focusKey();
+  $("#roomTitle").textContent=f?`${bname()}'s ${ROOMS[f].name.toLowerCase()}`:`${bname()}'s house`;
+  $("#roomTabs").innerHTML=(f?`<button class="roomTab all" data-all="1">See all</button>`:"")+Object.entries(ROOMS).map(([k,rm])=>{const own=ownsRoom(k);
+    return `<button class="roomTab ${k===f?"on":""} ${own?"":"locked"}" data-room="${k}" aria-label="${rm.name}"><span>${rm.icon}</span>${own?"":`<small>${STAR}${rm.price}</small>`}</button>`;}).join("");
   const svg=$("#house");
-  const floorTiles=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)floorTiles.push(tile(x,y,1,1,(x+y)%2?fl.b:fl.a));
-  const outdoor=r.key==="gar";
-  const wallL=`<polygon points="${pt(0,0,0)} ${pt(0,G,0)} ${ISO(0,G,0)[0]},${ISO(0,G,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="${outdoor?"#A5D98F":wall}"/>`;
-  const wallR=`<polygon points="${pt(0,0,0)} ${pt(G,0,0)} ${ISO(G,0,0)[0]},${ISO(G,0,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="${outdoor?"#8FCB7A":shade(wall,-.12)}"/>`;
-  const skirting=`<polygon points="${pt(0,0,0)} ${pt(0,G,0)} ${pt(0,G,.12)} ${pt(0,0,.12)}" fill="${outdoor?"#7FB86A":shade(wall,-.3)}"/><polygon points="${pt(0,0,0)} ${pt(G,0,0)} ${pt(G,0,.12)} ${pt(0,0,.12)}" fill="${outdoor?"#7FB86A":shade(wall,-.38)}"/>`;
-  const hedgeDots=outdoor?Array.from({length:40},(_,i)=>{const w=i<20?"L":"R";const [x,y]=wallPoint(w,(i%20)/20+.025,((i*7)%9)/9*.9+.05);return `<circle cx="${x}" cy="${y}" r="${5+(i%3)*2}" fill="${i%2?"#B3E39E":"#7FB86A"}" opacity=".8"/>`;}).join(""):
-    `<pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="2" fill="#fff" opacity=".35"/></pattern><polygon points="${pt(0,0,0)} ${pt(0,G,0)} ${ISO(0,G,0)[0]},${ISO(0,G,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="url(#dots)"/><polygon points="${pt(0,0,0)} ${pt(G,0,0)} ${ISO(G,0,0)[0]},${ISO(G,0,0)[1]-WH} ${ISO(0,0,0)[0]},${ISO(0,0,0)[1]-WH}" fill="url(#dots)"/>`;
-  const wallItems=roomWallItems(r).map(it=>{const f=FUR_BY[it.id];return `<g class="wallItem ${sel&&sel.u===it.u?"sel":""}" data-u="${it.u}" transform="${wallTransform(it.w,it.p,it.h)}">${sel&&sel.u===it.u?`<circle r="52" fill="rgba(239,91,123,.25)"/>`:""}${f.draw()}</g>`;}).join("");
-  const decals=roomDecals(r).map(d=>`<g class="decal ${sel&&sel.i===d.i?"sel":""}" data-i="${d.i}" transform="${wallTransform(d.w,d.p,d.h)}"><text text-anchor="middle" dominant-baseline="central" font-size="${(d.sz||10)*4.2}">${STICKERS[d.i%STICKERS.length]}</text></g>`).join("");
-  const furs=roomFurniture(r).map(it=>furSvg(it,sel&&sel.u===it.u));
-  svg.innerHTML=`<defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD3F5"/><stop offset="1" stop-color="#DDF3FF"/></linearGradient></defs>
-    <ellipse cx="${OX}" cy="${OY+G*TH+6}" rx="${G*TW+20}" ry="${G*TH+12}" fill="rgba(0,0,0,.06)"/>
-    ${wallL}${wallR}${hedgeDots}${skirting}<g id="wallLayer">${wallItems}${decals}</g>
-    <g id="floorTiles">${floorTiles.join("")}</g>
-    <g id="floorLayer">${furs.join("")}<g id="pipG" class="pipG" data-key="0"><g class="pipFlip"><g class="pipMove"><svg class="buddy idle" id="buddyRoom" viewBox="0 0 200 200" width="104" height="104" x="-52" y="-99" overflow="visible"></svg></g></g><g class="pipFx" id="pipFx"></g></g></g>`;
+  svg.innerHTML=`<defs><linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD3F5"/><stop offset="1" stop-color="#DDF3FF"/></linearGradient>
+    <pattern id="dots" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="7" cy="7" r="2" fill="#fff" opacity=".35"/></pattern></defs>
+    <ellipse cx="${OX}" cy="${ISO(N,N,0)[1]-N*TH+8}" rx="${N*TW+24}" ry="${N*TH+16}" fill="rgba(0,0,0,.05)"/>
+    ${LAYER_ORDER.map(k=>roomSvg(k,h)).join("")}
+    <g id="pipG" class="pipG" data-key="0"><g class="pipFlip"><g class="pipMove"><svg class="buddy idle" id="buddyRoom" viewBox="0 0 200 200" width="104" height="104" x="-52" y="-99" overflow="visible"></svg></g></g><g class="pipFx" id="pipFx"></g></g>`;
   $("#buddyRoom").innerHTML=BUDDY;applyWear();
   pipInterrupt();placePip();sortFloor();
-  // swatches: walls + floors owned
-  $("#swatches").innerHTML=(outdoor?"":Object.keys(WALLS).filter(ownsWall).map(k=>`<button class="swatch" data-wall="${k}" style="background:${WALLS[k]}" aria-label="${k} wall" aria-pressed="${k===r.wall}"></button>`).join(""))
-    +Object.keys(FLOORS).filter(ownsFloor).map(k=>`<button class="swatch fl" data-floor="${k}" style="background:linear-gradient(135deg,${FLOORS[k].a} 50%,${FLOORS[k].b} 50%)" aria-label="${FLOORS[k].name} floor" aria-pressed="${k===r.floor}"></button>`).join("")
-    +`<button class="btn sm" id="wallShop">Shop</button>`;
+  if(!VIEW_SET){setView(targetView());VIEW_SET=true;}
+  const sw=$("#swatches");
+  if(f){const r=curRoom();const outdoor=f==="gar";
+    sw.innerHTML=(outdoor?"":Object.keys(WALLS).filter(ownsWall).map(k=>`<button class="swatch" data-wall="${k}" style="background:${WALLS[k]}" aria-label="${k} wall" aria-pressed="${k===r.wall}"></button>`).join(""))
+      +Object.keys(FLOORS).filter(ownsFloor).map(k=>`<button class="swatch fl" data-floor="${k}" style="background:linear-gradient(135deg,${FLOORS[k].a} 50%,${FLOORS[k].b} 50%)" aria-label="${FLOORS[k].name} floor" aria-pressed="${k===r.floor}"></button>`).join("")
+      +`<button class="btn sm" id="wallShop">Shop</button>`;}
+  else sw.innerHTML=`<span class="help">Tap a room to decorate it.${Object.keys(ROOMS).some(k=>!ownsRoom(k))?" New rooms are in the Shop.":""}</span>`;
   renderTray();renderTools();
 }
-function sortFloor(){const layer=$("#floorLayer");if(!layer)return;const kids=[...layer.children].sort((a,b)=>(+a.dataset.key)-(+b.dataset.key));
-  if(kids.some((k,i)=>layer.children[i]!==k))kids.forEach(k=>layer.appendChild(k));}
+function sortFloor(){$$("#house .flr").forEach(layer=>{const kids=[...layer.children].sort((a,b)=>(+a.dataset.key)-(+b.dataset.key));
+  if(kids.some((k,i)=>layer.children[i]!==k))kids.forEach(k=>layer.appendChild(k));});}
 function renderTray(){
+  const f=focusKey();
+  if(!f){$("#trayTitle").textContent="My things";$("#trayMeter").style.width=Math.min(100,(gems()/Math.max(1,cheapestUnowned()))*100)+"%";$("#trayNext").innerHTML=`${STAR} ${gems()} gems`;
+    $("#tray").innerHTML=`<span class="trayEmpty">Tap a room to decorate it.</span>`;return;}
   const r=curRoom();const placedF=new Set(roomFurniture(r).concat(roomWallItems(r)).map(it=>it.id));
   const allPlacedDecals=new Set(Object.values(house().rooms).flatMap(rm=>(rm.decals||[]).map(d=>d.i)));
   const freeFur=furFor(r.key).filter(f=>ownsFur(f.id)&&!placedF.has(f.id));
@@ -1391,20 +1457,34 @@ function thumb(f,size){ // small SVG preview for the tray and shop
   return `<svg viewBox="${(x0-8-(s-w)/2).toFixed(0)} ${(y0-8-(s-h)/2).toFixed(0)} ${s.toFixed(0)} ${s.toFixed(0)}" width="${size}" height="${size}" aria-hidden="true">${f.draw()}</svg>`;
 }
 function renderTools(){
-  const t=$("#roomTools");const r=curRoom();
+  const t=$("#roomTools");
+  if(!focusKey()){t.innerHTML="";return;}
+  const r=curRoom();
   if(!sel){t.innerHTML=`<span class="help">${roomFurniture(r).length||roomDecals(r).length||roomWallItems(r).length?"Drag things to move them. Tap one to change it.":"Tap something below to put it in the room."}</span>`;return;}
   if(sel.kind==="decal")t.innerHTML=`<button class="softBtn" data-tool="big">Bigger</button><button class="softBtn" data-tool="small">Smaller</button><button class="softBtn" data-tool="back">Put away</button><button class="softBtn" data-tool="done">Done</button>`;
   else{const it=(r.items||[]).find(i=>i.u===sel.u);const f=it&&FUR_BY[it.id];
     t.innerHTML=(f&&!f.wall?`<button class="softBtn" data-tool="flip">Turn around</button>`:"")+`<button class="softBtn" data-tool="back">Put away</button><button class="softBtn" data-tool="done">Done</button>`;}
 }
-$("#roomTabs").addEventListener("click",e=>{const b=e.target.closest("[data-room]");if(!b)return;const k=b.dataset.room;sfx.tap();
-  if(!ownsRoom(k)){toast(`The ${ROOMS[k].name.toLowerCase()} costs ${ROOMS[k].price} gems in the Shop.`);openShop();return;}
-  sel=null;pipStop();saveHouse({cur:k});PIP.x=-1;renderRoom();pipStart();});
+/* ---- Zooming between the whole house and one room ---- */
+function targetView(){const f=focusKey();if(!f)return [0,0,VBW,VBH];const [ox,oy]=ROFF[f];
+  let left=ISO(ox,oy+G,0)[0]-36,right=ISO(ox+G,oy,0)[0]+36,top=ISO(ox,oy,0)[1]-WH-26,bottom=ISO(ox+G,oy+G,0)[1]+34;
+  let w=right-left,hh=bottom-top;const ar=VBW/VBH;if(w/hh<ar){const nw=hh*ar;left-=(nw-w)/2;w=nw;}else{const nh=w/ar;top-=(nh-hh)/2;hh=nh;}return [left,top,w,hh];}
+function setView(v){VIEW=v;$("#house").setAttribute("viewBox",v.map(n=>n.toFixed(1)).join(" "));}
+function animateView(to,ms=650){cancelAnimationFrame(viewAnim);if(calm()){setView(to);return;}const from=VIEW.slice(),t0=performance.now();
+  const stepV=now=>{let t=Math.min(1,(now-t0)/ms);t=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;setView(from.map((a,i)=>a+(to[i]-a)*t));if(t<1)viewAnim=requestAnimationFrame(stepV);};viewAnim=requestAnimationFrame(stepV);}
+function focusRoom(k){
+  if(k&&!ownsRoom(k)){toast(`The ${ROOMS[k].name.toLowerCase()} costs ${ROOMS[k].price} gems in the Shop.`);openShop();return;}
+  sel=null;if(k){VIEW_ALL=false;if(house().cur!==k)saveHouse({cur:k});}else VIEW_ALL=true;
+  renderRoom();animateView(targetView());
+  if(k&&roomAt(PIP.x,PIP.y)!==k)setTimeout(()=>callPipToRoom(k),350);
+}
+$("#roomTabs").addEventListener("click",e=>{if(e.target.closest("[data-all]")){sfx.tap();focusRoom(null);return;}
+  const b=e.target.closest("[data-room]");if(!b)return;sfx.tap();focusRoom(b.dataset.room);});
 $("#swatches").addEventListener("click",e=>{if(e.target.closest("#wallShop")){openShop();return;}
-  const b=e.target.closest("[data-wall],[data-floor]");if(!b)return;sfx.tap();const r=curRoom();
+  const b=e.target.closest("[data-wall],[data-floor]");if(!b||!focusKey())return;sfx.tap();const r=curRoom();
   if(b.dataset.wall)saveRoomState(r.key,{wall:b.dataset.wall});else saveRoomState(r.key,{floor:b.dataset.floor});renderRoom();});
 $("#tray").addEventListener("click",e=>{
-  const r=curRoom();
+  if(!focusKey())return;const r=curRoom();
   const bf=e.target.closest("[data-addfur]");
   if(bf){const f=FUR_BY[bf.dataset.addfur];sfx.pop();
     if(f.wall){const it={u:uid(),id:f.id,...freeWallSpot(r)};saveRoomState(r.key,{items:[...(r.items||[]),it]});sel={kind:"fur",u:it.u};}
@@ -1428,29 +1508,36 @@ $("#roomTools").addEventListener("click",e=>{const b=e.target.closest("[data-too
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function svgPoint(e){const svg=$("#house");const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=svg.getScreenCTM();const q=m?p.matrixTransform(m.inverse()):p;return [q.x,q.y];}
 function toTile(sx,sy){const dx=sx-OX,dy=sy-OY;return [(dx/TW+dy/TH)/2,(dy/TH-dx/TW)/2];}
-function toWall(sx,sy){ // nearest wall position for a screen point
-  const dx=sx-OX;const w=dx<0?"L":"R";const along=clamp(Math.abs(dx)/(G*TW),.06,.94);
-  const [,y0]=wallPoint(w,along,0);const h=clamp((y0-sy)/WH,.1,.92);return {w,p:along,h};}
+function toWall(sx,sy,k){ // nearest spot on one of room k's walls for a screen point
+  const [cx]=ISO(...ROFF[k],0);const dx=sx-cx;const w=dx<0?"L":"R";const along=clamp(Math.abs(dx)/(G*TW),.06,.94);
+  const [,y0]=wallPoint(w,along,0,k);const h=clamp((y0-sy)/WH,.1,.92);return {w,p:along,h};}
 $("#house").addEventListener("pointerdown",e=>{
+  if(e.target.closest("#pipG"))return;
+  const fs=e.target.closest(".forSale");if(fs){sfx.tap();focusRoom(fs.dataset.room);return;}
   const el=e.target.closest(".fur,.decal,.wallItem");
-  if(!el){if(sel){sel=null;renderRoom();}return;}
+  if(!el){if(sel){sel=null;renderRoom();return;}
+    const [sx,sy]=svgPoint(e);const [tx,ty]=toTile(sx,sy);const gx=Math.floor(tx),gy=Math.floor(ty);const k=roomAt(gx,gy);
+    if(k&&ownsRoom(k)&&focusKey()!==k){sfx.tap();focusRoom(k);return;}
+    if((k&&ownsRoom(k))||(hallAt(gx,gy)&&hallOpen(hallAt(gx,gy))))callPipTo(gx,gy);
+    return;}
+  const k=el.dataset.room;if(focusKey()!==k){sfx.tap();focusRoom(k);return;}
   e.preventDefault();const r=curRoom();
   if(el.classList.contains("decal")){const i=+el.dataset.i;if(!sel||sel.i!==i){sel={kind:"decal",i};renderRoom();}
-    drag={kind:"decal",i,moved:false};}
+    drag={kind:"decal",i,k,moved:false};}
   else{const u=el.dataset.u;const it=(r.items||[]).find(x=>x.u===u);if(!it)return;
     if(!sel||sel.u!==u){sel={kind:"fur",u};renderRoom();}
-    const [sx,sy]=svgPoint(e);const [tx,ty]=toTile(sx,sy);
-    drag={kind:FUR_BY[it.id].wall?"wall":"fur",u,it:{...it},offX:tx-it.x,offY:ty-it.y,moved:false,x:it.x,y:it.y};}
+    const [sx,sy]=svgPoint(e);const [tx,ty]=toTile(sx,sy);const [ox,oy]=ROFF[k];
+    drag={kind:FUR_BY[it.id].wall?"wall":"fur",u,k,it:{...it},offX:tx-ox-it.x,offY:ty-oy-it.y,moved:false,x:it.x,y:it.y};}
   try{$("#house").setPointerCapture(e.pointerId);}catch(_){}
 });
 $("#house").addEventListener("pointermove",e=>{
-  if(!drag)return;const [sx,sy]=svgPoint(e);const r=curRoom();
-  if(drag.kind==="fur"){const [tx,ty]=toTile(sx,sy);const x=Math.round(tx-drag.offX),y=Math.round(ty-drag.offY);
+  if(!drag)return;const [sx,sy]=svgPoint(e);const r=curRoom();const [ox,oy]=ROFF[drag.k];
+  if(drag.kind==="fur"){const [tx,ty]=toTile(sx,sy);const x=Math.round(tx-ox-drag.offX),y=Math.round(ty-oy-drag.offY);
     if((x!==drag.x||y!==drag.y)&&fits(r,drag.it,x,y)){drag.x=x;drag.y=y;drag.moved=true;
-      const g=$(`#house .fur[data-u="${drag.u}"]`);if(g){const [px,py]=ISO(x,y,0);g.setAttribute("transform",`translate(${(px-OX).toFixed(1)},${(py-OY).toFixed(1)})`);const {w,d}=footprint(drag.it);g.dataset.key=x+w+y+d;sortFloor();}}
-  }else{const wp=toWall(sx,sy);drag.wp=wp;drag.moved=true;
+      const g=$(`#house .fur[data-u="${drag.u}"]`);if(g){const [px,py]=ISO(ox+x,oy+y,0);g.setAttribute("transform",`translate(${(px-OX).toFixed(1)},${(py-OY).toFixed(1)})`);const {w,d}=footprint(drag.it);g.dataset.key=x+w+y+d;sortFloor();}}
+  }else{const wp=toWall(sx,sy,drag.k);drag.wp=wp;drag.moved=true;
     const g=drag.kind==="decal"?$(`#house .decal[data-i="${drag.i}"]`):$(`#house .wallItem[data-u="${drag.u}"]`);
-    if(g)g.setAttribute("transform",wallTransform(wp.w,wp.p,wp.h));}
+    if(g)g.setAttribute("transform",wallTransform(wp.w,wp.p,wp.h,drag.k));}
 });
 function endDrag(){
   if(!drag)return;const d=drag;drag=null;if(!d.moved)return;const r=curRoom();sfx.tap();
@@ -1460,19 +1547,28 @@ function endDrag(){
   renderRoom();
 }
 $("#house").addEventListener("pointerup",endDrag);$("#house").addEventListener("pointercancel",endDrag);
-function openRoom(){sel=null;show("room");renderRoom();pipStart();}
+function openRoom(){sel=null;VIEW_ALL=true;VIEW_SET=false;show("room");renderRoom();pipStart();}
 $("#roomBtn").onclick=openRoom;$("#starBtn").onclick=openShop;$("#sumRoomBtn").onclick=openShop;
 $("#roomBack").onclick=()=>{sel=null;pipStop();show("home");renderHome();};
 
-/* ---- Pip's little life in the house ---- */
+/* ---- Pip's little life in the house: he can walk to any room he owns ---- */
 const PIP={x:-1,y:-1,timer:null,busy:false,anim:null,gen:0};
 function pipInterrupt(){PIP.gen++;if(PIP.anim){cancelAnimationFrame(PIP.anim);PIP.anim=null;}}
 const pipEl=()=>$("#pipG");
 const calm=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
-function pipSet(x,y){PIP.x=x;PIP.y=y;const g=pipEl();if(!g)return;const [sx,sy]=ISO(x+.5,y+.5,0);
-  g.setAttribute("transform",`translate(${sx.toFixed(1)},${sy.toFixed(1)})`);g.dataset.key=(x+1+y+1+.5).toFixed(1);sortFloor();}
-function placePip(){const r=curRoom();const m=occupied(r);
-  if(PIP.x<0||!m[PIP.x]||m[PIP.x][PIP.y]){const free=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)if(!m[x][y])free.push([x,y]);
+function occAll(){const s=new Set();const h=house();
+  Object.keys(ROOMS).forEach(k=>{if(!ownsRoom(k))return;const r={key:k,...h.rooms[k]};const [ox,oy]=ROFF[k];
+    roomFurniture(r).forEach(it=>{const {w,d}=footprint(it);for(let x=it.x;x<it.x+w;x++)for(let y=it.y;y<it.y+d;y++)s.add((ox+x)+","+(oy+y));});});return s;}
+function walkable(x,y,m){if(x<0||y<0||x>=N||y>=N)return false;const k=roomAt(x,y);if(k)return ownsRoom(k)&&!m.has(x+","+y);const hl=hallAt(x,y);return !!hl&&hallOpen(hl);}
+function layerFor(x,y){const k=roomAt(x,y);if(k)return k;const hl=hallAt(x,y);return hl?hl.b:"bed";}
+function pipPlace(cx,cy){const g=pipEl();if(!g)return;const [sx,sy]=ISO(cx+.5,cy+.5,0);
+  const k=layerFor(Math.round(cx),Math.round(cy)),[ox,oy]=ROFF[k],layer=$("#fl-"+k);
+  g.setAttribute("transform",`translate(${sx.toFixed(1)},${sy.toFixed(1)})`);g.dataset.key=(cx-ox+1+cy-oy+1+.5).toFixed(2);
+  if(layer&&g.parentNode!==layer)layer.appendChild(g);sortFloor();}
+function pipSet(x,y){PIP.x=x;PIP.y=y;pipPlace(x,y);}
+function freeTiles(k){const m=occAll();const out=[];for(let x=0;x<N;x++)for(let y=0;y<N;y++){const rk=roomAt(x,y);if(!rk||(k&&rk!==k))continue;if(walkable(x,y,m))out.push([x,y]);}return out;}
+function placePip(){const m=occAll();
+  if(PIP.x<0||!walkable(PIP.x,PIP.y,m)){const f=focusKey()||house().cur;let free=freeTiles(ownsRoom(f)?f:"bed");if(!free.length)free=freeTiles(null);
     const [x,y]=free.length?free[Math.floor(Math.random()*free.length)]:[2,3];PIP.x=x;PIP.y=y;}
   pipSet(PIP.x,PIP.y);}
 function pipStart(){pipStop();placePip();PIP.timer=setTimeout(pipAct,1500+Math.random()*1500);}
@@ -1481,40 +1577,50 @@ function pipFx(text,cls,n=1){const box=$("#pipFx");if(!box)return;for(let i=0;i<
   t.setAttribute("x",(-20+Math.random()*40).toFixed(0));t.setAttribute("y","-70");t.style.animationDelay=(i*0.45)+"s";box.appendChild(t);setTimeout(()=>t.remove(),1800+i*450);}}
 function pipDo(cls,ms,mood){const g=pipEl();if(!g)return Promise.resolve();g.classList.add(cls);if(mood)buddy($("#buddyRoom"),mood);
   return new Promise(r=>setTimeout(()=>{const g2=pipEl();if(g2){g2.classList.remove(cls);}if(mood&&$("#buddyRoom"))buddy($("#buddyRoom"),"idle");r();},ms));}
-function pathTo(tx,ty){ // BFS over free tiles
-  const m=occupied(curRoom());if(m[tx][ty])return null;const key=(x,y)=>x*G+y;const prev=new Map();prev.set(key(PIP.x,PIP.y),null);const q=[[PIP.x,PIP.y]];
+function pathTo(tx,ty){ // BFS over free tiles in every room he owns, plus the hallways
+  const m=occAll();if(!walkable(tx,ty,m))return null;const key=(x,y)=>x*N+y;const prev=new Map();prev.set(key(PIP.x,PIP.y),null);const q=[[PIP.x,PIP.y]];
   while(q.length){const [x,y]=q.shift();if(x===tx&&y===ty)break;
-    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=G||ny>=G||m[nx][ny]||prev.has(key(nx,ny)))continue;prev.set(key(nx,ny),[x,y]);q.push([nx,ny]);}}
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(prev.has(key(nx,ny))||!walkable(nx,ny,m))continue;prev.set(key(nx,ny),[x,y]);q.push([nx,ny]);}}
   if(!prev.has(key(tx,ty)))return null;const path=[];let c=[tx,ty];while(c){path.unshift(c);c=prev.get(key(c[0],c[1]));}return path.slice(1);}
 function step(x,y,ms){return new Promise(res=>{const g=pipEl();if(!g){res();return;}const x0=PIP.x,y0=PIP.y,t0=performance.now(),gen=PIP.gen;
-  $("#pipG .pipFlip").classList.toggle("left",(x-x0)<0||(y-y0)>0);
-  const tick=now=>{const t=Math.min(1,(now-t0)/ms);const cx=x0+(x-x0)*t,cy=y0+(y-y0)*t;const [sx,sy]=ISO(cx+.5,cy+.5,0);
-    g.setAttribute("transform",`translate(${sx.toFixed(1)},${sy.toFixed(1)})`);g.dataset.key=(cx+1+cy+1+.5).toFixed(1);sortFloor();
-    if(gen!==PIP.gen){res();return;}
+  const fl=$("#pipG .pipFlip");if(fl)fl.classList.toggle("left",(x-x0)<0||(y-y0)>0);
+  const tick=now=>{if(gen!==PIP.gen){res();return;}const t=Math.min(1,(now-t0)/ms);pipPlace(x0+(x-x0)*t,y0+(y-y0)*t);
     if(t<1)PIP.anim=requestAnimationFrame(tick);else{PIP.x=x;PIP.y=y;PIP.anim=null;res();}};
   PIP.anim=requestAnimationFrame(tick);});}
 async function pipWalkTo(tx,ty){const path=pathTo(tx,ty);if(!path||!path.length)return false;const g=pipEl();if(!g)return false;
-  const gen=PIP.gen;g.classList.add("walking");for(const [x,y] of path){if(gen!==PIP.gen||!PIP.timer)break;await step(x,y,420);}const g2=pipEl();if(g2)g2.classList.remove("walking");return true;}
-function randomFreeTile(){const m=occupied(curRoom());const free=[];for(let x=0;x<G;x++)for(let y=0;y<G;y++)if(!m[x][y]&&!(x===PIP.x&&y===PIP.y))free.push([x,y]);return free.length?free[Math.floor(Math.random()*free.length)]:null;}
-function tileBeside(it){const {w,d}=footprint(it);const c=[];for(let x=it.x-1;x<=it.x+w;x++)for(let y=it.y-1;y<=it.y+d;y++){if(x<0||y<0||x>=G||y>=G)continue;if(x>=it.x&&x<it.x+w&&y>=it.y&&y<it.y+d)continue;c.push([x,y]);}
-  const m=occupied(curRoom());const ok=c.filter(([x,y])=>!m[x][y]);return ok.length?ok[Math.floor(Math.random()*ok.length)]:null;}
+  const gen=PIP.gen;g.classList.add("walking");for(const [x,y] of path){if(gen!==PIP.gen||!PIP.timer)break;await step(x,y,calm()?1:400);}const g2=pipEl();if(g2)g2.classList.remove("walking");return true;}
+function wanderTarget(){const f=focusKey(),here=roomAt(PIP.x,PIP.y);
+  const k=f?(Math.random()<.85?f:null):(Math.random()<.6?here:null);
+  let c=freeTiles(k).filter(([x,y])=>!(x===PIP.x&&y===PIP.y));if(!c.length)c=freeTiles(null);return c.length?c[Math.floor(Math.random()*c.length)]:null;}
+function tileBeside(it,k){const {w,d}=footprint(it);const [ox,oy]=ROFF[k];const m=occAll();const c=[];
+  for(let x=it.x-1;x<=it.x+w;x++)for(let y=it.y-1;y<=it.y+d;y++){if(x<0||y<0||x>=G||y>=G)continue;if(x>=it.x&&x<it.x+w&&y>=it.y&&y<it.y+d)continue;if(walkable(ox+x,oy+y,m))c.push([ox+x,oy+y]);}
+  return c.length?c[Math.floor(Math.random()*c.length)]:null;}
+function itemsWithRoom(k){const h=house();return Object.keys(ROOMS).filter(rk=>ownsRoom(rk)&&(!k||rk===k)).flatMap(rk=>roomFurniture({key:rk,...h.rooms[rk]}).map(it=>({it,k:rk})));}
+// Called when she taps the floor or picks a room: Pip trots over, through the hallways if he has to.
+async function callPipTo(x,y){if(!PIP.timer)return;pipInterrupt();const g=pipEl();if(g)g.setAttribute("class","pipG");PIP.busy=true;
+  clearTimeout(PIP.timer);PIP.timer=setTimeout(pipAct,99999);
+  const ok=await pipWalkTo(x,y);if(ok&&pipEl()){pipFx("♥");await pipDo("hop",1100,"cheer");}
+  PIP.busy=false;if(!$("#room").hidden){clearTimeout(PIP.timer);PIP.timer=setTimeout(pipAct,2500+Math.random()*3000);}}
+function callPipToRoom(k){const c=freeTiles(k);if(!c.length)return;const [ox,oy]=ROFF[k];const mid=[ox+G/2,oy+G/2];
+  c.sort((a,b)=>Math.hypot(a[0]-mid[0],a[1]-mid[1])-Math.hypot(b[0]-mid[0],b[1]-mid[1]));const t=c[Math.floor(Math.random()*Math.min(6,c.length))];callPipTo(t[0],t[1]);}
 const PIP_ACTS=[
-  async()=>{const t=randomFreeTile();if(t)await pipWalkTo(t[0],t[1]);},
-  async()=>{const t=randomFreeTile();if(t)await pipWalkTo(t[0],t[1]);},
+  async()=>{const t=wanderTarget();if(t)await pipWalkTo(t[0],t[1]);},
+  async()=>{const t=wanderTarget();if(t)await pipWalkTo(t[0],t[1]);},
+  async()=>{const t=wanderTarget();if(t)await pipWalkTo(t[0],t[1]);},
   async()=>{await pipDo("wave",2300,"cheer");},
   async()=>{pipFx("♪","",2);await pipDo("dance",2400,"cheer");},
   async()=>{await pipDo("hop",1100,"cheer");},
   async()=>{await pipDo("spin",1100);},
   async()=>{await pipDo("peek",2400,"think");},
-  async()=>{const r=curRoom();const bed=roomFurniture(r).find(i=>i.id==="bed"||i.id==="tent"||i.id==="catbed");
-    if(bed){const t=tileBeside(bed);if(t)await pipWalkTo(t[0],t[1]);}pipFx("z","z",3);await pipDo("sleep",4200);},
-  async()=>{const r=curRoom();const it=roomFurniture(r);if(!it.length)return pipDo("hop",1100,"cheer");
-    const t=tileBeside(it[Math.floor(Math.random()*it.length)]);if(t)await pipWalkTo(t[0],t[1]);pipFx("♥");await pipDo("hop",1100,"cheer");},
+  async()=>{const bed=itemsWithRoom(focusKey()).find(o=>o.it.id==="bed"||o.it.id==="tent"||o.it.id==="catbed")||itemsWithRoom(null).find(o=>o.it.id==="bed"||o.it.id==="tent"||o.it.id==="catbed");
+    if(bed){const t=tileBeside(bed.it,bed.k);if(t)await pipWalkTo(t[0],t[1]);}pipFx("z","z",3);await pipDo("sleep",4200);},
+  async()=>{const its=itemsWithRoom(focusKey());if(!its.length)return pipDo("hop",1100,"cheer");
+    const o=its[Math.floor(Math.random()*its.length)];const t=tileBeside(o.it,o.k);if(t)await pipWalkTo(t[0],t[1]);pipFx("♥");await pipDo("hop",1100,"cheer");},
 ];
 async function pipAct(){
   if($("#room").hidden)return;
   if(!calm()&&!PIP.busy&&!drag){PIP.busy=true;try{await PIP_ACTS[Math.floor(Math.random()*PIP_ACTS.length)]();}catch(_){}PIP.busy=false;}
-  if(!$("#room").hidden)PIP.timer=setTimeout(pipAct,2500+Math.random()*4500);
+  if(!$("#room").hidden){clearTimeout(PIP.timer);PIP.timer=setTimeout(pipAct,2500+Math.random()*4500);}
 }
 $("#house").addEventListener("click",async e=>{if(!e.target.closest("#pipG"))return;e.stopPropagation();sfx.pop();pipFx("♥","",2);
   if(PIP.busy)return;PIP.busy=true;await pipDo(Math.random()<.5?"hop":"spin",1100,"cheer");PIP.busy=false;});
@@ -1526,6 +1632,11 @@ function openDress(){
   $("#dressTitle").textContent=`Dress up ${bname()}`;
   $("#wearGrid").innerHTML=ACCS.map(a=>{const open=mine.includes(a.id);
     return`<button class="wearBtn" data-wear="${a.id}" aria-pressed="${wear.includes(a.id)}" ${open?"":"disabled"}>${a.name}<small>${open?(wear.includes(a.id)?"wearing":"tap to wear"):`${STAR} ${a.price} in the Shop`}</small></button>`}).join("");
+  const cur=S.rewards.color||"honey";
+  $("#colorRow").innerHTML=PIP_COLORS.map(c=>{const own=ownsColor(c.id);return `<button class="colorBtn ${own?"":"locked"}" data-color="${c.id}" aria-pressed="${c.id===cur}" aria-label="${c.name}"><i style="background:radial-gradient(circle at 50% 68%,${c.b} 0 34%,${c.a} 35%)"></i>${own?esc(c.name):`${STAR}${c.price}`}</button>`;}).join("");
+  $$("#colorRow .colorBtn").forEach(b=>b.onclick=()=>{const c=PIP_COLORS.find(x=>x.id===b.dataset.color);
+    if(!ownsColor(c.id)){sfx.nope();toast(`${c.name} is ${c.price} gems in the Shop.`);return;}
+    setRewards({color:c.id});sfx.pop();applyWear();buddy($("#buddyDress"),"cheer");openDress();});
   $$("#wearGrid .wearBtn").forEach(b=>b.onclick=()=>{const id=b.dataset.wear,w=new Set(S.rewards.wear||[]);w.has(id)?w.delete(id):w.add(id);setRewards({wear:[...w]});sfx.tap();applyWear();openDress();});
   buddy($("#buddyDress"),"idle");$("#dressOv").hidden=false;
 }
@@ -1721,7 +1832,7 @@ function renderSettings(){
   $("#setRate").value=s.rate;$("#setRateVal").textContent=s.rate<0.75?"slow":s.rate<0.95?"relaxed":"normal";
   fillVoiceSelect();
   $("#backupPanel").hidden=S.mode!=="local";
-  $("#setStars").innerHTML=`${STAR} ${gems()} gems · ${owned("fur").length} furniture, ${owned("st").length} stickers, ${owned("acc").length} outfits, ${Object.keys(ROOMS).filter(ownsRoom).length} rooms`;
+  $("#setStars").innerHTML=`${STAR} ${gems()} gems · ${owned("fur").length} furniture, ${owned("st").length} stickers, ${owned("acc").length} outfits, ${Object.keys(ROOMS).filter(ownsRoom).length} rooms<br><span class="small">Earned in all: about ${lifetimeGems()} gems (balance plus everything she has bought — the number to give her on a new iPad).</span>`;
 }
 let saveT=null;
 function saveSettings(patch){const next={...S.settings,...patch};S.settings=next;clearTimeout(saveT);saveT=setTimeout(()=>{setDoc("settings","main",next);$("#setSaved").textContent="Saved";setTimeout(()=>$("#setSaved").textContent="",1500);},500);renderSettings();renderHome();}
